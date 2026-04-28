@@ -1,0 +1,54 @@
+/target/
+/dist/
+/website/public/
+/website/static/app/
+
+
+# Rust build artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# Cargo lock is committed for binaries; uncomment if you want to ignore it
+# Cargo.lock
+
+# WASM build output
+/dist/
+/pkg
+*.wasm
+
+# IDE / editor
+/.idea
+/.vscode
+*.iml
+.history
+*.swp
+*.swo
+*~
+\#*\#
+.\#*
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local environment
+.env
+.env.local
+.envrc
+.direnv/
+
+# Logs and caches
+*.log
+.cache/
+node_modules/
+
+# Profile / flamegraph output
+flamegraph.svg
+perf.data*
+
+# Direnv / nix
+.direnv
+result
+result-*

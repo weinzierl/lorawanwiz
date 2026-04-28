@@ -1,0 +1,63 @@
+<!doctype html>
+<!--
+  lorawanwiz - LoRaWAN modulation visualizer
+  Copyright L. Weinzierl, 2026
+  https://weinzierlweb.com
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>lorawanwiz - LoRaWAN modulation visualizer</title>
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+
+    <meta name="author" content="L. Weinzierl" />
+    <meta name="copyright" content="Copyright L. Weinzierl, 2026" />
+
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #0e1014;
+        color: #eef1f6;
+        font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+        height: 100%;
+        overflow: hidden;
+      }
+      #bevy {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        outline: none;
+      }
+      #loading {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #889;
+        pointer-events: none;
+      }
+      #loading.hidden { display: none; }
+    </style>
+  </head>
+  <body>
+    <canvas id="bevy"></canvas>
+    <div id="loading">loading wasm...</div>
+    <script type="module">
+      import init from "./lorawanwiz.js";
+      init().then(() => {
+        document.getElementById("loading").classList.add("hidden");
+      }).catch((e) => {
+        document.getElementById("loading").textContent = "load failed: " + e;
+      });
+    </script>
+  </body>
+</html>

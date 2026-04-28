@@ -1,0 +1,118 @@
+<!doctype html>
+<!--
+  lorawanwiz - LoRaWAN modulation visualizer
+  Copyright L. Weinzierl, 2026
+  https://weinzierlweb.com
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>lorawanwiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/svg+xml" href="{{ get_url(path='favicon.svg') | safe }}" />
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ get_url(path='favicon-96x96.png') | safe }}" />
+    <link rel="shortcut icon" href="{{ get_url(path='favicon.ico') | safe }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ get_url(path='apple-touch-icon.png') | safe }}" />
+    <link rel="manifest" href="{{ get_url(path='site.webmanifest') | safe }}" />
+
+    <meta name="author" content="L. Weinzierl" />
+    <meta name="copyright" content="Copyright L. Weinzierl, 2026" />
+
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, sans-serif;
+        background: #101820;
+        color: #f4f7fb;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: 1fr auto;
+      }
+
+      main {
+        display: grid;
+        place-items: center;
+        padding: 3rem 0;
+      }
+
+      main > div {
+        width: min(42rem, calc(100vw - 3rem));
+        padding: 0 3rem;
+      }
+
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        line-height: 1;
+      }
+
+      p {
+        max-width: 34rem;
+        font-size: 1.15rem;
+        line-height: 1.6;
+        color: #cbd5e1;
+      }
+
+      a.button {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.85rem 1.15rem;
+        border: 1px solid #f4f7fb;
+        border-radius: 0.75rem;
+        color: #f4f7fb;
+        text-decoration: none;
+        font-weight: 650;
+      }
+
+      a.button:hover {
+        background: #f4f7fb;
+        color: #101820;
+      }
+
+      footer {
+        padding: 1.5rem 3rem;
+        font-size: 0.85rem;
+        color: #8aa;
+        text-align: center;
+      }
+
+      footer a {
+        color: #cbd5e1;
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <div>
+        <h1>lorawanwiz</h1>
+
+        <p>
+          An educational tool for visualizing LoRaWAN modulation, encryption, and
+          framing. Type a message, watch it travel through encryption, MIC, framing,
+          symbol packing, and chirp modulation. Hear the chirps rescaled to the
+          audible band.
+        </p>
+
+        <a class="button" href="{{ get_url(path='app/') | safe }}">
+          Open lorawanwiz
+        </a>
+      </div>
+    </main>
+
+    <footer>
+      Copyright L. Weinzierl, 2026,
+      <a href="https://weinzierlweb.com">weinzierlweb.com</a>
+    </footer>
+  </body>
+</html>

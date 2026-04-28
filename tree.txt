@@ -1,0 +1,3639 @@
+.
+├── assets
+│   ├── apple-touch-icon.png
+│   ├── favicon-96x96.png
+│   ├── favicon.ico
+│   ├── favicon.svg
+│   ├── favicon.zip
+│   ├── icon.png
+│   ├── lorawanwiz.desktop
+│   ├── site.webmanifest
+│   ├── web-app-manifest-192x192.png
+│   └── web-app-manifest-512x512.png
+├── Cargo.lock
+├── Cargo.toml
+├── index.html
+├── Justfile
+├── README.md
+├── src
+│   ├── audio.rs
+│   ├── lib.rs
+│   ├── main.rs
+│   ├── math.rs
+│   ├── pipeline.rs
+│   ├── state.rs
+│   ├── ui.rs
+│   └── visualization.rs
+├── target
+│   ├── CACHEDIR.TAG
+│   ├── debug
+│   │   ├── build
+│   │   │   ├── ahash-ae2fdb22acf9d38d
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-ae2fdb22acf9d38d
+│   │   │   │   └── build_script_build-ae2fdb22acf9d38d.d
+│   │   │   ├── ahash-f6f9da0166f00532
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── alsa-sys-3a153b00fbe23a17
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── alsa-sys-8d6fcabef721ba23
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-8d6fcabef721ba23
+│   │   │   │   └── build_script_build-8d6fcabef721ba23.d
+│   │   │   ├── ash-4f7b80836a3ad991
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── ash-70028379e14c3a1c
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-70028379e14c3a1c
+│   │   │   │   └── build_script_build-70028379e14c3a1c.d
+│   │   │   ├── async-io-a0ffba93d0db5793
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-a0ffba93d0db5793
+│   │   │   │   └── build_script_build-a0ffba93d0db5793.d
+│   │   │   ├── async-io-d2f45c55386cd02d
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── blake3-0a0a345503bd1a28
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-0a0a345503bd1a28
+│   │   │   │   └── build_script_build-0a0a345503bd1a28.d
+│   │   │   ├── blake3-b0f15ebb19d5fbb7
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   ├── a1edd97dd51cd48d-blake3_neon.o
+│   │   │   │   │   └── libblake3_neon.a
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── cpal-1221125e3f3daebe
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-1221125e3f3daebe
+│   │   │   │   └── build_script_build-1221125e3f3daebe.d
+│   │   │   ├── cpal-3d32d301a2fbe380
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── crossbeam-utils-1ca0223c886ef70d
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-1ca0223c886ef70d
+│   │   │   │   └── build_script_build-1ca0223c886ef70d.d
+│   │   │   ├── crossbeam-utils-2dcfc11c87348d90
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── erased-serde-2cf451c37f6e11ac
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── erased-serde-9240b434078165c0
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-9240b434078165c0
+│   │   │   │   └── build_script_build-9240b434078165c0.d
+│   │   │   ├── generic-array-026a5009bbf82c99
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-026a5009bbf82c99
+│   │   │   │   └── build_script_build-026a5009bbf82c99.d
+│   │   │   ├── generic-array-fbc38057e5d1d7ff
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── getrandom-1191295f6a83ecc0
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── getrandom-cef978c12bcbbd58
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-cef978c12bcbbd58
+│   │   │   │   └── build_script_build-cef978c12bcbbd58.d
+│   │   │   ├── getrandom-ef1d5f4fa238e91b
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-ef1d5f4fa238e91b
+│   │   │   │   └── build_script_build-ef1d5f4fa238e91b.d
+│   │   │   ├── getrandom-f7ae8d0ea75c9fd1
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── libc-0af3b582b968536c
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-0af3b582b968536c
+│   │   │   │   └── build_script_build-0af3b582b968536c.d
+│   │   │   ├── libc-5bcd2c8164cb6c03
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── libm-e10ce6d9c175244a
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-e10ce6d9c175244a
+│   │   │   │   └── build_script_build-e10ce6d9c175244a.d
+│   │   │   ├── libm-f5642e0dc5ef59bb
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── naga-b687aa4836feb590
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-b687aa4836feb590
+│   │   │   │   └── build_script_build-b687aa4836feb590.d
+│   │   │   ├── naga-e41ed4e4152af310
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── nix-7f06e2825430ace4
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── nix-9c66c69e48ce9da4
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-9c66c69e48ce9da4
+│   │   │   │   └── build_script_build-9c66c69e48ce9da4.d
+│   │   │   ├── num-traits-355d8daca3160f35
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-355d8daca3160f35
+│   │   │   │   └── build_script_build-355d8daca3160f35.d
+│   │   │   ├── num-traits-e3f865af256c67c9
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── parking_lot_core-5e3d6a02a83b17b9
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-5e3d6a02a83b17b9
+│   │   │   │   └── build_script_build-5e3d6a02a83b17b9.d
+│   │   │   ├── parking_lot_core-7bcc3d8738b6471a
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── proc-macro2-516a4d82f97e76be
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-516a4d82f97e76be
+│   │   │   │   └── build_script_build-516a4d82f97e76be.d
+│   │   │   ├── proc-macro2-fb48214daf4a8679
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── quote-1a9a1f8eec51eeb5
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-1a9a1f8eec51eeb5
+│   │   │   │   └── build_script_build-1a9a1f8eec51eeb5.d
+│   │   │   ├── quote-b1b3cf20f5cfb1ff
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── rustix-75a5faa76c91dbfc
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-75a5faa76c91dbfc
+│   │   │   │   └── build_script_build-75a5faa76c91dbfc.d
+│   │   │   ├── rustix-d06c08694e17d352
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── rustix-fb924c59ffd84140
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── rustix_test_can_compile
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── rustix-fd9e01f9f61c9005
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-fd9e01f9f61c9005
+│   │   │   │   └── build_script_build-fd9e01f9f61c9005.d
+│   │   │   ├── serde-5fd2cd6d8a60e658
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── private.rs
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── serde-a34771cafb9e3585
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-a34771cafb9e3585
+│   │   │   │   └── build_script_build-a34771cafb9e3585.d
+│   │   │   ├── serde_core-69eb0c64076d8817
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-69eb0c64076d8817
+│   │   │   │   └── build_script_build-69eb0c64076d8817.d
+│   │   │   ├── serde_core-d94390824f8f6307
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── private.rs
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── slotmap-54592d813362205d
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-54592d813362205d
+│   │   │   │   └── build_script_build-54592d813362205d.d
+│   │   │   ├── slotmap-ccad0506509ddd94
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── smithay-client-toolkit-786c5be96ac0cc6a
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── smithay-client-toolkit-ecf0d005e7bf571e
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-ecf0d005e7bf571e
+│   │   │   │   └── build_script_build-ecf0d005e7bf571e.d
+│   │   │   ├── thiserror-5911d69fd6dc785b
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-5911d69fd6dc785b
+│   │   │   │   └── build_script_build-5911d69fd6dc785b.d
+│   │   │   ├── thiserror-acee27969a74f7b2
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── private.rs
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── thiserror-b9b0a7715564e5d9
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-b9b0a7715564e5d9
+│   │   │   │   └── build_script_build-b9b0a7715564e5d9.d
+│   │   │   ├── thiserror-c7585b5e9922b985
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── typeid-6a060b8eb0ed967f
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── typeid-d084b5e2b111ad2b
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-d084b5e2b111ad2b
+│   │   │   │   └── build_script_build-d084b5e2b111ad2b.d
+│   │   │   ├── wayland-backend-840da3f3a5117bed
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wayland-backend-c91f4dcfd3c3c0b3
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-c91f4dcfd3c3c0b3
+│   │   │   │   └── build_script_build-c91f4dcfd3c3c0b3.d
+│   │   │   ├── wayland-client-707895b3a26b62eb
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wayland-client-d897d596f211bbdf
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-d897d596f211bbdf
+│   │   │   │   └── build_script_build-d897d596f211bbdf.d
+│   │   │   ├── wayland-sys-240cfedf62c6a428
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-240cfedf62c6a428
+│   │   │   │   └── build_script_build-240cfedf62c6a428.d
+│   │   │   ├── wayland-sys-9e30151c2b8fdcd5
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wgpu-2258767eba0464f4
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-2258767eba0464f4
+│   │   │   │   └── build_script_build-2258767eba0464f4.d
+│   │   │   ├── wgpu-core-1c449b8b1b4fdeac
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wgpu-core-fb81a88f97263f70
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-fb81a88f97263f70
+│   │   │   │   └── build_script_build-fb81a88f97263f70.d
+│   │   │   ├── wgpu-e95b52ee1ffb5bde
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wgpu-hal-5fbaf5f217ae571d
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-5fbaf5f217ae571d
+│   │   │   │   └── build_script_build-5fbaf5f217ae571d.d
+│   │   │   ├── wgpu-hal-9af65f6f440d828f
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── winit-449b46d584dd4023
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── winit-ca10c06d7de5b8c0
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-ca10c06d7de5b8c0
+│   │   │   │   └── build_script_build-ca10c06d7de5b8c0.d
+│   │   │   ├── x11-dl-5bce69737f9151b9
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── config.rs
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── x11-dl-e0d37bdddce4276b
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-e0d37bdddce4276b
+│   │   │   │   └── build_script_build-e0d37bdddce4276b.d
+│   │   │   ├── zerocopy-37e50f764404c96a
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   └── zerocopy-6b2ee264577a60ad
+│   │   │       ├── build-script-build
+│   │   │       ├── build_script_build-6b2ee264577a60ad
+│   │   │       └── build_script_build-6b2ee264577a60ad.d
+│   │   ├── deps
+│   │   │   ├── ab_glyph-4d8a00d7645c5a96.d
+│   │   │   ├── ab_glyph_rasterizer-642a1323bc15abad.d
+│   │   │   ├── accesskit-830d407531892b4f.d
+│   │   │   ├── accesskit_winit-6329299126be688b.d
+│   │   │   ├── aes-a4db22e6c50989e6.d
+│   │   │   ├── ahash-66b2a2dd94c10f36.d
+│   │   │   ├── aho_corasick-a4c88462ff6dd2f9.d
+│   │   │   ├── alsa-d3ce430d0390a008.d
+│   │   │   ├── alsa_sys-d804c41e7121253e.d
+│   │   │   ├── approx-12300268c4a30a86.d
+│   │   │   ├── arrayref-c56ce3cf05073638.d
+│   │   │   ├── arrayvec-b58486f1e4083399.d
+│   │   │   ├── ash-5903b4d4f8611355.d
+│   │   │   ├── as_raw_xcb_connection-6acc6b5168860165.d
+│   │   │   ├── assert_type_match-49fde97567d76dbe.d
+│   │   │   ├── async_broadcast-30487a063bc39bba.d
+│   │   │   ├── async_channel-c5f6e324685e2572.d
+│   │   │   ├── async_executor-0a35b678a40b65b5.d
+│   │   │   ├── async_fs-50423057c8d7af87.d
+│   │   │   ├── async_io-d305f18a711c66c8.d
+│   │   │   ├── async_lock-1bae4d1bd186770b.d
+│   │   │   ├── async_task-9237733802a4a152.d
+│   │   │   ├── atomicow-d0445b73b7ae5ecf.d
+│   │   │   ├── atomic_waker-d5acd5d98c7fc52c.d
+│   │   │   ├── autocfg-413ceabfd9333b20.d
+│   │   │   ├── bevy-81a14d666aa454c0.d
+│   │   │   ├── bevy_a11y-414416c21395b801.d
+│   │   │   ├── bevy_app-e1bc5d7a5097f994.d
+│   │   │   ├── bevy_asset-114588b3dba4c773.d
+│   │   │   ├── bevy_asset_macros-52e203df04ddee2d.d
+│   │   │   ├── bevy_camera-d6ab704383f44fac.d
+│   │   │   ├── bevy_color-3df13d971bddf0fc.d
+│   │   │   ├── bevy_core_pipeline-05b38988ab8a3b24.d
+│   │   │   ├── bevy_derive-21402a7dda658acb.d
+│   │   │   ├── bevy_diagnostic-6d211d3a8fda1401.d
+│   │   │   ├── bevy_ecs-a208d261920d8b67.d
+│   │   │   ├── bevy_ecs_macros-9b07080e57ae2af0.d
+│   │   │   ├── bevy_encase_derive-ad915b1e92f29d7a.d
+│   │   │   ├── bevy_image-92f37070b088ea6b.d
+│   │   │   ├── bevy_input-d92655d4720bf330.d
+│   │   │   ├── bevy_input_focus-24f3d48d2adb8e91.d
+│   │   │   ├── bevy_internal-6b1f06e8a19d78fa.d
+│   │   │   ├── bevy_log-fcb0ae1a9afb7c84.d
+│   │   │   ├── bevy_macro_utils-5ceff46a04c9d143.d
+│   │   │   ├── bevy_math-17913e5fd273b150.d
+│   │   │   ├── bevy_mesh-c38cc92b4db06683.d
+│   │   │   ├── bevy_platform-bd837d63bfc97b8b.d
+│   │   │   ├── bevy_ptr-83c819955b968e57.d
+│   │   │   ├── bevy_reflect-9776d93fd99f476e.d
+│   │   │   ├── bevy_reflect_derive-f0fe14d504f7c546.d
+│   │   │   ├── bevy_render-1f4d196c8ddf8485.d
+│   │   │   ├── bevy_render_macros-ea2d2cfc8febeb26.d
+│   │   │   ├── bevy_shader-fd327528c4678f66.d
+│   │   │   ├── bevy_sprite-1f802fe9621148d0.d
+│   │   │   ├── bevy_sprite_render-15d0d00811e87d4e.d
+│   │   │   ├── bevy_tasks-b99c8f5cad4958be.d
+│   │   │   ├── bevy_text-2a7de7bcdbaecb2a.d
+│   │   │   ├── bevy_time-aea3a14acb68bec7.d
+│   │   │   ├── bevy_transform-6964d17913d3fad6.d
+│   │   │   ├── bevy_ui-8a22958fe2ef85c1.d
+│   │   │   ├── bevy_ui_render-258f7fb200b96fcc.d
+│   │   │   ├── bevy_utils-d6ff04774db53362.d
+│   │   │   ├── bevy_window-aef45f7891706460.d
+│   │   │   ├── bevy_winit-1fb040b64c4a0b97.d
+│   │   │   ├── bitflags-7c89d2cc6d4b452a.d
+│   │   │   ├── bit_set-592c7a0a4faf40b8.d
+│   │   │   ├── bit_vec-1744781078ebdd07.d
+│   │   │   ├── blake3-ef20a78a2fb35158.d
+│   │   │   ├── block_buffer-4b65480a22be180d.d
+│   │   │   ├── blocking-4123a4e38d5c49c6.d
+│   │   │   ├── bumpalo-bed809d7335b6566.d
+│   │   │   ├── bytemuck-dde7d1723a488db4.d
+│   │   │   ├── bytemuck_derive-cafd61b38b356da2.d
+│   │   │   ├── byteorder_lite-2ab2edb6ab5f1544.d
+│   │   │   ├── calloop-1f060f463eada0cd.d
+│   │   │   ├── calloop_wayland_source-7a91792cc1e1acf8.d
+│   │   │   ├── cc-a177b7f50ed8796f.d
+│   │   │   ├── cfg_aliases-6b143b130b1a241e.d
+│   │   │   ├── cfg_if-9fe16ff8d9a4b558.d
+│   │   │   ├── cipher-1f53f4adf41a2bdd.d
+│   │   │   ├── cmac-dfbd173c871544d4.d
+│   │   │   ├── codespan_reporting-98323c6e9910f273.d
+│   │   │   ├── concurrent_queue-d9c091f050860765.d
+│   │   │   ├── constant_time_eq-3c8d4d951d215684.d
+│   │   │   ├── const_fnv1a_hash-20b3073234c22d19.d
+│   │   │   ├── constgebra-77cfe6b4558d610c.d
+│   │   │   ├── const_panic-ba69da76f81344c9.d
+│   │   │   ├── const_soft_float-f85daa85b34fa23b.d
+│   │   │   ├── convert_case-282501a88598ca71.d
+│   │   │   ├── core_maths-0ddcd39e81a5f485.d
+│   │   │   ├── cosmic_text-addf09071661da9a.d
+│   │   │   ├── cpal-dc9ed32613f436e3.d
+│   │   │   ├── cpufeatures-e645d2fb98e294a9.d
+│   │   │   ├── crossbeam_channel-d71df6d9970e81d4.d
+│   │   │   ├── crossbeam_queue-9c64c1d3b40cc144.d
+│   │   │   ├── crossbeam_utils-b0f8b1a540ba12ff.d
+│   │   │   ├── crypto_common-3206a786ae419cd7.d
+│   │   │   ├── ctrlc-b40eaae71b7d799a.d
+│   │   │   ├── cursor_icon-573fd7a61b031c8b.d
+│   │   │   ├── dasp_sample-0943d23a20221d04.d
+│   │   │   ├── data_encoding-01ba5d1baed487df.d
+│   │   │   ├── dbl-0253804ad01f654e.d
+│   │   │   ├── derive_more-2491f7c04c8d4312.d
+│   │   │   ├── derive_more_impl-9cff896460fe5613.d
+│   │   │   ├── digest-d9ffd0cae13db69d.d
+│   │   │   ├── disqualified-1e1d142d44e0961d.d
+│   │   │   ├── dlib-7a4b826118aecfd2.d
+│   │   │   ├── document_features-458e74a736ccb397.d
+│   │   │   ├── downcast_rs-45c90ad8a11fe750.d
+│   │   │   ├── downcast_rs-73ea01b18e7565a1.d
+│   │   │   ├── dpi-e88156f5bd81c891.d
+│   │   │   ├── either-ff736d371aed398f.d
+│   │   │   ├── encase-da44245e69b3548f.d
+│   │   │   ├── encase_derive-e036350acc4550f9.d
+│   │   │   ├── encase_derive_impl-dbcd082c67cafa69.d
+│   │   │   ├── equivalent-6f9fc07395a6bbb4.d
+│   │   │   ├── erased_serde-f21b1209fb84c21c.d
+│   │   │   ├── euclid-87d259cb90926963.d
+│   │   │   ├── event_listener-c55dbd3a5c3ebb8e.d
+│   │   │   ├── event_listener_strategy-05bcb615554d4f5f.d
+│   │   │   ├── fastrand-a686dd6c211528eb.d
+│   │   │   ├── find_msvc_tools-7861371b702f57a6.d
+│   │   │   ├── fixedbitset-fd94090bc3a7918a.d
+│   │   │   ├── foldhash-928d4ae083934560.d
+│   │   │   ├── foldhash-f3ddafcfb920fd06.d
+│   │   │   ├── fontconfig_parser-c725a229b4f5caa1.d
+│   │   │   ├── fontdb-8838ac38a6be72dd.d
+│   │   │   ├── font_types-1a508c93d6a668b6.d
+│   │   │   ├── font_types-a2e2ef115bb6adae.d
+│   │   │   ├── futures_core-94eab794925c5cfe.d
+│   │   │   ├── futures_io-6e1a9f0a04aa4ea4.d
+│   │   │   ├── futures_lite-b3bed591915a31c7.d
+│   │   │   ├── futures_macro-4ec2365217c0706e.d
+│   │   │   ├── futures_task-33bec48b7c18980f.d
+│   │   │   ├── futures_util-4c870484e6e1036c.d
+│   │   │   ├── generic_array-7a9b89c28f46b4fd.d
+│   │   │   ├── gethostname-cfaec471a6a78e43.d
+│   │   │   ├── getrandom-3cdc46686d26c31a.d
+│   │   │   ├── getrandom-5db51d26983c84d8.d
+│   │   │   ├── glam-01ca473b3dbae247.d
+│   │   │   ├── gpu_alloc-eb16028e5e0e0ad7.d
+│   │   │   ├── gpu_alloc_types-0338cb859d12a30d.d
+│   │   │   ├── gpu_descriptor-9224ec8a8430790f.d
+│   │   │   ├── gpu_descriptor_types-c39f2bf0b2af832e.d
+│   │   │   ├── grid-fb57e3c49cd90242.d
+│   │   │   ├── guillotiere-ff710110df93341d.d
+│   │   │   ├── half-f926a072a0c1338e.d
+│   │   │   ├── harfrust-c5a39959f0cee7ba.d
+│   │   │   ├── hashbrown-7f60a5c407004221.d
+│   │   │   ├── hashbrown-8c8d2680658fe587.d
+│   │   │   ├── hashbrown-f9d985788dfd080d.d
+│   │   │   ├── hexasphere-84d6e7d718b4355a.d
+│   │   │   ├── hexf_parse-91fa41a9e019d2cf.d
+│   │   │   ├── image-f802c39e58688acd.d
+│   │   │   ├── indexmap-1007185f7a61abc7.d
+│   │   │   ├── inout-d992d06735e79a1e.d
+│   │   │   ├── inventory-b2efd13aca1b5ea4.d
+│   │   │   ├── itertools-ee510f5ac3e6ce8a.d
+│   │   │   ├── lazy_static-0efb6451d93d4139.d
+│   │   │   ├── libab_glyph-4d8a00d7645c5a96.rlib
+│   │   │   ├── libab_glyph-4d8a00d7645c5a96.rmeta
+│   │   │   ├── libab_glyph_rasterizer-642a1323bc15abad.rlib
+│   │   │   ├── libab_glyph_rasterizer-642a1323bc15abad.rmeta
+│   │   │   ├── libaccesskit-830d407531892b4f.rlib
+│   │   │   ├── libaccesskit-830d407531892b4f.rmeta
+│   │   │   ├── libaccesskit_winit-6329299126be688b.rlib
+│   │   │   ├── libaccesskit_winit-6329299126be688b.rmeta
+│   │   │   ├── libaes-a4db22e6c50989e6.rlib
+│   │   │   ├── libaes-a4db22e6c50989e6.rmeta
+│   │   │   ├── libahash-66b2a2dd94c10f36.rlib
+│   │   │   ├── libahash-66b2a2dd94c10f36.rmeta
+│   │   │   ├── libaho_corasick-a4c88462ff6dd2f9.rlib
+│   │   │   ├── libaho_corasick-a4c88462ff6dd2f9.rmeta
+│   │   │   ├── libalsa-d3ce430d0390a008.rlib
+│   │   │   ├── libalsa-d3ce430d0390a008.rmeta
+│   │   │   ├── libalsa_sys-d804c41e7121253e.rlib
+│   │   │   ├── libalsa_sys-d804c41e7121253e.rmeta
+│   │   │   ├── libapprox-12300268c4a30a86.rlib
+│   │   │   ├── libapprox-12300268c4a30a86.rmeta
+│   │   │   ├── libarrayref-c56ce3cf05073638.rlib
+│   │   │   ├── libarrayref-c56ce3cf05073638.rmeta
+│   │   │   ├── libarrayvec-b58486f1e4083399.rlib
+│   │   │   ├── libarrayvec-b58486f1e4083399.rmeta
+│   │   │   ├── libash-5903b4d4f8611355.rlib
+│   │   │   ├── libash-5903b4d4f8611355.rmeta
+│   │   │   ├── libas_raw_xcb_connection-6acc6b5168860165.rlib
+│   │   │   ├── libas_raw_xcb_connection-6acc6b5168860165.rmeta
+│   │   │   ├── libassert_type_match-49fde97567d76dbe.so
+│   │   │   ├── libasync_broadcast-30487a063bc39bba.rlib
+│   │   │   ├── libasync_broadcast-30487a063bc39bba.rmeta
+│   │   │   ├── libasync_channel-c5f6e324685e2572.rlib
+│   │   │   ├── libasync_channel-c5f6e324685e2572.rmeta
+│   │   │   ├── libasync_executor-0a35b678a40b65b5.rlib
+│   │   │   ├── libasync_executor-0a35b678a40b65b5.rmeta
+│   │   │   ├── libasync_fs-50423057c8d7af87.rlib
+│   │   │   ├── libasync_fs-50423057c8d7af87.rmeta
+│   │   │   ├── libasync_io-d305f18a711c66c8.rlib
+│   │   │   ├── libasync_io-d305f18a711c66c8.rmeta
+│   │   │   ├── libasync_lock-1bae4d1bd186770b.rlib
+│   │   │   ├── libasync_lock-1bae4d1bd186770b.rmeta
+│   │   │   ├── libasync_task-9237733802a4a152.rlib
+│   │   │   ├── libasync_task-9237733802a4a152.rmeta
+│   │   │   ├── libatomicow-d0445b73b7ae5ecf.rlib
+│   │   │   ├── libatomicow-d0445b73b7ae5ecf.rmeta
+│   │   │   ├── libatomic_waker-d5acd5d98c7fc52c.rlib
+│   │   │   ├── libatomic_waker-d5acd5d98c7fc52c.rmeta
+│   │   │   ├── libautocfg-413ceabfd9333b20.rlib
+│   │   │   ├── libautocfg-413ceabfd9333b20.rmeta
+│   │   │   ├── libbevy-81a14d666aa454c0.rlib
+│   │   │   ├── libbevy-81a14d666aa454c0.rmeta
+│   │   │   ├── libbevy_a11y-414416c21395b801.rlib
+│   │   │   ├── libbevy_a11y-414416c21395b801.rmeta
+│   │   │   ├── libbevy_app-e1bc5d7a5097f994.rlib
+│   │   │   ├── libbevy_app-e1bc5d7a5097f994.rmeta
+│   │   │   ├── libbevy_asset-114588b3dba4c773.rlib
+│   │   │   ├── libbevy_asset-114588b3dba4c773.rmeta
+│   │   │   ├── libbevy_asset_macros-52e203df04ddee2d.so
+│   │   │   ├── libbevy_camera-d6ab704383f44fac.rlib
+│   │   │   ├── libbevy_camera-d6ab704383f44fac.rmeta
+│   │   │   ├── libbevy_color-3df13d971bddf0fc.rlib
+│   │   │   ├── libbevy_color-3df13d971bddf0fc.rmeta
+│   │   │   ├── libbevy_core_pipeline-05b38988ab8a3b24.rlib
+│   │   │   ├── libbevy_core_pipeline-05b38988ab8a3b24.rmeta
+│   │   │   ├── libbevy_derive-21402a7dda658acb.so
+│   │   │   ├── libbevy_diagnostic-6d211d3a8fda1401.rlib
+│   │   │   ├── libbevy_diagnostic-6d211d3a8fda1401.rmeta
+│   │   │   ├── libbevy_ecs-a208d261920d8b67.rlib
+│   │   │   ├── libbevy_ecs-a208d261920d8b67.rmeta
+│   │   │   ├── libbevy_ecs_macros-9b07080e57ae2af0.so
+│   │   │   ├── libbevy_encase_derive-ad915b1e92f29d7a.so
+│   │   │   ├── libbevy_image-92f37070b088ea6b.rlib
+│   │   │   ├── libbevy_image-92f37070b088ea6b.rmeta
+│   │   │   ├── libbevy_input-d92655d4720bf330.rlib
+│   │   │   ├── libbevy_input-d92655d4720bf330.rmeta
+│   │   │   ├── libbevy_input_focus-24f3d48d2adb8e91.rlib
+│   │   │   ├── libbevy_input_focus-24f3d48d2adb8e91.rmeta
+│   │   │   ├── libbevy_internal-6b1f06e8a19d78fa.rlib
+│   │   │   ├── libbevy_internal-6b1f06e8a19d78fa.rmeta
+│   │   │   ├── libbevy_log-fcb0ae1a9afb7c84.rlib
+│   │   │   ├── libbevy_log-fcb0ae1a9afb7c84.rmeta
+│   │   │   ├── libbevy_macro_utils-5ceff46a04c9d143.rlib
+│   │   │   ├── libbevy_macro_utils-5ceff46a04c9d143.rmeta
+│   │   │   ├── libbevy_math-17913e5fd273b150.rlib
+│   │   │   ├── libbevy_math-17913e5fd273b150.rmeta
+│   │   │   ├── libbevy_mesh-c38cc92b4db06683.rlib
+│   │   │   ├── libbevy_mesh-c38cc92b4db06683.rmeta
+│   │   │   ├── libbevy_platform-bd837d63bfc97b8b.rlib
+│   │   │   ├── libbevy_platform-bd837d63bfc97b8b.rmeta
+│   │   │   ├── libbevy_ptr-83c819955b968e57.rlib
+│   │   │   ├── libbevy_ptr-83c819955b968e57.rmeta
+│   │   │   ├── libbevy_reflect-9776d93fd99f476e.rlib
+│   │   │   ├── libbevy_reflect-9776d93fd99f476e.rmeta
+│   │   │   ├── libbevy_reflect_derive-f0fe14d504f7c546.so
+│   │   │   ├── libbevy_render-1f4d196c8ddf8485.rlib
+│   │   │   ├── libbevy_render-1f4d196c8ddf8485.rmeta
+│   │   │   ├── libbevy_render_macros-ea2d2cfc8febeb26.so
+│   │   │   ├── libbevy_shader-fd327528c4678f66.rlib
+│   │   │   ├── libbevy_shader-fd327528c4678f66.rmeta
+│   │   │   ├── libbevy_sprite-1f802fe9621148d0.rlib
+│   │   │   ├── libbevy_sprite-1f802fe9621148d0.rmeta
+│   │   │   ├── libbevy_sprite_render-15d0d00811e87d4e.rlib
+│   │   │   ├── libbevy_sprite_render-15d0d00811e87d4e.rmeta
+│   │   │   ├── libbevy_tasks-b99c8f5cad4958be.rlib
+│   │   │   ├── libbevy_tasks-b99c8f5cad4958be.rmeta
+│   │   │   ├── libbevy_text-2a7de7bcdbaecb2a.rlib
+│   │   │   ├── libbevy_text-2a7de7bcdbaecb2a.rmeta
+│   │   │   ├── libbevy_time-aea3a14acb68bec7.rlib
+│   │   │   ├── libbevy_time-aea3a14acb68bec7.rmeta
+│   │   │   ├── libbevy_transform-6964d17913d3fad6.rlib
+│   │   │   ├── libbevy_transform-6964d17913d3fad6.rmeta
+│   │   │   ├── libbevy_ui-8a22958fe2ef85c1.rlib
+│   │   │   ├── libbevy_ui-8a22958fe2ef85c1.rmeta
+│   │   │   ├── libbevy_ui_render-258f7fb200b96fcc.rlib
+│   │   │   ├── libbevy_ui_render-258f7fb200b96fcc.rmeta
+│   │   │   ├── libbevy_utils-d6ff04774db53362.rlib
+│   │   │   ├── libbevy_utils-d6ff04774db53362.rmeta
+│   │   │   ├── libbevy_window-aef45f7891706460.rlib
+│   │   │   ├── libbevy_window-aef45f7891706460.rmeta
+│   │   │   ├── libbevy_winit-1fb040b64c4a0b97.rlib
+│   │   │   ├── libbevy_winit-1fb040b64c4a0b97.rmeta
+│   │   │   ├── libbitflags-7c89d2cc6d4b452a.rlib
+│   │   │   ├── libbitflags-7c89d2cc6d4b452a.rmeta
+│   │   │   ├── libbit_set-592c7a0a4faf40b8.rlib
+│   │   │   ├── libbit_set-592c7a0a4faf40b8.rmeta
+│   │   │   ├── libbit_vec-1744781078ebdd07.rlib
+│   │   │   ├── libbit_vec-1744781078ebdd07.rmeta
+│   │   │   ├── libblake3-ef20a78a2fb35158.rlib
+│   │   │   ├── libblake3-ef20a78a2fb35158.rmeta
+│   │   │   ├── libblock_buffer-4b65480a22be180d.rlib
+│   │   │   ├── libblock_buffer-4b65480a22be180d.rmeta
+│   │   │   ├── libblocking-4123a4e38d5c49c6.rlib
+│   │   │   ├── libblocking-4123a4e38d5c49c6.rmeta
+│   │   │   ├── libbumpalo-bed809d7335b6566.rlib
+│   │   │   ├── libbumpalo-bed809d7335b6566.rmeta
+│   │   │   ├── libbytemuck-dde7d1723a488db4.rlib
+│   │   │   ├── libbytemuck-dde7d1723a488db4.rmeta
+│   │   │   ├── libbytemuck_derive-cafd61b38b356da2.so
+│   │   │   ├── libbyteorder_lite-2ab2edb6ab5f1544.rlib
+│   │   │   ├── libbyteorder_lite-2ab2edb6ab5f1544.rmeta
+│   │   │   ├── libc-79ca884476fe4a2e.d
+│   │   │   ├── libcalloop-1f060f463eada0cd.rlib
+│   │   │   ├── libcalloop-1f060f463eada0cd.rmeta
+│   │   │   ├── libcalloop_wayland_source-7a91792cc1e1acf8.rlib
+│   │   │   ├── libcalloop_wayland_source-7a91792cc1e1acf8.rmeta
+│   │   │   ├── libcc-a177b7f50ed8796f.rlib
+│   │   │   ├── libcc-a177b7f50ed8796f.rmeta
+│   │   │   ├── libcfg_aliases-6b143b130b1a241e.rlib
+│   │   │   ├── libcfg_aliases-6b143b130b1a241e.rmeta
+│   │   │   ├── libcfg_if-9fe16ff8d9a4b558.rlib
+│   │   │   ├── libcfg_if-9fe16ff8d9a4b558.rmeta
+│   │   │   ├── libcipher-1f53f4adf41a2bdd.rlib
+│   │   │   ├── libcipher-1f53f4adf41a2bdd.rmeta
+│   │   │   ├── libcmac-dfbd173c871544d4.rlib
+│   │   │   ├── libcmac-dfbd173c871544d4.rmeta
+│   │   │   ├── libcodespan_reporting-98323c6e9910f273.rlib
+│   │   │   ├── libcodespan_reporting-98323c6e9910f273.rmeta
+│   │   │   ├── libconcurrent_queue-d9c091f050860765.rlib
+│   │   │   ├── libconcurrent_queue-d9c091f050860765.rmeta
+│   │   │   ├── libconstant_time_eq-3c8d4d951d215684.rlib
+│   │   │   ├── libconstant_time_eq-3c8d4d951d215684.rmeta
+│   │   │   ├── libconst_fnv1a_hash-20b3073234c22d19.rlib
+│   │   │   ├── libconst_fnv1a_hash-20b3073234c22d19.rmeta
+│   │   │   ├── libconstgebra-77cfe6b4558d610c.rlib
+│   │   │   ├── libconstgebra-77cfe6b4558d610c.rmeta
+│   │   │   ├── libconst_panic-ba69da76f81344c9.rlib
+│   │   │   ├── libconst_panic-ba69da76f81344c9.rmeta
+│   │   │   ├── libconst_soft_float-f85daa85b34fa23b.rlib
+│   │   │   ├── libconst_soft_float-f85daa85b34fa23b.rmeta
+│   │   │   ├── libconvert_case-282501a88598ca71.rlib
+│   │   │   ├── libconvert_case-282501a88598ca71.rmeta
+│   │   │   ├── libcore_maths-0ddcd39e81a5f485.rlib
+│   │   │   ├── libcore_maths-0ddcd39e81a5f485.rmeta
+│   │   │   ├── libcosmic_text-addf09071661da9a.rlib
+│   │   │   ├── libcosmic_text-addf09071661da9a.rmeta
+│   │   │   ├── libcpal-dc9ed32613f436e3.rlib
+│   │   │   ├── libcpal-dc9ed32613f436e3.rmeta
+│   │   │   ├── libcpufeatures-e645d2fb98e294a9.rlib
+│   │   │   ├── libcpufeatures-e645d2fb98e294a9.rmeta
+│   │   │   ├── libcrossbeam_channel-d71df6d9970e81d4.rlib
+│   │   │   ├── libcrossbeam_channel-d71df6d9970e81d4.rmeta
+│   │   │   ├── libcrossbeam_queue-9c64c1d3b40cc144.rlib
+│   │   │   ├── libcrossbeam_queue-9c64c1d3b40cc144.rmeta
+│   │   │   ├── libcrossbeam_utils-b0f8b1a540ba12ff.rlib
+│   │   │   ├── libcrossbeam_utils-b0f8b1a540ba12ff.rmeta
+│   │   │   ├── libcrypto_common-3206a786ae419cd7.rlib
+│   │   │   ├── libcrypto_common-3206a786ae419cd7.rmeta
+│   │   │   ├── libctrlc-b40eaae71b7d799a.rlib
+│   │   │   ├── libctrlc-b40eaae71b7d799a.rmeta
+│   │   │   ├── libcursor_icon-573fd7a61b031c8b.rlib
+│   │   │   ├── libcursor_icon-573fd7a61b031c8b.rmeta
+│   │   │   ├── libdasp_sample-0943d23a20221d04.rlib
+│   │   │   ├── libdasp_sample-0943d23a20221d04.rmeta
+│   │   │   ├── libdata_encoding-01ba5d1baed487df.rlib
+│   │   │   ├── libdata_encoding-01ba5d1baed487df.rmeta
+│   │   │   ├── libdbl-0253804ad01f654e.rlib
+│   │   │   ├── libdbl-0253804ad01f654e.rmeta
+│   │   │   ├── libderive_more-2491f7c04c8d4312.rlib
+│   │   │   ├── libderive_more-2491f7c04c8d4312.rmeta
+│   │   │   ├── libderive_more_impl-9cff896460fe5613.so
+│   │   │   ├── libdigest-d9ffd0cae13db69d.rlib
+│   │   │   ├── libdigest-d9ffd0cae13db69d.rmeta
+│   │   │   ├── libdisqualified-1e1d142d44e0961d.rlib
+│   │   │   ├── libdisqualified-1e1d142d44e0961d.rmeta
+│   │   │   ├── libdlib-7a4b826118aecfd2.rlib
+│   │   │   ├── libdlib-7a4b826118aecfd2.rmeta
+│   │   │   ├── libdocument_features-458e74a736ccb397.so
+│   │   │   ├── libdowncast_rs-45c90ad8a11fe750.rlib
+│   │   │   ├── libdowncast_rs-45c90ad8a11fe750.rmeta
+│   │   │   ├── libdowncast_rs-73ea01b18e7565a1.rlib
+│   │   │   ├── libdowncast_rs-73ea01b18e7565a1.rmeta
+│   │   │   ├── libdpi-e88156f5bd81c891.rlib
+│   │   │   ├── libdpi-e88156f5bd81c891.rmeta
+│   │   │   ├── libeither-ff736d371aed398f.rlib
+│   │   │   ├── libeither-ff736d371aed398f.rmeta
+│   │   │   ├── libencase-da44245e69b3548f.rlib
+│   │   │   ├── libencase-da44245e69b3548f.rmeta
+│   │   │   ├── libencase_derive-e036350acc4550f9.so
+│   │   │   ├── libencase_derive_impl-dbcd082c67cafa69.rlib
+│   │   │   ├── libencase_derive_impl-dbcd082c67cafa69.rmeta
+│   │   │   ├── libequivalent-6f9fc07395a6bbb4.rlib
+│   │   │   ├── libequivalent-6f9fc07395a6bbb4.rmeta
+│   │   │   ├── liberased_serde-f21b1209fb84c21c.rlib
+│   │   │   ├── liberased_serde-f21b1209fb84c21c.rmeta
+│   │   │   ├── libeuclid-87d259cb90926963.rlib
+│   │   │   ├── libeuclid-87d259cb90926963.rmeta
+│   │   │   ├── libevent_listener-c55dbd3a5c3ebb8e.rlib
+│   │   │   ├── libevent_listener-c55dbd3a5c3ebb8e.rmeta
+│   │   │   ├── libevent_listener_strategy-05bcb615554d4f5f.rlib
+│   │   │   ├── libevent_listener_strategy-05bcb615554d4f5f.rmeta
+│   │   │   ├── libfastrand-a686dd6c211528eb.rlib
+│   │   │   ├── libfastrand-a686dd6c211528eb.rmeta
+│   │   │   ├── libfind_msvc_tools-7861371b702f57a6.rlib
+│   │   │   ├── libfind_msvc_tools-7861371b702f57a6.rmeta
+│   │   │   ├── libfixedbitset-fd94090bc3a7918a.rlib
+│   │   │   ├── libfixedbitset-fd94090bc3a7918a.rmeta
+│   │   │   ├── libfoldhash-928d4ae083934560.rlib
+│   │   │   ├── libfoldhash-928d4ae083934560.rmeta
+│   │   │   ├── libfoldhash-f3ddafcfb920fd06.rlib
+│   │   │   ├── libfoldhash-f3ddafcfb920fd06.rmeta
+│   │   │   ├── libfontconfig_parser-c725a229b4f5caa1.rlib
+│   │   │   ├── libfontconfig_parser-c725a229b4f5caa1.rmeta
+│   │   │   ├── libfontdb-8838ac38a6be72dd.rlib
+│   │   │   ├── libfontdb-8838ac38a6be72dd.rmeta
+│   │   │   ├── libfont_types-1a508c93d6a668b6.rlib
+│   │   │   ├── libfont_types-1a508c93d6a668b6.rmeta
+│   │   │   ├── libfont_types-a2e2ef115bb6adae.rlib
+│   │   │   ├── libfont_types-a2e2ef115bb6adae.rmeta
+│   │   │   ├── libfutures_core-94eab794925c5cfe.rlib
+│   │   │   ├── libfutures_core-94eab794925c5cfe.rmeta
+│   │   │   ├── libfutures_io-6e1a9f0a04aa4ea4.rlib
+│   │   │   ├── libfutures_io-6e1a9f0a04aa4ea4.rmeta
+│   │   │   ├── libfutures_lite-b3bed591915a31c7.rlib
+│   │   │   ├── libfutures_lite-b3bed591915a31c7.rmeta
+│   │   │   ├── libfutures_macro-4ec2365217c0706e.so
+│   │   │   ├── libfutures_task-33bec48b7c18980f.rlib
+│   │   │   ├── libfutures_task-33bec48b7c18980f.rmeta
+│   │   │   ├── libfutures_util-4c870484e6e1036c.rlib
+│   │   │   ├── libfutures_util-4c870484e6e1036c.rmeta
+│   │   │   ├── libgeneric_array-7a9b89c28f46b4fd.rlib
+│   │   │   ├── libgeneric_array-7a9b89c28f46b4fd.rmeta
+│   │   │   ├── libgethostname-cfaec471a6a78e43.rlib
+│   │   │   ├── libgethostname-cfaec471a6a78e43.rmeta
+│   │   │   ├── libgetrandom-3cdc46686d26c31a.rlib
+│   │   │   ├── libgetrandom-3cdc46686d26c31a.rmeta
+│   │   │   ├── libgetrandom-5db51d26983c84d8.rlib
+│   │   │   ├── libgetrandom-5db51d26983c84d8.rmeta
+│   │   │   ├── libglam-01ca473b3dbae247.rlib
+│   │   │   ├── libglam-01ca473b3dbae247.rmeta
+│   │   │   ├── libgpu_alloc-eb16028e5e0e0ad7.rlib
+│   │   │   ├── libgpu_alloc-eb16028e5e0e0ad7.rmeta
+│   │   │   ├── libgpu_alloc_types-0338cb859d12a30d.rlib
+│   │   │   ├── libgpu_alloc_types-0338cb859d12a30d.rmeta
+│   │   │   ├── libgpu_descriptor-9224ec8a8430790f.rlib
+│   │   │   ├── libgpu_descriptor-9224ec8a8430790f.rmeta
+│   │   │   ├── libgpu_descriptor_types-c39f2bf0b2af832e.rlib
+│   │   │   ├── libgpu_descriptor_types-c39f2bf0b2af832e.rmeta
+│   │   │   ├── libgrid-fb57e3c49cd90242.rlib
+│   │   │   ├── libgrid-fb57e3c49cd90242.rmeta
+│   │   │   ├── libguillotiere-ff710110df93341d.rlib
+│   │   │   ├── libguillotiere-ff710110df93341d.rmeta
+│   │   │   ├── libhalf-f926a072a0c1338e.rlib
+│   │   │   ├── libhalf-f926a072a0c1338e.rmeta
+│   │   │   ├── libharfrust-c5a39959f0cee7ba.rlib
+│   │   │   ├── libharfrust-c5a39959f0cee7ba.rmeta
+│   │   │   ├── libhashbrown-7f60a5c407004221.rlib
+│   │   │   ├── libhashbrown-7f60a5c407004221.rmeta
+│   │   │   ├── libhashbrown-8c8d2680658fe587.rlib
+│   │   │   ├── libhashbrown-8c8d2680658fe587.rmeta
+│   │   │   ├── libhashbrown-f9d985788dfd080d.rlib
+│   │   │   ├── libhashbrown-f9d985788dfd080d.rmeta
+│   │   │   ├── libhexasphere-84d6e7d718b4355a.rlib
+│   │   │   ├── libhexasphere-84d6e7d718b4355a.rmeta
+│   │   │   ├── libhexf_parse-91fa41a9e019d2cf.rlib
+│   │   │   ├── libhexf_parse-91fa41a9e019d2cf.rmeta
+│   │   │   ├── libimage-f802c39e58688acd.rlib
+│   │   │   ├── libimage-f802c39e58688acd.rmeta
+│   │   │   ├── libindexmap-1007185f7a61abc7.rlib
+│   │   │   ├── libindexmap-1007185f7a61abc7.rmeta
+│   │   │   ├── libinout-d992d06735e79a1e.rlib
+│   │   │   ├── libinout-d992d06735e79a1e.rmeta
+│   │   │   ├── libinventory-b2efd13aca1b5ea4.rlib
+│   │   │   ├── libinventory-b2efd13aca1b5ea4.rmeta
+│   │   │   ├── libitertools-ee510f5ac3e6ce8a.rlib
+│   │   │   ├── libitertools-ee510f5ac3e6ce8a.rmeta
+│   │   │   ├── liblazy_static-0efb6451d93d4139.rlib
+│   │   │   ├── liblazy_static-0efb6451d93d4139.rmeta
+│   │   │   ├── liblibc-79ca884476fe4a2e.rlib
+│   │   │   ├── liblibc-79ca884476fe4a2e.rmeta
+│   │   │   ├── liblibloading-cefe3288e8acffe4.rlib
+│   │   │   ├── liblibloading-cefe3288e8acffe4.rmeta
+│   │   │   ├── liblibm-5e90157cdd185862.rlib
+│   │   │   ├── liblibm-5e90157cdd185862.rmeta
+│   │   │   ├── liblinebender_resource_handle-8b856583b1b9fd42.rlib
+│   │   │   ├── liblinebender_resource_handle-8b856583b1b9fd42.rmeta
+│   │   │   ├── liblinux_raw_sys-48c803e54bacf51b.rlib
+│   │   │   ├── liblinux_raw_sys-48c803e54bacf51b.rmeta
+│   │   │   ├── liblinux_raw_sys-a860c42fd775081f.rlib
+│   │   │   ├── liblinux_raw_sys-a860c42fd775081f.rmeta
+│   │   │   ├── liblitrs-d65092d5f137daca.rlib
+│   │   │   ├── liblitrs-d65092d5f137daca.rmeta
+│   │   │   ├── libloading-cefe3288e8acffe4.d
+│   │   │   ├── liblock_api-264ea3c2eaecc262.rlib
+│   │   │   ├── liblock_api-264ea3c2eaecc262.rmeta
+│   │   │   ├── liblog-f6b6648815ed9824.rlib
+│   │   │   ├── liblog-f6b6648815ed9824.rmeta
+│   │   │   ├── libm-5e90157cdd185862.d
+│   │   │   ├── libmatchers-d7d735b04ec3f902.rlib
+│   │   │   ├── libmatchers-d7d735b04ec3f902.rmeta
+│   │   │   ├── libmemchr-1d6f4036cbad2f63.rlib
+│   │   │   ├── libmemchr-1d6f4036cbad2f63.rmeta
+│   │   │   ├── libmemchr-9e57eacef1172561.rlib
+│   │   │   ├── libmemchr-9e57eacef1172561.rmeta
+│   │   │   ├── libmemmap2-bd87f957075bcf6d.rlib
+│   │   │   ├── libmemmap2-bd87f957075bcf6d.rmeta
+│   │   │   ├── libmoxcms-4f6c0c56f4adc508.rlib
+│   │   │   ├── libmoxcms-4f6c0c56f4adc508.rmeta
+│   │   │   ├── libnaga-8cd500fda2345b16.rlib
+│   │   │   ├── libnaga-8cd500fda2345b16.rmeta
+│   │   │   ├── libnaga_oil-96d2ff77e2d863f2.rlib
+│   │   │   ├── libnaga_oil-96d2ff77e2d863f2.rmeta
+│   │   │   ├── libnix-623879dbb008960c.rlib
+│   │   │   ├── libnix-623879dbb008960c.rmeta
+│   │   │   ├── libnonmax-a22fc9ba3f170959.rlib
+│   │   │   ├── libnonmax-a22fc9ba3f170959.rmeta
+│   │   │   ├── libnu_ansi_term-696c928b2fcb6006.rlib
+│   │   │   ├── libnu_ansi_term-696c928b2fcb6006.rmeta
+│   │   │   ├── libnum_traits-833ee06d76dc9b73.rlib
+│   │   │   ├── libnum_traits-833ee06d76dc9b73.rmeta
+│   │   │   ├── liboffset_allocator-2602041317ffc9b5.rlib
+│   │   │   ├── liboffset_allocator-2602041317ffc9b5.rmeta
+│   │   │   ├── libonce_cell-1c25f06d0d7c6b79.rlib
+│   │   │   ├── libonce_cell-1c25f06d0d7c6b79.rmeta
+│   │   │   ├── libordered_float-10543ee450742fbb.rlib
+│   │   │   ├── libordered_float-10543ee450742fbb.rmeta
+│   │   │   ├── libowned_ttf_parser-792241d1489b04e0.rlib
+│   │   │   ├── libowned_ttf_parser-792241d1489b04e0.rmeta
+│   │   │   ├── libparking-a583cb958fe93630.rlib
+│   │   │   ├── libparking-a583cb958fe93630.rmeta
+│   │   │   ├── libparking_lot_core-ca2f3c675386db33.rlib
+│   │   │   ├── libparking_lot_core-ca2f3c675386db33.rmeta
+│   │   │   ├── libparking_lot-e34626dd521a93f2.rlib
+│   │   │   ├── libparking_lot-e34626dd521a93f2.rmeta
+│   │   │   ├── libpercent_encoding-8bc5d3da79c0415b.rlib
+│   │   │   ├── libpercent_encoding-8bc5d3da79c0415b.rmeta
+│   │   │   ├── libpin_project_lite-634574e9a8763841.rlib
+│   │   │   ├── libpin_project_lite-634574e9a8763841.rmeta
+│   │   │   ├── libpiper-4c6a9d2f67d8fa6f.rlib
+│   │   │   ├── libpiper-4c6a9d2f67d8fa6f.rmeta
+│   │   │   ├── libpkg_config-bf4b2fdcdc99ea9f.rlib
+│   │   │   ├── libpkg_config-bf4b2fdcdc99ea9f.rmeta
+│   │   │   ├── libpolling-bca4690757dee87d.rlib
+│   │   │   ├── libpolling-bca4690757dee87d.rmeta
+│   │   │   ├── libproc_macro2-7552098afa499c54.rlib
+│   │   │   ├── libproc_macro2-7552098afa499c54.rmeta
+│   │   │   ├── libprofiling-ad93bc708fc8e10c.rlib
+│   │   │   ├── libprofiling-ad93bc708fc8e10c.rmeta
+│   │   │   ├── libpxfm-fbfba48a4a9c7153.rlib
+│   │   │   ├── libpxfm-fbfba48a4a9c7153.rmeta
+│   │   │   ├── libquick_xml-19251890c17dc7fc.rlib
+│   │   │   ├── libquick_xml-19251890c17dc7fc.rmeta
+│   │   │   ├── libquote-ed04df21d9062e60.rlib
+│   │   │   ├── libquote-ed04df21d9062e60.rmeta
+│   │   │   ├── libradsort-37e196362ee47b29.rlib
+│   │   │   ├── libradsort-37e196362ee47b29.rmeta
+│   │   │   ├── librand_core-dfb54b33102fcc51.rlib
+│   │   │   ├── librand_core-dfb54b33102fcc51.rmeta
+│   │   │   ├── librand-d8e217c556f4fcc7.rlib
+│   │   │   ├── librand-d8e217c556f4fcc7.rmeta
+│   │   │   ├── librand_distr-d86f2be9d33457e5.rlib
+│   │   │   ├── librand_distr-d86f2be9d33457e5.rmeta
+│   │   │   ├── librangemap-a7bbc19a1f7c4f0f.rlib
+│   │   │   ├── librangemap-a7bbc19a1f7c4f0f.rmeta
+│   │   │   ├── libraw_window_handle-e342581284c13929.rlib
+│   │   │   ├── libraw_window_handle-e342581284c13929.rmeta
+│   │   │   ├── libread_fonts-0ca3f6af473c1238.rlib
+│   │   │   ├── libread_fonts-0ca3f6af473c1238.rmeta
+│   │   │   ├── libread_fonts-173cb64c368a1947.rlib
+│   │   │   ├── libread_fonts-173cb64c368a1947.rmeta
+│   │   │   ├── librectangle_pack-1e613c6740b8b397.rlib
+│   │   │   ├── librectangle_pack-1e613c6740b8b397.rmeta
+│   │   │   ├── libregex-4e0af5663fbbcc40.rlib
+│   │   │   ├── libregex-4e0af5663fbbcc40.rmeta
+│   │   │   ├── libregex_automata-865230fb62e54580.rlib
+│   │   │   ├── libregex_automata-865230fb62e54580.rmeta
+│   │   │   ├── libregex_syntax-d60cd40cde1b0c48.rlib
+│   │   │   ├── libregex_syntax-d60cd40cde1b0c48.rmeta
+│   │   │   ├── librenderdoc_sys-a529d9da09023d6b.rlib
+│   │   │   ├── librenderdoc_sys-a529d9da09023d6b.rmeta
+│   │   │   ├── libron-45b5a65c6b9725c7.rlib
+│   │   │   ├── libron-45b5a65c6b9725c7.rmeta
+│   │   │   ├── libroxmltree-aa4ed359738c9afe.rlib
+│   │   │   ├── libroxmltree-aa4ed359738c9afe.rmeta
+│   │   │   ├── librustc_hash-f5fc02b05a47ea2a.rlib
+│   │   │   ├── librustc_hash-f5fc02b05a47ea2a.rmeta
+│   │   │   ├── librustix-79c64ac4893e8afb.rlib
+│   │   │   ├── librustix-79c64ac4893e8afb.rmeta
+│   │   │   ├── librustix-92bd37e5aa454637.rlib
+│   │   │   ├── librustix-92bd37e5aa454637.rmeta
+│   │   │   ├── libscoped_tls-0e4155a8d0d0edeb.rlib
+│   │   │   ├── libscoped_tls-0e4155a8d0d0edeb.rmeta
+│   │   │   ├── libscopeguard-409e76afcd937cc1.rlib
+│   │   │   ├── libscopeguard-409e76afcd937cc1.rmeta
+│   │   │   ├── libsctk_adwaita-24d7acbf10de8097.rlib
+│   │   │   ├── libsctk_adwaita-24d7acbf10de8097.rmeta
+│   │   │   ├── libself_cell-21a97c9317085ebd.rlib
+│   │   │   ├── libself_cell-21a97c9317085ebd.rmeta
+│   │   │   ├── libserde-97ea072c1a4081e0.rlib
+│   │   │   ├── libserde-97ea072c1a4081e0.rmeta
+│   │   │   ├── libserde_core-6a7b5c64cbfa8786.rlib
+│   │   │   ├── libserde_core-6a7b5c64cbfa8786.rmeta
+│   │   │   ├── libserde_derive-9e1c2da25c710f3c.so
+│   │   │   ├── libsharded_slab-5fe452cffbb2bf63.rlib
+│   │   │   ├── libsharded_slab-5fe452cffbb2bf63.rmeta
+│   │   │   ├── libshlex-e9ebc9e4bb70b5cd.rlib
+│   │   │   ├── libshlex-e9ebc9e4bb70b5cd.rmeta
+│   │   │   ├── libskrifa-87bf20090d09271f.rlib
+│   │   │   ├── libskrifa-87bf20090d09271f.rmeta
+│   │   │   ├── libskrifa-c307fbf46ac02f88.rlib
+│   │   │   ├── libskrifa-c307fbf46ac02f88.rmeta
+│   │   │   ├── libslab-3b2537e59150fd5f.rlib
+│   │   │   ├── libslab-3b2537e59150fd5f.rmeta
+│   │   │   ├── libslotmap-2e681e4a2cd0b299.rlib
+│   │   │   ├── libslotmap-2e681e4a2cd0b299.rmeta
+│   │   │   ├── libsmallvec-a7fb204a3d4527d4.rlib
+│   │   │   ├── libsmallvec-a7fb204a3d4527d4.rmeta
+│   │   │   ├── libsmithay_client_toolkit-89513008cfe25a42.rlib
+│   │   │   ├── libsmithay_client_toolkit-89513008cfe25a42.rmeta
+│   │   │   ├── libsmol_str-f37a6a94ca89499e.rlib
+│   │   │   ├── libsmol_str-f37a6a94ca89499e.rmeta
+│   │   │   ├── libspin-73ab89e17e233904.rlib
+│   │   │   ├── libspin-73ab89e17e233904.rmeta
+│   │   │   ├── libspirv-039586d5c5cf8be5.rlib
+│   │   │   ├── libspirv-039586d5c5cf8be5.rmeta
+│   │   │   ├── libstackfuture-50181aea66b5f6d6.rlib
+│   │   │   ├── libstackfuture-50181aea66b5f6d6.rmeta
+│   │   │   ├── libstatic_assertions-2b9399f0bc43e56d.rlib
+│   │   │   ├── libstatic_assertions-2b9399f0bc43e56d.rmeta
+│   │   │   ├── libstrict_num-0775109f9111f120.rlib
+│   │   │   ├── libstrict_num-0775109f9111f120.rmeta
+│   │   │   ├── libsubtle-206a0c7ce8e3110c.rlib
+│   │   │   ├── libsubtle-206a0c7ce8e3110c.rmeta
+│   │   │   ├── libsvg_fmt-22c1802cc9d36003.rlib
+│   │   │   ├── libsvg_fmt-22c1802cc9d36003.rmeta
+│   │   │   ├── libswash-72c32c2427478264.rlib
+│   │   │   ├── libswash-72c32c2427478264.rmeta
+│   │   │   ├── libsyn-09d49c381ffc4559.rlib
+│   │   │   ├── libsyn-09d49c381ffc4559.rmeta
+│   │   │   ├── libsys_locale-7940ca86211fb890.rlib
+│   │   │   ├── libsys_locale-7940ca86211fb890.rmeta
+│   │   │   ├── libtaffy-4b5eb48215a36ed6.rlib
+│   │   │   ├── libtaffy-4b5eb48215a36ed6.rmeta
+│   │   │   ├── libtermcolor-6735f69dc9dc9f95.rlib
+│   │   │   ├── libtermcolor-6735f69dc9dc9f95.rmeta
+│   │   │   ├── libthiserror-6e882d1ebe5e9c29.rlib
+│   │   │   ├── libthiserror-6e882d1ebe5e9c29.rmeta
+│   │   │   ├── libthiserror-fb3dc14655c5e634.rlib
+│   │   │   ├── libthiserror-fb3dc14655c5e634.rmeta
+│   │   │   ├── libthiserror_impl-9050be74742e8c42.so
+│   │   │   ├── libthiserror_impl-add61823d28bf4fc.so
+│   │   │   ├── libthread_local-2213301058adb6dd.rlib
+│   │   │   ├── libthread_local-2213301058adb6dd.rmeta
+│   │   │   ├── libtiny_skia-e46b394f8085daf9.rlib
+│   │   │   ├── libtiny_skia-e46b394f8085daf9.rmeta
+│   │   │   ├── libtiny_skia_path-5862f5acc8f68b3e.rlib
+│   │   │   ├── libtiny_skia_path-5862f5acc8f68b3e.rmeta
+│   │   │   ├── libtinyvec-c5b4266ff926f2c9.rlib
+│   │   │   ├── libtinyvec-c5b4266ff926f2c9.rmeta
+│   │   │   ├── libtinyvec_macros-e4fef57d6a2ca329.rlib
+│   │   │   ├── libtinyvec_macros-e4fef57d6a2ca329.rmeta
+│   │   │   ├── libtoml_datetime-cb0801b1cb0d9a78.rlib
+│   │   │   ├── libtoml_datetime-cb0801b1cb0d9a78.rmeta
+│   │   │   ├── libtoml_edit-72e6d8342c8211e9.rlib
+│   │   │   ├── libtoml_edit-72e6d8342c8211e9.rmeta
+│   │   │   ├── libtoml_parser-702b2b1cd64b6ed5.rlib
+│   │   │   ├── libtoml_parser-702b2b1cd64b6ed5.rmeta
+│   │   │   ├── libtracing-42b7948954f63695.rlib
+│   │   │   ├── libtracing-42b7948954f63695.rmeta
+│   │   │   ├── libtracing_attributes-eac9c49fc44b135f.so
+│   │   │   ├── libtracing_core-269986fc6a79e9b0.rlib
+│   │   │   ├── libtracing_core-269986fc6a79e9b0.rmeta
+│   │   │   ├── libtracing_log-9277b33062d16151.rlib
+│   │   │   ├── libtracing_log-9277b33062d16151.rmeta
+│   │   │   ├── libtracing_subscriber-6dfa9709849e6e4f.rlib
+│   │   │   ├── libtracing_subscriber-6dfa9709849e6e4f.rmeta
+│   │   │   ├── libttf_parser-5217f3535c6d1ea2.rlib
+│   │   │   ├── libttf_parser-5217f3535c6d1ea2.rmeta
+│   │   │   ├── libtypeid-4071c6b6535444ff.rlib
+│   │   │   ├── libtypeid-4071c6b6535444ff.rmeta
+│   │   │   ├── libtypenum-5617a4ed2a890a29.rlib
+│   │   │   ├── libtypenum-5617a4ed2a890a29.rmeta
+│   │   │   ├── libtypewit-b74cb00311d3fac1.rlib
+│   │   │   ├── libtypewit-b74cb00311d3fac1.rmeta
+│   │   │   ├── libunicode_bidi-7e898387255d8107.rlib
+│   │   │   ├── libunicode_bidi-7e898387255d8107.rmeta
+│   │   │   ├── libunicode_ident-ec581f641fcf3b3f.rlib
+│   │   │   ├── libunicode_ident-ec581f641fcf3b3f.rmeta
+│   │   │   ├── libunicode_linebreak-4ab3753c635ca070.rlib
+│   │   │   ├── libunicode_linebreak-4ab3753c635ca070.rmeta
+│   │   │   ├── libunicode_script-988f8e5ee5181333.rlib
+│   │   │   ├── libunicode_script-988f8e5ee5181333.rmeta
+│   │   │   ├── libunicode_segmentation-66c3a034ec4a07dc.rlib
+│   │   │   ├── libunicode_segmentation-66c3a034ec4a07dc.rmeta
+│   │   │   ├── libunicode_width-07d3936eb835ded8.rlib
+│   │   │   ├── libunicode_width-07d3936eb835ded8.rmeta
+│   │   │   ├── libunicode_xid-c553593ba8b9ad5c.rlib
+│   │   │   ├── libunicode_xid-c553593ba8b9ad5c.rmeta
+│   │   │   ├── libuuid-c461989aab6dd917.rlib
+│   │   │   ├── libuuid-c461989aab6dd917.rmeta
+│   │   │   ├── libvariadics_please-21f42ee4fb7ae6e0.so
+│   │   │   ├── libversion_check-b235eb4af5c755dc.rlib
+│   │   │   ├── libversion_check-b235eb4af5c755dc.rmeta
+│   │   │   ├── libwayland_backend-d005222bd046a30e.rlib
+│   │   │   ├── libwayland_backend-d005222bd046a30e.rmeta
+│   │   │   ├── libwayland_client-b3603cb6eb6f1c84.rlib
+│   │   │   ├── libwayland_client-b3603cb6eb6f1c84.rmeta
+│   │   │   ├── libwayland_csd_frame-23a3131bfa832f99.rlib
+│   │   │   ├── libwayland_csd_frame-23a3131bfa832f99.rmeta
+│   │   │   ├── libwayland_cursor-715505005f566dd9.rlib
+│   │   │   ├── libwayland_cursor-715505005f566dd9.rmeta
+│   │   │   ├── libwayland_protocols-c2499cd3a65746bd.rlib
+│   │   │   ├── libwayland_protocols-c2499cd3a65746bd.rmeta
+│   │   │   ├── libwayland_protocols_plasma-f7752e2c699ecba2.rlib
+│   │   │   ├── libwayland_protocols_plasma-f7752e2c699ecba2.rmeta
+│   │   │   ├── libwayland_protocols_wlr-a61ef62a7b1fde5b.rlib
+│   │   │   ├── libwayland_protocols_wlr-a61ef62a7b1fde5b.rmeta
+│   │   │   ├── libwayland_scanner-67150c7f77a9d97a.so
+│   │   │   ├── libwayland_sys-7863003c82f1aca5.rlib
+│   │   │   ├── libwayland_sys-7863003c82f1aca5.rmeta
+│   │   │   ├── libwgpu-54fd9071d271b55f.rlib
+│   │   │   ├── libwgpu-54fd9071d271b55f.rmeta
+│   │   │   ├── libwgpu_core_deps_windows_linux_android-7ab0f4dafaba7600.rlib
+│   │   │   ├── libwgpu_core_deps_windows_linux_android-7ab0f4dafaba7600.rmeta
+│   │   │   ├── libwgpu_core-ebf26325d91cab96.rlib
+│   │   │   ├── libwgpu_core-ebf26325d91cab96.rmeta
+│   │   │   ├── libwgpu_hal-917471b1ec7ed7fe.rlib
+│   │   │   ├── libwgpu_hal-917471b1ec7ed7fe.rmeta
+│   │   │   ├── libwgpu_types-ac6622e76f32d654.rlib
+│   │   │   ├── libwgpu_types-ac6622e76f32d654.rmeta
+│   │   │   ├── libwinit-52775009a482104e.rlib
+│   │   │   ├── libwinit-52775009a482104e.rmeta
+│   │   │   ├── libwinnow-3712a633abd51f73.rlib
+│   │   │   ├── libwinnow-3712a633abd51f73.rmeta
+│   │   │   ├── libwinnow-b0ecfe989a236fd6.rlib
+│   │   │   ├── libwinnow-b0ecfe989a236fd6.rmeta
+│   │   │   ├── libx11_dl-1d6f51b44d8bec0b.rlib
+│   │   │   ├── libx11_dl-1d6f51b44d8bec0b.rmeta
+│   │   │   ├── libx11rb-6059a08e5d0459d4.rlib
+│   │   │   ├── libx11rb-6059a08e5d0459d4.rmeta
+│   │   │   ├── libx11rb_protocol-ff45732b415051ed.rlib
+│   │   │   ├── libx11rb_protocol-ff45732b415051ed.rmeta
+│   │   │   ├── libxcursor-631c361f1468370a.rlib
+│   │   │   ├── libxcursor-631c361f1468370a.rmeta
+│   │   │   ├── libxkbcommon_dl-298451cd5174d2df.rlib
+│   │   │   ├── libxkbcommon_dl-298451cd5174d2df.rmeta
+│   │   │   ├── libxkeysym-ad6e919890c460d9.rlib
+│   │   │   ├── libxkeysym-ad6e919890c460d9.rmeta
+│   │   │   ├── libyazi-420fb48c880f9429.rlib
+│   │   │   ├── libyazi-420fb48c880f9429.rmeta
+│   │   │   ├── libzeno-cd45066645c17ee8.rlib
+│   │   │   ├── libzeno-cd45066645c17ee8.rmeta
+│   │   │   ├── libzerocopy-3fe3473799daac23.rlib
+│   │   │   ├── libzerocopy-3fe3473799daac23.rmeta
+│   │   │   ├── libzerocopy_derive-cf38421052fef242.so
+│   │   │   ├── linebender_resource_handle-8b856583b1b9fd42.d
+│   │   │   ├── linux_raw_sys-48c803e54bacf51b.d
+│   │   │   ├── linux_raw_sys-a860c42fd775081f.d
+│   │   │   ├── litrs-d65092d5f137daca.d
+│   │   │   ├── lock_api-264ea3c2eaecc262.d
+│   │   │   ├── log-f6b6648815ed9824.d
+│   │   │   ├── lorawanwiz-349b59af1b462f10
+│   │   │   ├── lorawanwiz-349b59af1b462f10.d
+│   │   │   ├── matchers-d7d735b04ec3f902.d
+│   │   │   ├── memchr-1d6f4036cbad2f63.d
+│   │   │   ├── memchr-9e57eacef1172561.d
+│   │   │   ├── memmap2-bd87f957075bcf6d.d
+│   │   │   ├── moxcms-4f6c0c56f4adc508.d
+│   │   │   ├── naga-8cd500fda2345b16.d
+│   │   │   ├── naga_oil-96d2ff77e2d863f2.d
+│   │   │   ├── nix-623879dbb008960c.d
+│   │   │   ├── nonmax-a22fc9ba3f170959.d
+│   │   │   ├── nu_ansi_term-696c928b2fcb6006.d
+│   │   │   ├── num_traits-833ee06d76dc9b73.d
+│   │   │   ├── offset_allocator-2602041317ffc9b5.d
+│   │   │   ├── once_cell-1c25f06d0d7c6b79.d
+│   │   │   ├── ordered_float-10543ee450742fbb.d
+│   │   │   ├── owned_ttf_parser-792241d1489b04e0.d
+│   │   │   ├── parking-a583cb958fe93630.d
+│   │   │   ├── parking_lot_core-ca2f3c675386db33.d
+│   │   │   ├── parking_lot-e34626dd521a93f2.d
+│   │   │   ├── percent_encoding-8bc5d3da79c0415b.d
+│   │   │   ├── pin_project_lite-634574e9a8763841.d
+│   │   │   ├── piper-4c6a9d2f67d8fa6f.d
+│   │   │   ├── pkg_config-bf4b2fdcdc99ea9f.d
+│   │   │   ├── polling-bca4690757dee87d.d
+│   │   │   ├── proc_macro2-7552098afa499c54.d
+│   │   │   ├── profiling-ad93bc708fc8e10c.d
+│   │   │   ├── pxfm-fbfba48a4a9c7153.d
+│   │   │   ├── quick_xml-19251890c17dc7fc.d
+│   │   │   ├── quote-ed04df21d9062e60.d
+│   │   │   ├── radsort-37e196362ee47b29.d
+│   │   │   ├── rand_core-dfb54b33102fcc51.d
+│   │   │   ├── rand-d8e217c556f4fcc7.d
+│   │   │   ├── rand_distr-d86f2be9d33457e5.d
+│   │   │   ├── rangemap-a7bbc19a1f7c4f0f.d
+│   │   │   ├── raw_window_handle-e342581284c13929.d
+│   │   │   ├── read_fonts-0ca3f6af473c1238.d
+│   │   │   ├── read_fonts-173cb64c368a1947.d
+│   │   │   ├── rectangle_pack-1e613c6740b8b397.d
+│   │   │   ├── regex-4e0af5663fbbcc40.d
+│   │   │   ├── regex_automata-865230fb62e54580.d
+│   │   │   ├── regex_syntax-d60cd40cde1b0c48.d
+│   │   │   ├── renderdoc_sys-a529d9da09023d6b.d
+│   │   │   ├── ron-45b5a65c6b9725c7.d
+│   │   │   ├── roxmltree-aa4ed359738c9afe.d
+│   │   │   ├── rustc_hash-f5fc02b05a47ea2a.d
+│   │   │   ├── rustix-79c64ac4893e8afb.d
+│   │   │   ├── rustix-92bd37e5aa454637.d
+│   │   │   ├── scoped_tls-0e4155a8d0d0edeb.d
+│   │   │   ├── scopeguard-409e76afcd937cc1.d
+│   │   │   ├── sctk_adwaita-24d7acbf10de8097.d
+│   │   │   ├── self_cell-21a97c9317085ebd.d
+│   │   │   ├── serde-97ea072c1a4081e0.d
+│   │   │   ├── serde_core-6a7b5c64cbfa8786.d
+│   │   │   ├── serde_derive-9e1c2da25c710f3c.d
+│   │   │   ├── sharded_slab-5fe452cffbb2bf63.d
+│   │   │   ├── shlex-e9ebc9e4bb70b5cd.d
+│   │   │   ├── skrifa-87bf20090d09271f.d
+│   │   │   ├── skrifa-c307fbf46ac02f88.d
+│   │   │   ├── slab-3b2537e59150fd5f.d
+│   │   │   ├── slotmap-2e681e4a2cd0b299.d
+│   │   │   ├── smallvec-a7fb204a3d4527d4.d
+│   │   │   ├── smithay_client_toolkit-89513008cfe25a42.d
+│   │   │   ├── smol_str-f37a6a94ca89499e.d
+│   │   │   ├── spin-73ab89e17e233904.d
+│   │   │   ├── spirv-039586d5c5cf8be5.d
+│   │   │   ├── stackfuture-50181aea66b5f6d6.d
+│   │   │   ├── static_assertions-2b9399f0bc43e56d.d
+│   │   │   ├── strict_num-0775109f9111f120.d
+│   │   │   ├── subtle-206a0c7ce8e3110c.d
+│   │   │   ├── svg_fmt-22c1802cc9d36003.d
+│   │   │   ├── swash-72c32c2427478264.d
+│   │   │   ├── syn-09d49c381ffc4559.d
+│   │   │   ├── sys_locale-7940ca86211fb890.d
+│   │   │   ├── taffy-4b5eb48215a36ed6.d
+│   │   │   ├── termcolor-6735f69dc9dc9f95.d
+│   │   │   ├── thiserror-6e882d1ebe5e9c29.d
+│   │   │   ├── thiserror-fb3dc14655c5e634.d
+│   │   │   ├── thiserror_impl-9050be74742e8c42.d
+│   │   │   ├── thiserror_impl-add61823d28bf4fc.d
+│   │   │   ├── thread_local-2213301058adb6dd.d
+│   │   │   ├── tiny_skia-e46b394f8085daf9.d
+│   │   │   ├── tiny_skia_path-5862f5acc8f68b3e.d
+│   │   │   ├── tinyvec-c5b4266ff926f2c9.d
+│   │   │   ├── tinyvec_macros-e4fef57d6a2ca329.d
+│   │   │   ├── toml_datetime-cb0801b1cb0d9a78.d
+│   │   │   ├── toml_edit-72e6d8342c8211e9.d
+│   │   │   ├── toml_parser-702b2b1cd64b6ed5.d
+│   │   │   ├── tracing-42b7948954f63695.d
+│   │   │   ├── tracing_attributes-eac9c49fc44b135f.d
+│   │   │   ├── tracing_core-269986fc6a79e9b0.d
+│   │   │   ├── tracing_log-9277b33062d16151.d
+│   │   │   ├── tracing_subscriber-6dfa9709849e6e4f.d
+│   │   │   ├── ttf_parser-5217f3535c6d1ea2.d
+│   │   │   ├── typeid-4071c6b6535444ff.d
+│   │   │   ├── typenum-5617a4ed2a890a29.d
+│   │   │   ├── typewit-b74cb00311d3fac1.d
+│   │   │   ├── unicode_bidi-7e898387255d8107.d
+│   │   │   ├── unicode_ident-ec581f641fcf3b3f.d
+│   │   │   ├── unicode_linebreak-4ab3753c635ca070.d
+│   │   │   ├── unicode_script-988f8e5ee5181333.d
+│   │   │   ├── unicode_segmentation-66c3a034ec4a07dc.d
+│   │   │   ├── unicode_width-07d3936eb835ded8.d
+│   │   │   ├── unicode_xid-c553593ba8b9ad5c.d
+│   │   │   ├── uuid-c461989aab6dd917.d
+│   │   │   ├── variadics_please-21f42ee4fb7ae6e0.d
+│   │   │   ├── version_check-b235eb4af5c755dc.d
+│   │   │   ├── wayland_backend-d005222bd046a30e.d
+│   │   │   ├── wayland_client-b3603cb6eb6f1c84.d
+│   │   │   ├── wayland_csd_frame-23a3131bfa832f99.d
+│   │   │   ├── wayland_cursor-715505005f566dd9.d
+│   │   │   ├── wayland_protocols-c2499cd3a65746bd.d
+│   │   │   ├── wayland_protocols_plasma-f7752e2c699ecba2.d
+│   │   │   ├── wayland_protocols_wlr-a61ef62a7b1fde5b.d
+│   │   │   ├── wayland_scanner-67150c7f77a9d97a.d
+│   │   │   ├── wayland_sys-7863003c82f1aca5.d
+│   │   │   ├── wgpu-54fd9071d271b55f.d
+│   │   │   ├── wgpu_core_deps_windows_linux_android-7ab0f4dafaba7600.d
+│   │   │   ├── wgpu_core-ebf26325d91cab96.d
+│   │   │   ├── wgpu_hal-917471b1ec7ed7fe.d
+│   │   │   ├── wgpu_types-ac6622e76f32d654.d
+│   │   │   ├── winit-52775009a482104e.d
+│   │   │   ├── winnow-3712a633abd51f73.d
+│   │   │   ├── winnow-b0ecfe989a236fd6.d
+│   │   │   ├── x11_dl-1d6f51b44d8bec0b.d
+│   │   │   ├── x11rb-6059a08e5d0459d4.d
+│   │   │   ├── x11rb_protocol-ff45732b415051ed.d
+│   │   │   ├── xcursor-631c361f1468370a.d
+│   │   │   ├── xkbcommon_dl-298451cd5174d2df.d
+│   │   │   ├── xkeysym-ad6e919890c460d9.d
+│   │   │   ├── yazi-420fb48c880f9429.d
+│   │   │   ├── zeno-cd45066645c17ee8.d
+│   │   │   ├── zerocopy-3fe3473799daac23.d
+│   │   │   └── zerocopy_derive-cf38421052fef242.d
+│   │   ├── examples
+│   │   └── incremental
+│   │       └── lorawanwiz-007899opl9rwc
+│   │           ├── s-hi1gi6t4lz-1ki2dy6-9vjgh1zlej5n4niencm1z53qo
+│   │           │   ├── 07bov7cxkuetc36cqg674tu10.o
+│   │           │   ├── 0asttc23esnnys8qsj2x6ikhy.o
+│   │           │   ├── 0uyz0z7762fjzplllcocw2bmy.o
+│   │           │   ├── 1akzg1bz4gal92f9zbo6b2eke.o
+│   │           │   ├── 1dw2b94h64or2xqoxes1l3awn.o
+│   │           │   ├── 1euyzsnhylmimbvpc8fwmvuhe.o
+│   │           │   ├── 1jq1nc8fpilrmqptkftvwxoxd.o
+│   │           │   ├── 260m6goobakfwd19zrttwya3q.o
+│   │           │   ├── 2ylaoyvvlt0mw12a00a04v5bw.o
+│   │           │   ├── 33zrau425gm0jprwuhzivg6ey.o
+│   │           │   ├── 3uk4jua8a08ca3m6lmj0u8iwp.o
+│   │           │   ├── 4erox2viaokmq6nuokjgcyequ.o
+│   │           │   ├── 4lmmf39c51xkwkzm6fmc690gq.o
+│   │           │   ├── 4n9jvvl1xlm1nshsccy5w4pnu.o
+│   │           │   ├── 4oz1hm5a2a91u618bfgpler6z.o
+│   │           │   ├── 55f1pwwgedcgxjju68r1595z7.o
+│   │           │   ├── 58vtzhx7z3jc3zc4dmf1toz44.o
+│   │           │   ├── 5hh1c0lopybo3pmntydpi0d5e.o
+│   │           │   ├── 663s5wzypcfkua367qrerxww2.o
+│   │           │   ├── 66avxn8utv33z1as6kmdo6jb2.o
+│   │           │   ├── 6uwtbcyzq36y0tr8rrfjh86qj.o
+│   │           │   ├── 6z38vk533tcvwavk01e2i9l21.o
+│   │           │   ├── 72n9zb0yp90zcjqhrqhmzi5ah.o
+│   │           │   ├── 7af4tuix93cb0ojcz3z28lf6r.o
+│   │           │   ├── 7q5kn899f9o45fp4vf45yljfp.o
+│   │           │   ├── 8gg3o880lyv1bkqz01a6lbvnz.o
+│   │           │   ├── 8gyljjsve1q99fkvtceh5pk5d.o
+│   │           │   ├── 8itexoiijairs0x2dhukekrvz.o
+│   │           │   ├── 8qpsc3mn25l2dfllue1hnhsrk.o
+│   │           │   ├── 8to3eswf1x0vpx93sca0puy3r.o
+│   │           │   ├── 9121ppgd7k9l4dlvzhm4hn63i.o
+│   │           │   ├── 93fzjctkfttbk84jmmlbshepq.o
+│   │           │   ├── 9es23k20id9eclxl2sekvjpz8.o
+│   │           │   ├── 9ipgehzfgyyletylf7ykt7fum.o
+│   │           │   ├── ae34zb70z7r6ycfod57i2x1wu.o
+│   │           │   ├── bbdkmw44ffcv6sxi10y84u6py.o
+│   │           │   ├── bcj756pw0w2chp48m0fwujyob.o
+│   │           │   ├── bzl9buch1hbv4k93xnsh6ifl8.o
+│   │           │   ├── c7474xi6rcbedyu7762alnqyu.o
+│   │           │   ├── c8d2x1my0ssyrrd1n1u5uuiwm.o
+│   │           │   ├── cdre3c3se55ul7zlkn3wjye2m.o
+│   │           │   ├── cesw1evfoq0fclvcxx40qutj9.o
+│   │           │   ├── cmq8cv1zygstw01vxcb9crhp1.o
+│   │           │   ├── corer8omjx4v8g3bt15vx52zi.o
+│   │           │   ├── crfbma6nltfemeuvnh79om8sj.o
+│   │           │   ├── dagscnz2p7axibaiymnetbxc7.o
+│   │           │   ├── dem3258wcoqk4bil1t7tojiqr.o
+│   │           │   ├── dep-graph.bin
+│   │           │   ├── do8lqlclvcmfp4a0i15dqmxof.o
+│   │           │   ├── dr1vlzi5w49drdayf84f2n7an.o
+│   │           │   ├── eh11jn073hbptnh5bhdms9bnq.o
+│   │           │   ├── ew2nzt1235x0buxqayiours69.o
+│   │           │   ├── ewc48awanl6vtwc2gg8xlball.o
+│   │           │   ├── f4brwjrqyqytcybg5dzwlq7u9.o
+│   │           │   ├── f4s81ttopm51oshsgmuphc8br.o
+│   │           │   ├── query-cache.bin
+│   │           │   └── work-products.bin
+│   │           └── s-hi1gi6t4lz-1ki2dy6.lock
+│   ├── release
+│   │   ├── build
+│   │   │   ├── ahash-24ee41aea93c44a4
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-24ee41aea93c44a4
+│   │   │   │   └── build_script_build-24ee41aea93c44a4.d
+│   │   │   ├── ahash-efe6883473df583d
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── alsa-sys-0fcdf3fea17978f9
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── alsa-sys-58b7d986539b30d4
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-58b7d986539b30d4
+│   │   │   │   └── build_script_build-58b7d986539b30d4.d
+│   │   │   ├── ash-99ad01984b0c993d
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-99ad01984b0c993d
+│   │   │   │   └── build_script_build-99ad01984b0c993d.d
+│   │   │   ├── ash-a4b31fbb06072060
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── async-io-738cfdc66b7b3cc2
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── async-io-a28362603259d1d4
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-a28362603259d1d4
+│   │   │   │   └── build_script_build-a28362603259d1d4.d
+│   │   │   ├── blake3-2be1cb6c1b2cae91
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   ├── a1edd97dd51cd48d-blake3_neon.o
+│   │   │   │   │   └── libblake3_neon.a
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── blake3-8739dab4a3be887d
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-8739dab4a3be887d
+│   │   │   │   └── build_script_build-8739dab4a3be887d.d
+│   │   │   ├── cpal-29c06b9158db90b7
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── cpal-3f8839bb326f21a8
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-3f8839bb326f21a8
+│   │   │   │   └── build_script_build-3f8839bb326f21a8.d
+│   │   │   ├── crossbeam-utils-6c5b6f59fc7d95c0
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── crossbeam-utils-8c236aa9a2b924ab
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-8c236aa9a2b924ab
+│   │   │   │   └── build_script_build-8c236aa9a2b924ab.d
+│   │   │   ├── erased-serde-09d857ce53354ab1
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── erased-serde-115744e14dea6ec5
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-115744e14dea6ec5
+│   │   │   │   └── build_script_build-115744e14dea6ec5.d
+│   │   │   ├── generic-array-57a59671e2d7ea8b
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-57a59671e2d7ea8b
+│   │   │   │   └── build_script_build-57a59671e2d7ea8b.d
+│   │   │   ├── generic-array-baa39e54d2f6e277
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── getrandom-4d1390da2e965ade
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-4d1390da2e965ade
+│   │   │   │   └── build_script_build-4d1390da2e965ade.d
+│   │   │   ├── getrandom-689be3c23d119c2d
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── getrandom-6de2e9c4658830e6
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-6de2e9c4658830e6
+│   │   │   │   └── build_script_build-6de2e9c4658830e6.d
+│   │   │   ├── getrandom-d13a1a7f58a18f31
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── libc-161940da6d6ac556
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-161940da6d6ac556
+│   │   │   │   └── build_script_build-161940da6d6ac556.d
+│   │   │   ├── libc-16bb1f6b8d0bb9fd
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── libm-901e87899234b0f1
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-901e87899234b0f1
+│   │   │   │   └── build_script_build-901e87899234b0f1.d
+│   │   │   ├── libm-b4b6c1ec30cae074
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── naga-65097d3137474430
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── naga-8c1069cd68903e72
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-8c1069cd68903e72
+│   │   │   │   └── build_script_build-8c1069cd68903e72.d
+│   │   │   ├── nix-7b0dc36a8154a79d
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-7b0dc36a8154a79d
+│   │   │   │   └── build_script_build-7b0dc36a8154a79d.d
+│   │   │   ├── nix-c663e0e60534ee66
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── num-traits-7fb834670bf2edee
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── num-traits-dd4de39522f3bf5b
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-dd4de39522f3bf5b
+│   │   │   │   └── build_script_build-dd4de39522f3bf5b.d
+│   │   │   ├── parking_lot_core-533b6d5da8da1283
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-533b6d5da8da1283
+│   │   │   │   └── build_script_build-533b6d5da8da1283.d
+│   │   │   ├── parking_lot_core-cc1f6042c2ec4a81
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── proc-macro2-abc1acd1e9dc2b78
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── proc-macro2-db03f760dbbf51de
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-db03f760dbbf51de
+│   │   │   │   └── build_script_build-db03f760dbbf51de.d
+│   │   │   ├── quote-341b80fe5787690c
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── quote-effe22b8356687bc
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-effe22b8356687bc
+│   │   │   │   └── build_script_build-effe22b8356687bc.d
+│   │   │   ├── rustix-1c9a8b70502a4538
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── rustix-918926c8a5632b0b
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── rustix_test_can_compile
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── rustix-afd67fba4d4950aa
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-afd67fba4d4950aa
+│   │   │   │   └── build_script_build-afd67fba4d4950aa.d
+│   │   │   ├── rustix-e96f9a652c87ea84
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-e96f9a652c87ea84
+│   │   │   │   └── build_script_build-e96f9a652c87ea84.d
+│   │   │   ├── serde-4ee24fabde665416
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-4ee24fabde665416
+│   │   │   │   └── build_script_build-4ee24fabde665416.d
+│   │   │   ├── serde_core-8a9b32446e571b04
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── private.rs
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── serde_core-f0a08be699f49e32
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-f0a08be699f49e32
+│   │   │   │   └── build_script_build-f0a08be699f49e32.d
+│   │   │   ├── serde-dc7d299a3a5b7fb9
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── private.rs
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── slotmap-5ca8ce098128e17f
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── slotmap-e2d3b87a961ec4a2
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-e2d3b87a961ec4a2
+│   │   │   │   └── build_script_build-e2d3b87a961ec4a2.d
+│   │   │   ├── smithay-client-toolkit-4924bd5fccabd33f
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── smithay-client-toolkit-67d3d7c48d5aaf64
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-67d3d7c48d5aaf64
+│   │   │   │   └── build_script_build-67d3d7c48d5aaf64.d
+│   │   │   ├── thiserror-3ff577f7cad97984
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-3ff577f7cad97984
+│   │   │   │   └── build_script_build-3ff577f7cad97984.d
+│   │   │   ├── thiserror-60b00b42160c2f90
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── thiserror-8bf0bc3d1359da39
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-8bf0bc3d1359da39
+│   │   │   │   └── build_script_build-8bf0bc3d1359da39.d
+│   │   │   ├── thiserror-d635805feec7804b
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── private.rs
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── typeid-646c1cd6a15b67cb
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── typeid-f1b4b937749650c5
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-f1b4b937749650c5
+│   │   │   │   └── build_script_build-f1b4b937749650c5.d
+│   │   │   ├── wayland-backend-7043d14c5b16c98c
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wayland-backend-acf6285435cd95fc
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-acf6285435cd95fc
+│   │   │   │   └── build_script_build-acf6285435cd95fc.d
+│   │   │   ├── wayland-client-0533dc04b59616a1
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-0533dc04b59616a1
+│   │   │   │   └── build_script_build-0533dc04b59616a1.d
+│   │   │   ├── wayland-client-da831d3eee54814c
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wayland-sys-7f49eb503e113973
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wayland-sys-e7b32d82d3380c1d
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-e7b32d82d3380c1d
+│   │   │   │   └── build_script_build-e7b32d82d3380c1d.d
+│   │   │   ├── wgpu-07d96f031b0f7d22
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-07d96f031b0f7d22
+│   │   │   │   └── build_script_build-07d96f031b0f7d22.d
+│   │   │   ├── wgpu-b3b9e46cce9f305a
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wgpu-core-89d8916e4001df15
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-89d8916e4001df15
+│   │   │   │   └── build_script_build-89d8916e4001df15.d
+│   │   │   ├── wgpu-core-932e88e9998f7083
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wgpu-hal-745c8939b219f466
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── wgpu-hal-bce1699d3ae5c76c
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-bce1699d3ae5c76c
+│   │   │   │   └── build_script_build-bce1699d3ae5c76c.d
+│   │   │   ├── winit-47c516d8db6807c2
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-47c516d8db6807c2
+│   │   │   │   └── build_script_build-47c516d8db6807c2.d
+│   │   │   ├── winit-84732a9ffc52ab02
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── x11-dl-98ffdb674eb09403
+│   │   │   │   ├── build-script-build
+│   │   │   │   ├── build_script_build-98ffdb674eb09403
+│   │   │   │   └── build_script_build-98ffdb674eb09403.d
+│   │   │   ├── x11-dl-adc2409d4f53712c
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   │   └── config.rs
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   ├── zerocopy-312093842e43b9ba
+│   │   │   │   ├── invoked.timestamp
+│   │   │   │   ├── out
+│   │   │   │   ├── output
+│   │   │   │   ├── root-output
+│   │   │   │   └── stderr
+│   │   │   └── zerocopy-e941e9e6e9ff136d
+│   │   │       ├── build-script-build
+│   │   │       ├── build_script_build-e941e9e6e9ff136d
+│   │   │       └── build_script_build-e941e9e6e9ff136d.d
+│   │   ├── deps
+│   │   │   ├── ab_glyph-6caaff7501fa7ddb.d
+│   │   │   ├── ab_glyph_rasterizer-1f1d12f3f07c56c1.d
+│   │   │   ├── accesskit-654c0b93f9329d65.d
+│   │   │   ├── accesskit_winit-2e36692025594792.d
+│   │   │   ├── aes-e7d8d8418aa3e852.d
+│   │   │   ├── ahash-a3de0f1c5861f2c9.d
+│   │   │   ├── aho_corasick-a4e1c9a659d11d6c.d
+│   │   │   ├── alsa-69a3793d90e651a3.d
+│   │   │   ├── alsa_sys-a2f2dace3752bf3a.d
+│   │   │   ├── approx-30497f855f4420af.d
+│   │   │   ├── arrayref-8ab4abce0e0b5773.d
+│   │   │   ├── arrayvec-a54c98f05c020a32.d
+│   │   │   ├── ash-fd2ed23552f8c4d2.d
+│   │   │   ├── as_raw_xcb_connection-0d456b6525bad6f4.d
+│   │   │   ├── assert_type_match-8553f3fae8ad431f.d
+│   │   │   ├── async_broadcast-5e648bdc9c6110d8.d
+│   │   │   ├── async_channel-9aecbafde00324d4.d
+│   │   │   ├── async_executor-6701b60c09bc0936.d
+│   │   │   ├── async_fs-656330c19063d5ab.d
+│   │   │   ├── async_io-4be3ca2c7116a0b7.d
+│   │   │   ├── async_lock-e4cc3107146d37f2.d
+│   │   │   ├── async_task-943992d0b01580b3.d
+│   │   │   ├── atomicow-7b3f68f18c919962.d
+│   │   │   ├── atomic_waker-9fefdd8b298f0213.d
+│   │   │   ├── autocfg-aa784bc30a44d94b.d
+│   │   │   ├── bevy-4eaa8ccbaf9665d6.d
+│   │   │   ├── bevy_a11y-fc116e2751e933a2.d
+│   │   │   ├── bevy_app-ac129f7369a7468a.d
+│   │   │   ├── bevy_asset-19dc00a53621eba5.d
+│   │   │   ├── bevy_asset_macros-af4fe03a8b99b2d4.d
+│   │   │   ├── bevy_camera-2deeed4f34ddd97f.d
+│   │   │   ├── bevy_color-5d598cf3b4ced4c0.d
+│   │   │   ├── bevy_core_pipeline-8a5baf21653455b5.d
+│   │   │   ├── bevy_derive-8224fa78fd3aab6d.d
+│   │   │   ├── bevy_diagnostic-71623468369f6162.d
+│   │   │   ├── bevy_ecs-6de548e37069df7d.d
+│   │   │   ├── bevy_ecs_macros-78129838e3bb26d4.d
+│   │   │   ├── bevy_encase_derive-97b9302954b8b33f.d
+│   │   │   ├── bevy_image-0a279a022e9db842.d
+│   │   │   ├── bevy_input-921ea13363c22783.d
+│   │   │   ├── bevy_input_focus-422289abc7ac3329.d
+│   │   │   ├── bevy_internal-7eb8ccdb9f7f21c9.d
+│   │   │   ├── bevy_log-fcf416d50a58bdd8.d
+│   │   │   ├── bevy_macro_utils-ca32c1d5fc29a9d9.d
+│   │   │   ├── bevy_math-c85d0e04c923919d.d
+│   │   │   ├── bevy_mesh-40027e55305ee858.d
+│   │   │   ├── bevy_platform-1b58517edef4d282.d
+│   │   │   ├── bevy_ptr-8044ee4f7ec4197c.d
+│   │   │   ├── bevy_reflect-50df9d3e46227f06.d
+│   │   │   ├── bevy_reflect_derive-507be6695336799a.d
+│   │   │   ├── bevy_render-b4d4b3502431d0ca.d
+│   │   │   ├── bevy_render_macros-6c44c9f11475744f.d
+│   │   │   ├── bevy_shader-e014cd3112a01fcf.d
+│   │   │   ├── bevy_sprite-6e7a4a9188a6f093.d
+│   │   │   ├── bevy_sprite_render-b887dfd06711e3d2.d
+│   │   │   ├── bevy_tasks-f24703a78f1acb06.d
+│   │   │   ├── bevy_text-6f06e05b280382c1.d
+│   │   │   ├── bevy_time-903af4240ef54edb.d
+│   │   │   ├── bevy_transform-14dc7a83753bdaa6.d
+│   │   │   ├── bevy_ui-93e6d2e5069db1a8.d
+│   │   │   ├── bevy_ui_render-3abc21633f074c04.d
+│   │   │   ├── bevy_utils-e12198756efa8a61.d
+│   │   │   ├── bevy_window-f467413117c1804f.d
+│   │   │   ├── bevy_winit-bdc591d0aca2fc88.d
+│   │   │   ├── bitflags-a3010aba8030621b.d
+│   │   │   ├── bit_set-d07d6ed7c3d139bd.d
+│   │   │   ├── bit_vec-c889031e4c0f860f.d
+│   │   │   ├── blake3-050adec6a9f7d76f.d
+│   │   │   ├── block_buffer-609be28ccc081184.d
+│   │   │   ├── blocking-66bf49e5eaf5b987.d
+│   │   │   ├── bumpalo-4b2a3ae1f43e686f.d
+│   │   │   ├── bytemuck-b4430f0396dac4f5.d
+│   │   │   ├── bytemuck_derive-0fa9f0eae82b4adb.d
+│   │   │   ├── byteorder_lite-102c74280fd21de5.d
+│   │   │   ├── calloop-4327a4554a2059fe.d
+│   │   │   ├── calloop_wayland_source-2e42ab6a14c1d5fc.d
+│   │   │   ├── cc-2a2e187bddd1b5c7.d
+│   │   │   ├── cfg_aliases-b9c61d5a4523701c.d
+│   │   │   ├── cfg_if-3eaec410401fcdb8.d
+│   │   │   ├── cipher-4dd375f4cca181f9.d
+│   │   │   ├── cmac-0ec7402d2e2f6c86.d
+│   │   │   ├── codespan_reporting-519579a6f1461c3f.d
+│   │   │   ├── concurrent_queue-843aeb534c6dce71.d
+│   │   │   ├── constant_time_eq-0143ef554f7e4424.d
+│   │   │   ├── const_fnv1a_hash-640700a27d4eb006.d
+│   │   │   ├── constgebra-93359bb8666391d3.d
+│   │   │   ├── const_panic-faf7f41e639c188b.d
+│   │   │   ├── const_soft_float-7773a32544f0363c.d
+│   │   │   ├── convert_case-9d8471142309a3d2.d
+│   │   │   ├── core_maths-673df1521c175479.d
+│   │   │   ├── cosmic_text-5b291d46e622dcc8.d
+│   │   │   ├── cpal-79c95401f114a24a.d
+│   │   │   ├── cpufeatures-06b0b15b56acf141.d
+│   │   │   ├── crossbeam_channel-611f421cb80c724e.d
+│   │   │   ├── crossbeam_queue-93907ad24457fe42.d
+│   │   │   ├── crossbeam_utils-fa13b3f85228955d.d
+│   │   │   ├── crypto_common-63e54b6277114e68.d
+│   │   │   ├── ctrlc-665483eb0669b3dc.d
+│   │   │   ├── cursor_icon-d349c6d6bc778674.d
+│   │   │   ├── dasp_sample-1e1b5401e6f55a2e.d
+│   │   │   ├── data_encoding-75320f9181036123.d
+│   │   │   ├── dbl-5734083a30f8219b.d
+│   │   │   ├── derive_more-d1a90013ae7bdd36.d
+│   │   │   ├── derive_more_impl-0f074212f8467bcb.d
+│   │   │   ├── digest-9d0885336c698833.d
+│   │   │   ├── disqualified-566899ed2345b778.d
+│   │   │   ├── dlib-8f12a7f6cbdb37f1.d
+│   │   │   ├── document_features-fd1a817dee612df9.d
+│   │   │   ├── downcast_rs-22f2f0cfccbbc00c.d
+│   │   │   ├── downcast_rs-b45e517e672571a1.d
+│   │   │   ├── dpi-ac0972d980980038.d
+│   │   │   ├── either-7ee2978fc3090823.d
+│   │   │   ├── encase-898310aec301584a.d
+│   │   │   ├── encase_derive-0c48ce65c3528b28.d
+│   │   │   ├── encase_derive_impl-e11e059176b8fd0e.d
+│   │   │   ├── equivalent-10ba082c18fb9cd2.d
+│   │   │   ├── equivalent-3f359728f9187a2c.d
+│   │   │   ├── erased_serde-95ce969b3c6785b4.d
+│   │   │   ├── euclid-7a61990e68266c5f.d
+│   │   │   ├── event_listener-927195b110bbaffd.d
+│   │   │   ├── event_listener_strategy-53f9995731b0eb02.d
+│   │   │   ├── fastrand-4d05f368110a1cdd.d
+│   │   │   ├── find_msvc_tools-e4011e6a4b8d0557.d
+│   │   │   ├── fixedbitset-036e095bfb3b7e2d.d
+│   │   │   ├── foldhash-5ce2fc3e16f3ec94.d
+│   │   │   ├── foldhash-c00c8ce917b80939.d
+│   │   │   ├── fontconfig_parser-42900a3e483d3284.d
+│   │   │   ├── fontdb-3051b1f46742b0e9.d
+│   │   │   ├── font_types-1f6cd4b25cb4e07f.d
+│   │   │   ├── font_types-5b107ed34740b3ac.d
+│   │   │   ├── futures_core-4af1771959a48358.d
+│   │   │   ├── futures_io-5fc27d4a11a64452.d
+│   │   │   ├── futures_lite-4d07ae5aa310d98f.d
+│   │   │   ├── futures_macro-26882b71da510481.d
+│   │   │   ├── futures_task-af06da91093345ad.d
+│   │   │   ├── futures_util-a2cf5576d91ac750.d
+│   │   │   ├── generic_array-f112c3c4dfbb5aa0.d
+│   │   │   ├── gethostname-72434e8270b79855.d
+│   │   │   ├── getrandom-bfa0436590502d41.d
+│   │   │   ├── getrandom-d7ec9cdb0f9ce77e.d
+│   │   │   ├── glam-76ffc91f45335c3c.d
+│   │   │   ├── gpu_alloc-24ab444c80e278e6.d
+│   │   │   ├── gpu_alloc_types-ffb88ebd0a1e9509.d
+│   │   │   ├── gpu_descriptor-6897de2da0483bbd.d
+│   │   │   ├── gpu_descriptor_types-28a403980cdeb043.d
+│   │   │   ├── grid-edd3a505872f59a3.d
+│   │   │   ├── guillotiere-384684d83d09a986.d
+│   │   │   ├── half-3343348a3021ead4.d
+│   │   │   ├── harfrust-3e755a83ace4da86.d
+│   │   │   ├── hashbrown-00fd02032548d485.d
+│   │   │   ├── hashbrown-043771cb2c01c1d3.d
+│   │   │   ├── hashbrown-91e5551f4a11aa18.d
+│   │   │   ├── hashbrown-c222bcfd8927218d.d
+│   │   │   ├── hexasphere-cb561098934aca7f.d
+│   │   │   ├── hexf_parse-f35d7283789120e1.d
+│   │   │   ├── image-20430d9d53da9ca8.d
+│   │   │   ├── indexmap-2bb7f43aa1a0936c.d
+│   │   │   ├── indexmap-d413e98963ecb957.d
+│   │   │   ├── inout-b02f60481bae629f.d
+│   │   │   ├── inventory-2173409a615008c7.d
+│   │   │   ├── itertools-3af5344fc262ddbb.d
+│   │   │   ├── lazy_static-5faffef025b0e2bb.d
+│   │   │   ├── libab_glyph-6caaff7501fa7ddb.rlib
+│   │   │   ├── libab_glyph-6caaff7501fa7ddb.rmeta
+│   │   │   ├── libab_glyph_rasterizer-1f1d12f3f07c56c1.rlib
+│   │   │   ├── libab_glyph_rasterizer-1f1d12f3f07c56c1.rmeta
+│   │   │   ├── libaccesskit-654c0b93f9329d65.rlib
+│   │   │   ├── libaccesskit-654c0b93f9329d65.rmeta
+│   │   │   ├── libaccesskit_winit-2e36692025594792.rlib
+│   │   │   ├── libaccesskit_winit-2e36692025594792.rmeta
+│   │   │   ├── libaes-e7d8d8418aa3e852.rlib
+│   │   │   ├── libaes-e7d8d8418aa3e852.rmeta
+│   │   │   ├── libahash-a3de0f1c5861f2c9.rlib
+│   │   │   ├── libahash-a3de0f1c5861f2c9.rmeta
+│   │   │   ├── libaho_corasick-a4e1c9a659d11d6c.rlib
+│   │   │   ├── libaho_corasick-a4e1c9a659d11d6c.rmeta
+│   │   │   ├── libalsa-69a3793d90e651a3.rlib
+│   │   │   ├── libalsa-69a3793d90e651a3.rmeta
+│   │   │   ├── libalsa_sys-a2f2dace3752bf3a.rlib
+│   │   │   ├── libalsa_sys-a2f2dace3752bf3a.rmeta
+│   │   │   ├── libapprox-30497f855f4420af.rlib
+│   │   │   ├── libapprox-30497f855f4420af.rmeta
+│   │   │   ├── libarrayref-8ab4abce0e0b5773.rlib
+│   │   │   ├── libarrayref-8ab4abce0e0b5773.rmeta
+│   │   │   ├── libarrayvec-a54c98f05c020a32.rlib
+│   │   │   ├── libarrayvec-a54c98f05c020a32.rmeta
+│   │   │   ├── libash-fd2ed23552f8c4d2.rlib
+│   │   │   ├── libash-fd2ed23552f8c4d2.rmeta
+│   │   │   ├── libas_raw_xcb_connection-0d456b6525bad6f4.rlib
+│   │   │   ├── libas_raw_xcb_connection-0d456b6525bad6f4.rmeta
+│   │   │   ├── libassert_type_match-8553f3fae8ad431f.so
+│   │   │   ├── libasync_broadcast-5e648bdc9c6110d8.rlib
+│   │   │   ├── libasync_broadcast-5e648bdc9c6110d8.rmeta
+│   │   │   ├── libasync_channel-9aecbafde00324d4.rlib
+│   │   │   ├── libasync_channel-9aecbafde00324d4.rmeta
+│   │   │   ├── libasync_executor-6701b60c09bc0936.rlib
+│   │   │   ├── libasync_executor-6701b60c09bc0936.rmeta
+│   │   │   ├── libasync_fs-656330c19063d5ab.rlib
+│   │   │   ├── libasync_fs-656330c19063d5ab.rmeta
+│   │   │   ├── libasync_io-4be3ca2c7116a0b7.rlib
+│   │   │   ├── libasync_io-4be3ca2c7116a0b7.rmeta
+│   │   │   ├── libasync_lock-e4cc3107146d37f2.rlib
+│   │   │   ├── libasync_lock-e4cc3107146d37f2.rmeta
+│   │   │   ├── libasync_task-943992d0b01580b3.rlib
+│   │   │   ├── libasync_task-943992d0b01580b3.rmeta
+│   │   │   ├── libatomicow-7b3f68f18c919962.rlib
+│   │   │   ├── libatomicow-7b3f68f18c919962.rmeta
+│   │   │   ├── libatomic_waker-9fefdd8b298f0213.rlib
+│   │   │   ├── libatomic_waker-9fefdd8b298f0213.rmeta
+│   │   │   ├── libautocfg-aa784bc30a44d94b.rlib
+│   │   │   ├── libautocfg-aa784bc30a44d94b.rmeta
+│   │   │   ├── libbevy-4eaa8ccbaf9665d6.rlib
+│   │   │   ├── libbevy-4eaa8ccbaf9665d6.rmeta
+│   │   │   ├── libbevy_a11y-fc116e2751e933a2.rlib
+│   │   │   ├── libbevy_a11y-fc116e2751e933a2.rmeta
+│   │   │   ├── libbevy_app-ac129f7369a7468a.rlib
+│   │   │   ├── libbevy_app-ac129f7369a7468a.rmeta
+│   │   │   ├── libbevy_asset-19dc00a53621eba5.rlib
+│   │   │   ├── libbevy_asset-19dc00a53621eba5.rmeta
+│   │   │   ├── libbevy_asset_macros-af4fe03a8b99b2d4.so
+│   │   │   ├── libbevy_camera-2deeed4f34ddd97f.rlib
+│   │   │   ├── libbevy_camera-2deeed4f34ddd97f.rmeta
+│   │   │   ├── libbevy_color-5d598cf3b4ced4c0.rlib
+│   │   │   ├── libbevy_color-5d598cf3b4ced4c0.rmeta
+│   │   │   ├── libbevy_core_pipeline-8a5baf21653455b5.rlib
+│   │   │   ├── libbevy_core_pipeline-8a5baf21653455b5.rmeta
+│   │   │   ├── libbevy_derive-8224fa78fd3aab6d.so
+│   │   │   ├── libbevy_diagnostic-71623468369f6162.rlib
+│   │   │   ├── libbevy_diagnostic-71623468369f6162.rmeta
+│   │   │   ├── libbevy_ecs-6de548e37069df7d.rlib
+│   │   │   ├── libbevy_ecs-6de548e37069df7d.rmeta
+│   │   │   ├── libbevy_ecs_macros-78129838e3bb26d4.so
+│   │   │   ├── libbevy_encase_derive-97b9302954b8b33f.so
+│   │   │   ├── libbevy_image-0a279a022e9db842.rlib
+│   │   │   ├── libbevy_image-0a279a022e9db842.rmeta
+│   │   │   ├── libbevy_input-921ea13363c22783.rlib
+│   │   │   ├── libbevy_input-921ea13363c22783.rmeta
+│   │   │   ├── libbevy_input_focus-422289abc7ac3329.rlib
+│   │   │   ├── libbevy_input_focus-422289abc7ac3329.rmeta
+│   │   │   ├── libbevy_internal-7eb8ccdb9f7f21c9.rlib
+│   │   │   ├── libbevy_internal-7eb8ccdb9f7f21c9.rmeta
+│   │   │   ├── libbevy_log-fcf416d50a58bdd8.rlib
+│   │   │   ├── libbevy_log-fcf416d50a58bdd8.rmeta
+│   │   │   ├── libbevy_macro_utils-ca32c1d5fc29a9d9.rlib
+│   │   │   ├── libbevy_macro_utils-ca32c1d5fc29a9d9.rmeta
+│   │   │   ├── libbevy_math-c85d0e04c923919d.rlib
+│   │   │   ├── libbevy_math-c85d0e04c923919d.rmeta
+│   │   │   ├── libbevy_mesh-40027e55305ee858.rlib
+│   │   │   ├── libbevy_mesh-40027e55305ee858.rmeta
+│   │   │   ├── libbevy_platform-1b58517edef4d282.rlib
+│   │   │   ├── libbevy_platform-1b58517edef4d282.rmeta
+│   │   │   ├── libbevy_ptr-8044ee4f7ec4197c.rlib
+│   │   │   ├── libbevy_ptr-8044ee4f7ec4197c.rmeta
+│   │   │   ├── libbevy_reflect-50df9d3e46227f06.rlib
+│   │   │   ├── libbevy_reflect-50df9d3e46227f06.rmeta
+│   │   │   ├── libbevy_reflect_derive-507be6695336799a.so
+│   │   │   ├── libbevy_render-b4d4b3502431d0ca.rlib
+│   │   │   ├── libbevy_render-b4d4b3502431d0ca.rmeta
+│   │   │   ├── libbevy_render_macros-6c44c9f11475744f.so
+│   │   │   ├── libbevy_shader-e014cd3112a01fcf.rlib
+│   │   │   ├── libbevy_shader-e014cd3112a01fcf.rmeta
+│   │   │   ├── libbevy_sprite-6e7a4a9188a6f093.rlib
+│   │   │   ├── libbevy_sprite-6e7a4a9188a6f093.rmeta
+│   │   │   ├── libbevy_sprite_render-b887dfd06711e3d2.rlib
+│   │   │   ├── libbevy_sprite_render-b887dfd06711e3d2.rmeta
+│   │   │   ├── libbevy_tasks-f24703a78f1acb06.rlib
+│   │   │   ├── libbevy_tasks-f24703a78f1acb06.rmeta
+│   │   │   ├── libbevy_text-6f06e05b280382c1.rlib
+│   │   │   ├── libbevy_text-6f06e05b280382c1.rmeta
+│   │   │   ├── libbevy_time-903af4240ef54edb.rlib
+│   │   │   ├── libbevy_time-903af4240ef54edb.rmeta
+│   │   │   ├── libbevy_transform-14dc7a83753bdaa6.rlib
+│   │   │   ├── libbevy_transform-14dc7a83753bdaa6.rmeta
+│   │   │   ├── libbevy_ui-93e6d2e5069db1a8.rlib
+│   │   │   ├── libbevy_ui-93e6d2e5069db1a8.rmeta
+│   │   │   ├── libbevy_ui_render-3abc21633f074c04.rlib
+│   │   │   ├── libbevy_ui_render-3abc21633f074c04.rmeta
+│   │   │   ├── libbevy_utils-e12198756efa8a61.rlib
+│   │   │   ├── libbevy_utils-e12198756efa8a61.rmeta
+│   │   │   ├── libbevy_window-f467413117c1804f.rlib
+│   │   │   ├── libbevy_window-f467413117c1804f.rmeta
+│   │   │   ├── libbevy_winit-bdc591d0aca2fc88.rlib
+│   │   │   ├── libbevy_winit-bdc591d0aca2fc88.rmeta
+│   │   │   ├── libbitflags-a3010aba8030621b.rlib
+│   │   │   ├── libbitflags-a3010aba8030621b.rmeta
+│   │   │   ├── libbit_set-d07d6ed7c3d139bd.rlib
+│   │   │   ├── libbit_set-d07d6ed7c3d139bd.rmeta
+│   │   │   ├── libbit_vec-c889031e4c0f860f.rlib
+│   │   │   ├── libbit_vec-c889031e4c0f860f.rmeta
+│   │   │   ├── libblake3-050adec6a9f7d76f.rlib
+│   │   │   ├── libblake3-050adec6a9f7d76f.rmeta
+│   │   │   ├── libblock_buffer-609be28ccc081184.rlib
+│   │   │   ├── libblock_buffer-609be28ccc081184.rmeta
+│   │   │   ├── libblocking-66bf49e5eaf5b987.rlib
+│   │   │   ├── libblocking-66bf49e5eaf5b987.rmeta
+│   │   │   ├── libbumpalo-4b2a3ae1f43e686f.rlib
+│   │   │   ├── libbumpalo-4b2a3ae1f43e686f.rmeta
+│   │   │   ├── libbytemuck-b4430f0396dac4f5.rlib
+│   │   │   ├── libbytemuck-b4430f0396dac4f5.rmeta
+│   │   │   ├── libbytemuck_derive-0fa9f0eae82b4adb.so
+│   │   │   ├── libbyteorder_lite-102c74280fd21de5.rlib
+│   │   │   ├── libbyteorder_lite-102c74280fd21de5.rmeta
+│   │   │   ├── libc-6b64f1e1fc79210e.d
+│   │   │   ├── libcalloop-4327a4554a2059fe.rlib
+│   │   │   ├── libcalloop-4327a4554a2059fe.rmeta
+│   │   │   ├── libcalloop_wayland_source-2e42ab6a14c1d5fc.rlib
+│   │   │   ├── libcalloop_wayland_source-2e42ab6a14c1d5fc.rmeta
+│   │   │   ├── libcc-2a2e187bddd1b5c7.rlib
+│   │   │   ├── libcc-2a2e187bddd1b5c7.rmeta
+│   │   │   ├── libcfg_aliases-b9c61d5a4523701c.rlib
+│   │   │   ├── libcfg_aliases-b9c61d5a4523701c.rmeta
+│   │   │   ├── libcfg_if-3eaec410401fcdb8.rlib
+│   │   │   ├── libcfg_if-3eaec410401fcdb8.rmeta
+│   │   │   ├── libcipher-4dd375f4cca181f9.rlib
+│   │   │   ├── libcipher-4dd375f4cca181f9.rmeta
+│   │   │   ├── libcmac-0ec7402d2e2f6c86.rlib
+│   │   │   ├── libcmac-0ec7402d2e2f6c86.rmeta
+│   │   │   ├── libcodespan_reporting-519579a6f1461c3f.rlib
+│   │   │   ├── libcodespan_reporting-519579a6f1461c3f.rmeta
+│   │   │   ├── libconcurrent_queue-843aeb534c6dce71.rlib
+│   │   │   ├── libconcurrent_queue-843aeb534c6dce71.rmeta
+│   │   │   ├── libconstant_time_eq-0143ef554f7e4424.rlib
+│   │   │   ├── libconstant_time_eq-0143ef554f7e4424.rmeta
+│   │   │   ├── libconst_fnv1a_hash-640700a27d4eb006.rlib
+│   │   │   ├── libconst_fnv1a_hash-640700a27d4eb006.rmeta
+│   │   │   ├── libconstgebra-93359bb8666391d3.rlib
+│   │   │   ├── libconstgebra-93359bb8666391d3.rmeta
+│   │   │   ├── libconst_panic-faf7f41e639c188b.rlib
+│   │   │   ├── libconst_panic-faf7f41e639c188b.rmeta
+│   │   │   ├── libconst_soft_float-7773a32544f0363c.rlib
+│   │   │   ├── libconst_soft_float-7773a32544f0363c.rmeta
+│   │   │   ├── libconvert_case-9d8471142309a3d2.rlib
+│   │   │   ├── libconvert_case-9d8471142309a3d2.rmeta
+│   │   │   ├── libcore_maths-673df1521c175479.rlib
+│   │   │   ├── libcore_maths-673df1521c175479.rmeta
+│   │   │   ├── libcosmic_text-5b291d46e622dcc8.rlib
+│   │   │   ├── libcosmic_text-5b291d46e622dcc8.rmeta
+│   │   │   ├── libcpal-79c95401f114a24a.rlib
+│   │   │   ├── libcpal-79c95401f114a24a.rmeta
+│   │   │   ├── libcpufeatures-06b0b15b56acf141.rlib
+│   │   │   ├── libcpufeatures-06b0b15b56acf141.rmeta
+│   │   │   ├── libcrossbeam_channel-611f421cb80c724e.rlib
+│   │   │   ├── libcrossbeam_channel-611f421cb80c724e.rmeta
+│   │   │   ├── libcrossbeam_queue-93907ad24457fe42.rlib
+│   │   │   ├── libcrossbeam_queue-93907ad24457fe42.rmeta
+│   │   │   ├── libcrossbeam_utils-fa13b3f85228955d.rlib
+│   │   │   ├── libcrossbeam_utils-fa13b3f85228955d.rmeta
+│   │   │   ├── libcrypto_common-63e54b6277114e68.rlib
+│   │   │   ├── libcrypto_common-63e54b6277114e68.rmeta
+│   │   │   ├── libctrlc-665483eb0669b3dc.rlib
+│   │   │   ├── libctrlc-665483eb0669b3dc.rmeta
+│   │   │   ├── libcursor_icon-d349c6d6bc778674.rlib
+│   │   │   ├── libcursor_icon-d349c6d6bc778674.rmeta
+│   │   │   ├── libdasp_sample-1e1b5401e6f55a2e.rlib
+│   │   │   ├── libdasp_sample-1e1b5401e6f55a2e.rmeta
+│   │   │   ├── libdata_encoding-75320f9181036123.rlib
+│   │   │   ├── libdata_encoding-75320f9181036123.rmeta
+│   │   │   ├── libdbl-5734083a30f8219b.rlib
+│   │   │   ├── libdbl-5734083a30f8219b.rmeta
+│   │   │   ├── libderive_more-d1a90013ae7bdd36.rlib
+│   │   │   ├── libderive_more-d1a90013ae7bdd36.rmeta
+│   │   │   ├── libderive_more_impl-0f074212f8467bcb.so
+│   │   │   ├── libdigest-9d0885336c698833.rlib
+│   │   │   ├── libdigest-9d0885336c698833.rmeta
+│   │   │   ├── libdisqualified-566899ed2345b778.rlib
+│   │   │   ├── libdisqualified-566899ed2345b778.rmeta
+│   │   │   ├── libdlib-8f12a7f6cbdb37f1.rlib
+│   │   │   ├── libdlib-8f12a7f6cbdb37f1.rmeta
+│   │   │   ├── libdocument_features-fd1a817dee612df9.so
+│   │   │   ├── libdowncast_rs-22f2f0cfccbbc00c.rlib
+│   │   │   ├── libdowncast_rs-22f2f0cfccbbc00c.rmeta
+│   │   │   ├── libdowncast_rs-b45e517e672571a1.rlib
+│   │   │   ├── libdowncast_rs-b45e517e672571a1.rmeta
+│   │   │   ├── libdpi-ac0972d980980038.rlib
+│   │   │   ├── libdpi-ac0972d980980038.rmeta
+│   │   │   ├── libeither-7ee2978fc3090823.rlib
+│   │   │   ├── libeither-7ee2978fc3090823.rmeta
+│   │   │   ├── libencase-898310aec301584a.rlib
+│   │   │   ├── libencase-898310aec301584a.rmeta
+│   │   │   ├── libencase_derive-0c48ce65c3528b28.so
+│   │   │   ├── libencase_derive_impl-e11e059176b8fd0e.rlib
+│   │   │   ├── libencase_derive_impl-e11e059176b8fd0e.rmeta
+│   │   │   ├── libequivalent-10ba082c18fb9cd2.rlib
+│   │   │   ├── libequivalent-10ba082c18fb9cd2.rmeta
+│   │   │   ├── libequivalent-3f359728f9187a2c.rlib
+│   │   │   ├── libequivalent-3f359728f9187a2c.rmeta
+│   │   │   ├── liberased_serde-95ce969b3c6785b4.rlib
+│   │   │   ├── liberased_serde-95ce969b3c6785b4.rmeta
+│   │   │   ├── libeuclid-7a61990e68266c5f.rlib
+│   │   │   ├── libeuclid-7a61990e68266c5f.rmeta
+│   │   │   ├── libevent_listener-927195b110bbaffd.rlib
+│   │   │   ├── libevent_listener-927195b110bbaffd.rmeta
+│   │   │   ├── libevent_listener_strategy-53f9995731b0eb02.rlib
+│   │   │   ├── libevent_listener_strategy-53f9995731b0eb02.rmeta
+│   │   │   ├── libfastrand-4d05f368110a1cdd.rlib
+│   │   │   ├── libfastrand-4d05f368110a1cdd.rmeta
+│   │   │   ├── libfind_msvc_tools-e4011e6a4b8d0557.rlib
+│   │   │   ├── libfind_msvc_tools-e4011e6a4b8d0557.rmeta
+│   │   │   ├── libfixedbitset-036e095bfb3b7e2d.rlib
+│   │   │   ├── libfixedbitset-036e095bfb3b7e2d.rmeta
+│   │   │   ├── libfoldhash-5ce2fc3e16f3ec94.rlib
+│   │   │   ├── libfoldhash-5ce2fc3e16f3ec94.rmeta
+│   │   │   ├── libfoldhash-c00c8ce917b80939.rlib
+│   │   │   ├── libfoldhash-c00c8ce917b80939.rmeta
+│   │   │   ├── libfontconfig_parser-42900a3e483d3284.rlib
+│   │   │   ├── libfontconfig_parser-42900a3e483d3284.rmeta
+│   │   │   ├── libfontdb-3051b1f46742b0e9.rlib
+│   │   │   ├── libfontdb-3051b1f46742b0e9.rmeta
+│   │   │   ├── libfont_types-1f6cd4b25cb4e07f.rlib
+│   │   │   ├── libfont_types-1f6cd4b25cb4e07f.rmeta
+│   │   │   ├── libfont_types-5b107ed34740b3ac.rlib
+│   │   │   ├── libfont_types-5b107ed34740b3ac.rmeta
+│   │   │   ├── libfutures_core-4af1771959a48358.rlib
+│   │   │   ├── libfutures_core-4af1771959a48358.rmeta
+│   │   │   ├── libfutures_io-5fc27d4a11a64452.rlib
+│   │   │   ├── libfutures_io-5fc27d4a11a64452.rmeta
+│   │   │   ├── libfutures_lite-4d07ae5aa310d98f.rlib
+│   │   │   ├── libfutures_lite-4d07ae5aa310d98f.rmeta
+│   │   │   ├── libfutures_macro-26882b71da510481.so
+│   │   │   ├── libfutures_task-af06da91093345ad.rlib
+│   │   │   ├── libfutures_task-af06da91093345ad.rmeta
+│   │   │   ├── libfutures_util-a2cf5576d91ac750.rlib
+│   │   │   ├── libfutures_util-a2cf5576d91ac750.rmeta
+│   │   │   ├── libgeneric_array-f112c3c4dfbb5aa0.rlib
+│   │   │   ├── libgeneric_array-f112c3c4dfbb5aa0.rmeta
+│   │   │   ├── libgethostname-72434e8270b79855.rlib
+│   │   │   ├── libgethostname-72434e8270b79855.rmeta
+│   │   │   ├── libgetrandom-bfa0436590502d41.rlib
+│   │   │   ├── libgetrandom-bfa0436590502d41.rmeta
+│   │   │   ├── libgetrandom-d7ec9cdb0f9ce77e.rlib
+│   │   │   ├── libgetrandom-d7ec9cdb0f9ce77e.rmeta
+│   │   │   ├── libglam-76ffc91f45335c3c.rlib
+│   │   │   ├── libglam-76ffc91f45335c3c.rmeta
+│   │   │   ├── libgpu_alloc-24ab444c80e278e6.rlib
+│   │   │   ├── libgpu_alloc-24ab444c80e278e6.rmeta
+│   │   │   ├── libgpu_alloc_types-ffb88ebd0a1e9509.rlib
+│   │   │   ├── libgpu_alloc_types-ffb88ebd0a1e9509.rmeta
+│   │   │   ├── libgpu_descriptor-6897de2da0483bbd.rlib
+│   │   │   ├── libgpu_descriptor-6897de2da0483bbd.rmeta
+│   │   │   ├── libgpu_descriptor_types-28a403980cdeb043.rlib
+│   │   │   ├── libgpu_descriptor_types-28a403980cdeb043.rmeta
+│   │   │   ├── libgrid-edd3a505872f59a3.rlib
+│   │   │   ├── libgrid-edd3a505872f59a3.rmeta
+│   │   │   ├── libguillotiere-384684d83d09a986.rlib
+│   │   │   ├── libguillotiere-384684d83d09a986.rmeta
+│   │   │   ├── libhalf-3343348a3021ead4.rlib
+│   │   │   ├── libhalf-3343348a3021ead4.rmeta
+│   │   │   ├── libharfrust-3e755a83ace4da86.rlib
+│   │   │   ├── libharfrust-3e755a83ace4da86.rmeta
+│   │   │   ├── libhashbrown-00fd02032548d485.rlib
+│   │   │   ├── libhashbrown-00fd02032548d485.rmeta
+│   │   │   ├── libhashbrown-043771cb2c01c1d3.rlib
+│   │   │   ├── libhashbrown-043771cb2c01c1d3.rmeta
+│   │   │   ├── libhashbrown-91e5551f4a11aa18.rlib
+│   │   │   ├── libhashbrown-91e5551f4a11aa18.rmeta
+│   │   │   ├── libhashbrown-c222bcfd8927218d.rlib
+│   │   │   ├── libhashbrown-c222bcfd8927218d.rmeta
+│   │   │   ├── libhexasphere-cb561098934aca7f.rlib
+│   │   │   ├── libhexasphere-cb561098934aca7f.rmeta
+│   │   │   ├── libhexf_parse-f35d7283789120e1.rlib
+│   │   │   ├── libhexf_parse-f35d7283789120e1.rmeta
+│   │   │   ├── libimage-20430d9d53da9ca8.rlib
+│   │   │   ├── libimage-20430d9d53da9ca8.rmeta
+│   │   │   ├── libindexmap-2bb7f43aa1a0936c.rlib
+│   │   │   ├── libindexmap-2bb7f43aa1a0936c.rmeta
+│   │   │   ├── libindexmap-d413e98963ecb957.rlib
+│   │   │   ├── libindexmap-d413e98963ecb957.rmeta
+│   │   │   ├── libinout-b02f60481bae629f.rlib
+│   │   │   ├── libinout-b02f60481bae629f.rmeta
+│   │   │   ├── libinventory-2173409a615008c7.rlib
+│   │   │   ├── libinventory-2173409a615008c7.rmeta
+│   │   │   ├── libitertools-3af5344fc262ddbb.rlib
+│   │   │   ├── libitertools-3af5344fc262ddbb.rmeta
+│   │   │   ├── liblazy_static-5faffef025b0e2bb.rlib
+│   │   │   ├── liblazy_static-5faffef025b0e2bb.rmeta
+│   │   │   ├── liblibc-6b64f1e1fc79210e.rlib
+│   │   │   ├── liblibc-6b64f1e1fc79210e.rmeta
+│   │   │   ├── liblibloading-722a1f2500ca3706.rlib
+│   │   │   ├── liblibloading-722a1f2500ca3706.rmeta
+│   │   │   ├── liblibm-8c30932988bcb2ac.rlib
+│   │   │   ├── liblibm-8c30932988bcb2ac.rmeta
+│   │   │   ├── liblinebender_resource_handle-adf08d863c968ad4.rlib
+│   │   │   ├── liblinebender_resource_handle-adf08d863c968ad4.rmeta
+│   │   │   ├── liblinux_raw_sys-656120193dda0b9b.rlib
+│   │   │   ├── liblinux_raw_sys-656120193dda0b9b.rmeta
+│   │   │   ├── liblinux_raw_sys-85510ca2edc73eb6.rlib
+│   │   │   ├── liblinux_raw_sys-85510ca2edc73eb6.rmeta
+│   │   │   ├── liblitrs-cb19a7f0456eaa4f.rlib
+│   │   │   ├── liblitrs-cb19a7f0456eaa4f.rmeta
+│   │   │   ├── libloading-722a1f2500ca3706.d
+│   │   │   ├── liblock_api-3904a054dc2a2420.rlib
+│   │   │   ├── liblock_api-3904a054dc2a2420.rmeta
+│   │   │   ├── liblog-2e5cec296d29dda2.rlib
+│   │   │   ├── liblog-2e5cec296d29dda2.rmeta
+│   │   │   ├── liblorawanwiz-5864b181d412e688.rlib
+│   │   │   ├── liblorawanwiz-5864b181d412e688.rmeta
+│   │   │   ├── libm-8c30932988bcb2ac.d
+│   │   │   ├── libmatchers-220f3426ea4c6164.rlib
+│   │   │   ├── libmatchers-220f3426ea4c6164.rmeta
+│   │   │   ├── libmemchr-3c8acefee13f9d49.rlib
+│   │   │   ├── libmemchr-3c8acefee13f9d49.rmeta
+│   │   │   ├── libmemchr-ddf063ac426b804f.rlib
+│   │   │   ├── libmemchr-ddf063ac426b804f.rmeta
+│   │   │   ├── libmemmap2-df6b9f3fceeed992.rlib
+│   │   │   ├── libmemmap2-df6b9f3fceeed992.rmeta
+│   │   │   ├── libmoxcms-a8b483fae65a2c73.rlib
+│   │   │   ├── libmoxcms-a8b483fae65a2c73.rmeta
+│   │   │   ├── libnaga-a8675ddd17dc38a9.rlib
+│   │   │   ├── libnaga-a8675ddd17dc38a9.rmeta
+│   │   │   ├── libnaga_oil-30b30f224ab7ea91.rlib
+│   │   │   ├── libnaga_oil-30b30f224ab7ea91.rmeta
+│   │   │   ├── libnix-8189e4b9d2ad6d4e.rlib
+│   │   │   ├── libnix-8189e4b9d2ad6d4e.rmeta
+│   │   │   ├── libnonmax-49410bb8484359bc.rlib
+│   │   │   ├── libnonmax-49410bb8484359bc.rmeta
+│   │   │   ├── libnu_ansi_term-0b94a5dd526faa04.rlib
+│   │   │   ├── libnu_ansi_term-0b94a5dd526faa04.rmeta
+│   │   │   ├── libnum_traits-d9421849d88146a5.rlib
+│   │   │   ├── libnum_traits-d9421849d88146a5.rmeta
+│   │   │   ├── liboffset_allocator-cf92dce8dfc30d0e.rlib
+│   │   │   ├── liboffset_allocator-cf92dce8dfc30d0e.rmeta
+│   │   │   ├── libonce_cell-152b7ea490fabd8a.rlib
+│   │   │   ├── libonce_cell-152b7ea490fabd8a.rmeta
+│   │   │   ├── libordered_float-bff5aa947c993f5a.rlib
+│   │   │   ├── libordered_float-bff5aa947c993f5a.rmeta
+│   │   │   ├── libowned_ttf_parser-6dede3364c33d416.rlib
+│   │   │   ├── libowned_ttf_parser-6dede3364c33d416.rmeta
+│   │   │   ├── libparking-04cd3b53c906e959.rlib
+│   │   │   ├── libparking-04cd3b53c906e959.rmeta
+│   │   │   ├── libparking_lot-a841e14fcc1b12e4.rlib
+│   │   │   ├── libparking_lot-a841e14fcc1b12e4.rmeta
+│   │   │   ├── libparking_lot_core-19d75ee1f1f04b45.rlib
+│   │   │   ├── libparking_lot_core-19d75ee1f1f04b45.rmeta
+│   │   │   ├── libpercent_encoding-e86e43a20dd2a52b.rlib
+│   │   │   ├── libpercent_encoding-e86e43a20dd2a52b.rmeta
+│   │   │   ├── libpin_project_lite-64c2ddb5809e515a.rlib
+│   │   │   ├── libpin_project_lite-64c2ddb5809e515a.rmeta
+│   │   │   ├── libpiper-53d8e546d70cf62b.rlib
+│   │   │   ├── libpiper-53d8e546d70cf62b.rmeta
+│   │   │   ├── libpkg_config-67fbbc859e34b4d4.rlib
+│   │   │   ├── libpkg_config-67fbbc859e34b4d4.rmeta
+│   │   │   ├── libpolling-874181c56102c8d7.rlib
+│   │   │   ├── libpolling-874181c56102c8d7.rmeta
+│   │   │   ├── libproc_macro2-61a7c488741f8b20.rlib
+│   │   │   ├── libproc_macro2-61a7c488741f8b20.rmeta
+│   │   │   ├── libprofiling-0e19a853d62d7d90.rlib
+│   │   │   ├── libprofiling-0e19a853d62d7d90.rmeta
+│   │   │   ├── libpxfm-7a6705e96411d569.rlib
+│   │   │   ├── libpxfm-7a6705e96411d569.rmeta
+│   │   │   ├── libquick_xml-83c6726edb265fb7.rlib
+│   │   │   ├── libquick_xml-83c6726edb265fb7.rmeta
+│   │   │   ├── libquote-553e3396dfa55b1a.rlib
+│   │   │   ├── libquote-553e3396dfa55b1a.rmeta
+│   │   │   ├── libradsort-5634c2bd1fb3198e.rlib
+│   │   │   ├── libradsort-5634c2bd1fb3198e.rmeta
+│   │   │   ├── librand-05a598a71246e015.rlib
+│   │   │   ├── librand-05a598a71246e015.rmeta
+│   │   │   ├── librand_core-28836709f4a872b3.rlib
+│   │   │   ├── librand_core-28836709f4a872b3.rmeta
+│   │   │   ├── librand_distr-5a37343dd7506230.rlib
+│   │   │   ├── librand_distr-5a37343dd7506230.rmeta
+│   │   │   ├── librangemap-9561d1650407e248.rlib
+│   │   │   ├── librangemap-9561d1650407e248.rmeta
+│   │   │   ├── libraw_window_handle-ad62a4f1757343f7.rlib
+│   │   │   ├── libraw_window_handle-ad62a4f1757343f7.rmeta
+│   │   │   ├── libread_fonts-de9feb9e6d3c7527.rlib
+│   │   │   ├── libread_fonts-de9feb9e6d3c7527.rmeta
+│   │   │   ├── libread_fonts-e5c68d0d6640fe55.rlib
+│   │   │   ├── libread_fonts-e5c68d0d6640fe55.rmeta
+│   │   │   ├── librectangle_pack-83e398f78d7f52fb.rlib
+│   │   │   ├── librectangle_pack-83e398f78d7f52fb.rmeta
+│   │   │   ├── libregex_automata-65f7eb23dbe283a6.rlib
+│   │   │   ├── libregex_automata-65f7eb23dbe283a6.rmeta
+│   │   │   ├── libregex-f8991d011f969fd6.rlib
+│   │   │   ├── libregex-f8991d011f969fd6.rmeta
+│   │   │   ├── libregex_syntax-18c8035b5fcdad5a.rlib
+│   │   │   ├── libregex_syntax-18c8035b5fcdad5a.rmeta
+│   │   │   ├── librenderdoc_sys-6f3f9749f7dbcc1f.rlib
+│   │   │   ├── librenderdoc_sys-6f3f9749f7dbcc1f.rmeta
+│   │   │   ├── libron-f658604e697da8ac.rlib
+│   │   │   ├── libron-f658604e697da8ac.rmeta
+│   │   │   ├── libroxmltree-ed87ee1d993b1987.rlib
+│   │   │   ├── libroxmltree-ed87ee1d993b1987.rmeta
+│   │   │   ├── librustc_hash-4813381505e16894.rlib
+│   │   │   ├── librustc_hash-4813381505e16894.rmeta
+│   │   │   ├── librustix-0098e12c8ea0f73a.rlib
+│   │   │   ├── librustix-0098e12c8ea0f73a.rmeta
+│   │   │   ├── librustix-dea4a2b8c66ff134.rlib
+│   │   │   ├── librustix-dea4a2b8c66ff134.rmeta
+│   │   │   ├── libscoped_tls-997e3ffd95cf237a.rlib
+│   │   │   ├── libscoped_tls-997e3ffd95cf237a.rmeta
+│   │   │   ├── libscopeguard-c61147f9ee1a1a9c.rlib
+│   │   │   ├── libscopeguard-c61147f9ee1a1a9c.rmeta
+│   │   │   ├── libsctk_adwaita-7857443a36fef816.rlib
+│   │   │   ├── libsctk_adwaita-7857443a36fef816.rmeta
+│   │   │   ├── libself_cell-fbd41547c76dffb0.rlib
+│   │   │   ├── libself_cell-fbd41547c76dffb0.rmeta
+│   │   │   ├── libserde-42f88ed2ae20b211.rlib
+│   │   │   ├── libserde-42f88ed2ae20b211.rmeta
+│   │   │   ├── libserde_core-f7ca03542e4ff37c.rlib
+│   │   │   ├── libserde_core-f7ca03542e4ff37c.rmeta
+│   │   │   ├── libserde_derive-78739f489c0fe152.so
+│   │   │   ├── libsharded_slab-5333964857828164.rlib
+│   │   │   ├── libsharded_slab-5333964857828164.rmeta
+│   │   │   ├── libshlex-fb7a799fd88cbcab.rlib
+│   │   │   ├── libshlex-fb7a799fd88cbcab.rmeta
+│   │   │   ├── libskrifa-8d2a99637b2f76d9.rlib
+│   │   │   ├── libskrifa-8d2a99637b2f76d9.rmeta
+│   │   │   ├── libskrifa-9ef70b853762e7b6.rlib
+│   │   │   ├── libskrifa-9ef70b853762e7b6.rmeta
+│   │   │   ├── libslab-0cca3c4286e6133b.rlib
+│   │   │   ├── libslab-0cca3c4286e6133b.rmeta
+│   │   │   ├── libslotmap-057319f4edf90f16.rlib
+│   │   │   ├── libslotmap-057319f4edf90f16.rmeta
+│   │   │   ├── libsmallvec-3754ca7bc69366c8.rlib
+│   │   │   ├── libsmallvec-3754ca7bc69366c8.rmeta
+│   │   │   ├── libsmithay_client_toolkit-c57559644cfdca96.rlib
+│   │   │   ├── libsmithay_client_toolkit-c57559644cfdca96.rmeta
+│   │   │   ├── libsmol_str-4cf79d9f008a6618.rlib
+│   │   │   ├── libsmol_str-4cf79d9f008a6618.rmeta
+│   │   │   ├── libspin-616610be1f9b4edf.rlib
+│   │   │   ├── libspin-616610be1f9b4edf.rmeta
+│   │   │   ├── libspirv-f0f4dab34970848a.rlib
+│   │   │   ├── libspirv-f0f4dab34970848a.rmeta
+│   │   │   ├── libstackfuture-6351c7e7ffdf92e9.rlib
+│   │   │   ├── libstackfuture-6351c7e7ffdf92e9.rmeta
+│   │   │   ├── libstatic_assertions-ce86b009b1e10474.rlib
+│   │   │   ├── libstatic_assertions-ce86b009b1e10474.rmeta
+│   │   │   ├── libstrict_num-f1eb5524f7e1b9ea.rlib
+│   │   │   ├── libstrict_num-f1eb5524f7e1b9ea.rmeta
+│   │   │   ├── libsubtle-c7d8351c8ba21495.rlib
+│   │   │   ├── libsubtle-c7d8351c8ba21495.rmeta
+│   │   │   ├── libsvg_fmt-0f8b354724b6e4ca.rlib
+│   │   │   ├── libsvg_fmt-0f8b354724b6e4ca.rmeta
+│   │   │   ├── libswash-b441bb10257f631d.rlib
+│   │   │   ├── libswash-b441bb10257f631d.rmeta
+│   │   │   ├── libsyn-7c59dd4621a5e68b.rlib
+│   │   │   ├── libsyn-7c59dd4621a5e68b.rmeta
+│   │   │   ├── libsys_locale-5291a0d00415c966.rlib
+│   │   │   ├── libsys_locale-5291a0d00415c966.rmeta
+│   │   │   ├── libtaffy-541af84fa0ee7425.rlib
+│   │   │   ├── libtaffy-541af84fa0ee7425.rmeta
+│   │   │   ├── libtermcolor-e11174fa210708db.rlib
+│   │   │   ├── libtermcolor-e11174fa210708db.rmeta
+│   │   │   ├── libthiserror-0fbb3a684082d0d2.rlib
+│   │   │   ├── libthiserror-0fbb3a684082d0d2.rmeta
+│   │   │   ├── libthiserror-f343c2a01759715d.rlib
+│   │   │   ├── libthiserror-f343c2a01759715d.rmeta
+│   │   │   ├── libthiserror_impl-1efb5329abe35a54.so
+│   │   │   ├── libthiserror_impl-988784f82bc44afa.so
+│   │   │   ├── libthread_local-c7940bbe295881ec.rlib
+│   │   │   ├── libthread_local-c7940bbe295881ec.rmeta
+│   │   │   ├── libtiny_skia-6f6fe17078c9e044.rlib
+│   │   │   ├── libtiny_skia-6f6fe17078c9e044.rmeta
+│   │   │   ├── libtiny_skia_path-d5b651fc8ecf4d67.rlib
+│   │   │   ├── libtiny_skia_path-d5b651fc8ecf4d67.rmeta
+│   │   │   ├── libtinyvec-70b2489405466d9f.rlib
+│   │   │   ├── libtinyvec-70b2489405466d9f.rmeta
+│   │   │   ├── libtinyvec_macros-5855e508f5fbebba.rlib
+│   │   │   ├── libtinyvec_macros-5855e508f5fbebba.rmeta
+│   │   │   ├── libtoml_datetime-41a702c635baccc3.rlib
+│   │   │   ├── libtoml_datetime-41a702c635baccc3.rmeta
+│   │   │   ├── libtoml_edit-b4e478fadc0f0040.rlib
+│   │   │   ├── libtoml_edit-b4e478fadc0f0040.rmeta
+│   │   │   ├── libtoml_parser-3e727859ca30d9e4.rlib
+│   │   │   ├── libtoml_parser-3e727859ca30d9e4.rmeta
+│   │   │   ├── libtracing-52b936b383b016c4.rlib
+│   │   │   ├── libtracing-52b936b383b016c4.rmeta
+│   │   │   ├── libtracing_attributes-63f2c8800fe72f8a.so
+│   │   │   ├── libtracing_core-ccaf783a8b7bb00c.rlib
+│   │   │   ├── libtracing_core-ccaf783a8b7bb00c.rmeta
+│   │   │   ├── libtracing_log-2cd79b54ee657701.rlib
+│   │   │   ├── libtracing_log-2cd79b54ee657701.rmeta
+│   │   │   ├── libtracing_subscriber-91cbe21a1ba4fb1e.rlib
+│   │   │   ├── libtracing_subscriber-91cbe21a1ba4fb1e.rmeta
+│   │   │   ├── libttf_parser-ceb77066caa1c5db.rlib
+│   │   │   ├── libttf_parser-ceb77066caa1c5db.rmeta
+│   │   │   ├── libtypeid-311e2371e2814711.rlib
+│   │   │   ├── libtypeid-311e2371e2814711.rmeta
+│   │   │   ├── libtypenum-ffaaddf66d5985c5.rlib
+│   │   │   ├── libtypenum-ffaaddf66d5985c5.rmeta
+│   │   │   ├── libtypewit-0b620470a8402a6f.rlib
+│   │   │   ├── libtypewit-0b620470a8402a6f.rmeta
+│   │   │   ├── libunicode_bidi-2a1bc785f28ea036.rlib
+│   │   │   ├── libunicode_bidi-2a1bc785f28ea036.rmeta
+│   │   │   ├── libunicode_ident-6bb02ab8d6f00e91.rlib
+│   │   │   ├── libunicode_ident-6bb02ab8d6f00e91.rmeta
+│   │   │   ├── libunicode_ident-f9b8b263e5c5999f.rlib
+│   │   │   ├── libunicode_ident-f9b8b263e5c5999f.rmeta
+│   │   │   ├── libunicode_linebreak-463b23f2034db9a9.rlib
+│   │   │   ├── libunicode_linebreak-463b23f2034db9a9.rmeta
+│   │   │   ├── libunicode_script-d16526e7a28fca58.rlib
+│   │   │   ├── libunicode_script-d16526e7a28fca58.rmeta
+│   │   │   ├── libunicode_segmentation-77bcc0a74c6380d5.rlib
+│   │   │   ├── libunicode_segmentation-77bcc0a74c6380d5.rmeta
+│   │   │   ├── libunicode_segmentation-d38f2cbd9348e423.rlib
+│   │   │   ├── libunicode_segmentation-d38f2cbd9348e423.rmeta
+│   │   │   ├── libunicode_width-362fb5d36595c0e9.rlib
+│   │   │   ├── libunicode_width-362fb5d36595c0e9.rmeta
+│   │   │   ├── libunicode_xid-8cdd117048821de0.rlib
+│   │   │   ├── libunicode_xid-8cdd117048821de0.rmeta
+│   │   │   ├── libuuid-b4fdaf65762f3d68.rlib
+│   │   │   ├── libuuid-b4fdaf65762f3d68.rmeta
+│   │   │   ├── libvariadics_please-0c16d0a2c308fc16.so
+│   │   │   ├── libversion_check-f9b40c71ab491de1.rlib
+│   │   │   ├── libversion_check-f9b40c71ab491de1.rmeta
+│   │   │   ├── libwayland_backend-dfd5fa4b22a2414f.rlib
+│   │   │   ├── libwayland_backend-dfd5fa4b22a2414f.rmeta
+│   │   │   ├── libwayland_client-e2bd39829e82fd28.rlib
+│   │   │   ├── libwayland_client-e2bd39829e82fd28.rmeta
+│   │   │   ├── libwayland_csd_frame-dcb9ac0c94ae869c.rlib
+│   │   │   ├── libwayland_csd_frame-dcb9ac0c94ae869c.rmeta
+│   │   │   ├── libwayland_cursor-3f0031045d3130fc.rlib
+│   │   │   ├── libwayland_cursor-3f0031045d3130fc.rmeta
+│   │   │   ├── libwayland_protocols-62903d7d792c388a.rlib
+│   │   │   ├── libwayland_protocols-62903d7d792c388a.rmeta
+│   │   │   ├── libwayland_protocols_plasma-f2697ccb68718f02.rlib
+│   │   │   ├── libwayland_protocols_plasma-f2697ccb68718f02.rmeta
+│   │   │   ├── libwayland_protocols_wlr-1e5e0900d3ddfe43.rlib
+│   │   │   ├── libwayland_protocols_wlr-1e5e0900d3ddfe43.rmeta
+│   │   │   ├── libwayland_scanner-b520fab3aee7ec0f.so
+│   │   │   ├── libwayland_sys-58c3efe8777bd78c.rlib
+│   │   │   ├── libwayland_sys-58c3efe8777bd78c.rmeta
+│   │   │   ├── libwgpu-502c79a08ae20bb2.rlib
+│   │   │   ├── libwgpu-502c79a08ae20bb2.rmeta
+│   │   │   ├── libwgpu_core-98ca187cf640fad0.rlib
+│   │   │   ├── libwgpu_core-98ca187cf640fad0.rmeta
+│   │   │   ├── libwgpu_core_deps_windows_linux_android-78f9a95257215d7d.rlib
+│   │   │   ├── libwgpu_core_deps_windows_linux_android-78f9a95257215d7d.rmeta
+│   │   │   ├── libwgpu_hal-a4adf452e5331182.rlib
+│   │   │   ├── libwgpu_hal-a4adf452e5331182.rmeta
+│   │   │   ├── libwgpu_types-83e90e0e055bf761.rlib
+│   │   │   ├── libwgpu_types-83e90e0e055bf761.rmeta
+│   │   │   ├── libwinit-57e5242cb3d0ad05.rlib
+│   │   │   ├── libwinit-57e5242cb3d0ad05.rmeta
+│   │   │   ├── libwinnow-2ea641b7ebda9fab.rlib
+│   │   │   ├── libwinnow-2ea641b7ebda9fab.rmeta
+│   │   │   ├── libwinnow-c0a2d4c78ed76681.rlib
+│   │   │   ├── libwinnow-c0a2d4c78ed76681.rmeta
+│   │   │   ├── libx11_dl-0148087ee1184b0d.rlib
+│   │   │   ├── libx11_dl-0148087ee1184b0d.rmeta
+│   │   │   ├── libx11rb-8137f477119eea4a.rlib
+│   │   │   ├── libx11rb-8137f477119eea4a.rmeta
+│   │   │   ├── libx11rb_protocol-22358db73fb22242.rlib
+│   │   │   ├── libx11rb_protocol-22358db73fb22242.rmeta
+│   │   │   ├── libxcursor-ad40e789c88dd8b8.rlib
+│   │   │   ├── libxcursor-ad40e789c88dd8b8.rmeta
+│   │   │   ├── libxkbcommon_dl-74293fa4e13fcc9a.rlib
+│   │   │   ├── libxkbcommon_dl-74293fa4e13fcc9a.rmeta
+│   │   │   ├── libxkeysym-94fecc6988a06f35.rlib
+│   │   │   ├── libxkeysym-94fecc6988a06f35.rmeta
+│   │   │   ├── libyazi-c5df0bbfa942a5b0.rlib
+│   │   │   ├── libyazi-c5df0bbfa942a5b0.rmeta
+│   │   │   ├── libzeno-46be1bb6d8b028cf.rlib
+│   │   │   ├── libzeno-46be1bb6d8b028cf.rmeta
+│   │   │   ├── libzerocopy-51d80d5fe28cdffb.rlib
+│   │   │   ├── libzerocopy-51d80d5fe28cdffb.rmeta
+│   │   │   ├── libzerocopy_derive-3e997774e21a92c7.so
+│   │   │   ├── linebender_resource_handle-adf08d863c968ad4.d
+│   │   │   ├── linux_raw_sys-656120193dda0b9b.d
+│   │   │   ├── linux_raw_sys-85510ca2edc73eb6.d
+│   │   │   ├── litrs-cb19a7f0456eaa4f.d
+│   │   │   ├── lock_api-3904a054dc2a2420.d
+│   │   │   ├── log-2e5cec296d29dda2.d
+│   │   │   ├── lorawanwiz-5864b181d412e688.d
+│   │   │   ├── lorawanwiz-6774258b21b40534
+│   │   │   ├── lorawanwiz-6774258b21b40534.d
+│   │   │   ├── matchers-220f3426ea4c6164.d
+│   │   │   ├── memchr-3c8acefee13f9d49.d
+│   │   │   ├── memchr-ddf063ac426b804f.d
+│   │   │   ├── memmap2-df6b9f3fceeed992.d
+│   │   │   ├── moxcms-a8b483fae65a2c73.d
+│   │   │   ├── naga-a8675ddd17dc38a9.d
+│   │   │   ├── naga_oil-30b30f224ab7ea91.d
+│   │   │   ├── nix-8189e4b9d2ad6d4e.d
+│   │   │   ├── nonmax-49410bb8484359bc.d
+│   │   │   ├── nu_ansi_term-0b94a5dd526faa04.d
+│   │   │   ├── num_traits-d9421849d88146a5.d
+│   │   │   ├── offset_allocator-cf92dce8dfc30d0e.d
+│   │   │   ├── once_cell-152b7ea490fabd8a.d
+│   │   │   ├── ordered_float-bff5aa947c993f5a.d
+│   │   │   ├── owned_ttf_parser-6dede3364c33d416.d
+│   │   │   ├── parking-04cd3b53c906e959.d
+│   │   │   ├── parking_lot-a841e14fcc1b12e4.d
+│   │   │   ├── parking_lot_core-19d75ee1f1f04b45.d
+│   │   │   ├── percent_encoding-e86e43a20dd2a52b.d
+│   │   │   ├── pin_project_lite-64c2ddb5809e515a.d
+│   │   │   ├── piper-53d8e546d70cf62b.d
+│   │   │   ├── pkg_config-67fbbc859e34b4d4.d
+│   │   │   ├── polling-874181c56102c8d7.d
+│   │   │   ├── proc_macro2-61a7c488741f8b20.d
+│   │   │   ├── profiling-0e19a853d62d7d90.d
+│   │   │   ├── pxfm-7a6705e96411d569.d
+│   │   │   ├── quick_xml-83c6726edb265fb7.d
+│   │   │   ├── quote-553e3396dfa55b1a.d
+│   │   │   ├── radsort-5634c2bd1fb3198e.d
+│   │   │   ├── rand-05a598a71246e015.d
+│   │   │   ├── rand_core-28836709f4a872b3.d
+│   │   │   ├── rand_distr-5a37343dd7506230.d
+│   │   │   ├── rangemap-9561d1650407e248.d
+│   │   │   ├── raw_window_handle-ad62a4f1757343f7.d
+│   │   │   ├── read_fonts-de9feb9e6d3c7527.d
+│   │   │   ├── read_fonts-e5c68d0d6640fe55.d
+│   │   │   ├── rectangle_pack-83e398f78d7f52fb.d
+│   │   │   ├── regex_automata-65f7eb23dbe283a6.d
+│   │   │   ├── regex-f8991d011f969fd6.d
+│   │   │   ├── regex_syntax-18c8035b5fcdad5a.d
+│   │   │   ├── renderdoc_sys-6f3f9749f7dbcc1f.d
+│   │   │   ├── ron-f658604e697da8ac.d
+│   │   │   ├── roxmltree-ed87ee1d993b1987.d
+│   │   │   ├── rustc_hash-4813381505e16894.d
+│   │   │   ├── rustix-0098e12c8ea0f73a.d
+│   │   │   ├── rustix-dea4a2b8c66ff134.d
+│   │   │   ├── scoped_tls-997e3ffd95cf237a.d
+│   │   │   ├── scopeguard-c61147f9ee1a1a9c.d
+│   │   │   ├── sctk_adwaita-7857443a36fef816.d
+│   │   │   ├── self_cell-fbd41547c76dffb0.d
+│   │   │   ├── serde-42f88ed2ae20b211.d
+│   │   │   ├── serde_core-f7ca03542e4ff37c.d
+│   │   │   ├── serde_derive-78739f489c0fe152.d
+│   │   │   ├── sharded_slab-5333964857828164.d
+│   │   │   ├── shlex-fb7a799fd88cbcab.d
+│   │   │   ├── skrifa-8d2a99637b2f76d9.d
+│   │   │   ├── skrifa-9ef70b853762e7b6.d
+│   │   │   ├── slab-0cca3c4286e6133b.d
+│   │   │   ├── slotmap-057319f4edf90f16.d
+│   │   │   ├── smallvec-3754ca7bc69366c8.d
+│   │   │   ├── smithay_client_toolkit-c57559644cfdca96.d
+│   │   │   ├── smol_str-4cf79d9f008a6618.d
+│   │   │   ├── spin-616610be1f9b4edf.d
+│   │   │   ├── spirv-f0f4dab34970848a.d
+│   │   │   ├── stackfuture-6351c7e7ffdf92e9.d
+│   │   │   ├── static_assertions-ce86b009b1e10474.d
+│   │   │   ├── strict_num-f1eb5524f7e1b9ea.d
+│   │   │   ├── subtle-c7d8351c8ba21495.d
+│   │   │   ├── svg_fmt-0f8b354724b6e4ca.d
+│   │   │   ├── swash-b441bb10257f631d.d
+│   │   │   ├── syn-7c59dd4621a5e68b.d
+│   │   │   ├── sys_locale-5291a0d00415c966.d
+│   │   │   ├── taffy-541af84fa0ee7425.d
+│   │   │   ├── termcolor-e11174fa210708db.d
+│   │   │   ├── thiserror-0fbb3a684082d0d2.d
+│   │   │   ├── thiserror-f343c2a01759715d.d
+│   │   │   ├── thiserror_impl-1efb5329abe35a54.d
+│   │   │   ├── thiserror_impl-988784f82bc44afa.d
+│   │   │   ├── thread_local-c7940bbe295881ec.d
+│   │   │   ├── tiny_skia-6f6fe17078c9e044.d
+│   │   │   ├── tiny_skia_path-d5b651fc8ecf4d67.d
+│   │   │   ├── tinyvec-70b2489405466d9f.d
+│   │   │   ├── tinyvec_macros-5855e508f5fbebba.d
+│   │   │   ├── toml_datetime-41a702c635baccc3.d
+│   │   │   ├── toml_edit-b4e478fadc0f0040.d
+│   │   │   ├── toml_parser-3e727859ca30d9e4.d
+│   │   │   ├── tracing-52b936b383b016c4.d
+│   │   │   ├── tracing_attributes-63f2c8800fe72f8a.d
+│   │   │   ├── tracing_core-ccaf783a8b7bb00c.d
+│   │   │   ├── tracing_log-2cd79b54ee657701.d
+│   │   │   ├── tracing_subscriber-91cbe21a1ba4fb1e.d
+│   │   │   ├── ttf_parser-ceb77066caa1c5db.d
+│   │   │   ├── typeid-311e2371e2814711.d
+│   │   │   ├── typenum-ffaaddf66d5985c5.d
+│   │   │   ├── typewit-0b620470a8402a6f.d
+│   │   │   ├── unicode_bidi-2a1bc785f28ea036.d
+│   │   │   ├── unicode_ident-6bb02ab8d6f00e91.d
+│   │   │   ├── unicode_ident-f9b8b263e5c5999f.d
+│   │   │   ├── unicode_linebreak-463b23f2034db9a9.d
+│   │   │   ├── unicode_script-d16526e7a28fca58.d
+│   │   │   ├── unicode_segmentation-77bcc0a74c6380d5.d
+│   │   │   ├── unicode_segmentation-d38f2cbd9348e423.d
+│   │   │   ├── unicode_width-362fb5d36595c0e9.d
+│   │   │   ├── unicode_xid-8cdd117048821de0.d
+│   │   │   ├── uuid-b4fdaf65762f3d68.d
+│   │   │   ├── variadics_please-0c16d0a2c308fc16.d
+│   │   │   ├── version_check-f9b40c71ab491de1.d
+│   │   │   ├── wayland_backend-dfd5fa4b22a2414f.d
+│   │   │   ├── wayland_client-e2bd39829e82fd28.d
+│   │   │   ├── wayland_csd_frame-dcb9ac0c94ae869c.d
+│   │   │   ├── wayland_cursor-3f0031045d3130fc.d
+│   │   │   ├── wayland_protocols-62903d7d792c388a.d
+│   │   │   ├── wayland_protocols_plasma-f2697ccb68718f02.d
+│   │   │   ├── wayland_protocols_wlr-1e5e0900d3ddfe43.d
+│   │   │   ├── wayland_scanner-b520fab3aee7ec0f.d
+│   │   │   ├── wayland_sys-58c3efe8777bd78c.d
+│   │   │   ├── wgpu-502c79a08ae20bb2.d
+│   │   │   ├── wgpu_core-98ca187cf640fad0.d
+│   │   │   ├── wgpu_core_deps_windows_linux_android-78f9a95257215d7d.d
+│   │   │   ├── wgpu_hal-a4adf452e5331182.d
+│   │   │   ├── wgpu_types-83e90e0e055bf761.d
+│   │   │   ├── winit-57e5242cb3d0ad05.d
+│   │   │   ├── winnow-2ea641b7ebda9fab.d
+│   │   │   ├── winnow-c0a2d4c78ed76681.d
+│   │   │   ├── x11_dl-0148087ee1184b0d.d
+│   │   │   ├── x11rb-8137f477119eea4a.d
+│   │   │   ├── x11rb_protocol-22358db73fb22242.d
+│   │   │   ├── xcursor-ad40e789c88dd8b8.d
+│   │   │   ├── xkbcommon_dl-74293fa4e13fcc9a.d
+│   │   │   ├── xkeysym-94fecc6988a06f35.d
+│   │   │   ├── yazi-c5df0bbfa942a5b0.d
+│   │   │   ├── zeno-46be1bb6d8b028cf.d
+│   │   │   ├── zerocopy-51d80d5fe28cdffb.d
+│   │   │   └── zerocopy_derive-3e997774e21a92c7.d
+│   │   ├── examples
+│   │   ├── incremental
+│   │   ├── liblorawanwiz.d
+│   │   ├── liblorawanwiz.rlib
+│   │   ├── lorawanwiz
+│   │   └── lorawanwiz.d
+│   ├── wasm32-unknown-unknown
+│   │   ├── CACHEDIR.TAG
+│   │   └── wasm-release
+│   │       ├── build
+│   │       │   ├── blake3-be82f459f91ab540
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── crossbeam-utils-223e6ee72a665c2d
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── erased-serde-eb1147a6bd7cb1b2
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── generic-array-2ff274666954c60a
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── libm-4a87ba1d5f1e6833
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── naga-e6011fc3ce9b216f
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── num-traits-d12758ebace97a9a
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── parking_lot_core-ecd16236b0bd8f1a
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── serde-1a38de4a89a3c7da
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   │   └── private.rs
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── serde_core-91358ba1ef2dda53
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   │   └── private.rs
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── slotmap-4970a7134560753b
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── thiserror-eb412ca701ae8bea
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   │   └── private.rs
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── typeid-0522ea369e8f6ad6
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── wasm-bindgen-674adae143c78870
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── wasm-bindgen-shared-adc58f64a3f33403
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── wgpu-0ec83d1640e6136b
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── wgpu-core-c73bc977661c87de
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── wgpu-hal-bd3b4c6520202f03
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   ├── winit-66e9122efb5f3534
+│   │       │   │   ├── invoked.timestamp
+│   │       │   │   ├── out
+│   │       │   │   ├── output
+│   │       │   │   ├── root-output
+│   │       │   │   └── stderr
+│   │       │   └── zerocopy-08d4a2f4c9f4a130
+│   │       │       ├── invoked.timestamp
+│   │       │       ├── out
+│   │       │       ├── output
+│   │       │       ├── root-output
+│   │       │       └── stderr
+│   │       ├── deps
+│   │       │   ├── accesskit-88a14b93c5485317.d
+│   │       │   ├── accesskit_winit-ec528a237e112786.d
+│   │       │   ├── aes-fb5689f6d2fd8fa1.d
+│   │       │   ├── aho_corasick-37bdbacdcfad65e8.d
+│   │       │   ├── approx-b37249f3c25544e0.d
+│   │       │   ├── arrayref-806939a4d4461921.d
+│   │       │   ├── arrayvec-ef2910605f1917b6.d
+│   │       │   ├── async_broadcast-34c5fd7ceab7ef34.d
+│   │       │   ├── async_channel-2ff5fbd3fe1669c6.d
+│   │       │   ├── async_executor-52f152101a73f12a.d
+│   │       │   ├── async_fs-9caf75082f7c9a9b.d
+│   │       │   ├── async_lock-d9ad0d29731eacc8.d
+│   │       │   ├── async_task-5186a54aa75c7eb0.d
+│   │       │   ├── atomicow-4c75d73f932781d6.d
+│   │       │   ├── atomic_waker-a7d192e7b2d00682.d
+│   │       │   ├── bevy_a11y-aacde461f49b6bc0.d
+│   │       │   ├── bevy_app-ddb6586dc71c3ae8.d
+│   │       │   ├── bevy_asset-6588f61992490bba.d
+│   │       │   ├── bevy_camera-21a0156544887465.d
+│   │       │   ├── bevy_color-a29f02611450ca88.d
+│   │       │   ├── bevy_diagnostic-7051ee68af068c6c.d
+│   │       │   ├── bevy_ecs-e63e9cfc0e8b9056.d
+│   │       │   ├── bevy_image-ea2299ca29b4e775.d
+│   │       │   ├── bevy_input-a99ff43e516a0892.d
+│   │       │   ├── bevy_input_focus-86d2d8a137d23d9d.d
+│   │       │   ├── bevy_log-efc19fd1ff1af22d.d
+│   │       │   ├── bevy_math-71e6e31dc9ae8c07.d
+│   │       │   ├── bevy_mesh-8042cc7f71bfe34c.d
+│   │       │   ├── bevy_platform-d3f7f3e98ae5614a.d
+│   │       │   ├── bevy_ptr-0cbceb5d0088e4b6.d
+│   │       │   ├── bevy_reflect-81ecba0176efac7c.d
+│   │       │   ├── bevy_render-ff1d90e4f9b6d4ed.d
+│   │       │   ├── bevy_shader-5c84e028fd092964.d
+│   │       │   ├── bevy_sprite-79bc1aee20f5b689.d
+│   │       │   ├── bevy_tasks-00089802fbba8f16.d
+│   │       │   ├── bevy_text-52de3b35001cfba0.d
+│   │       │   ├── bevy_time-3fee73d4d899d455.d
+│   │       │   ├── bevy_transform-439e80c5689ce773.d
+│   │       │   ├── bevy_ui-07e81545e424859d.d
+│   │       │   ├── bevy_utils-90fb17172e014029.d
+│   │       │   ├── bevy_window-233363b5497a1599.d
+│   │       │   ├── bevy_winit-83097e45a1094905.d
+│   │       │   ├── bitflags-e936c8e853722b95.d
+│   │       │   ├── bit_set-f0ccdbdf0169fd44.d
+│   │       │   ├── bit_vec-308272b520206753.d
+│   │       │   ├── blake3-2ed1e5838b235670.d
+│   │       │   ├── block_buffer-387797809db170b1.d
+│   │       │   ├── blocking-be923c030b7cf711.d
+│   │       │   ├── bumpalo-bd04cf208fcfeb35.d
+│   │       │   ├── bytemuck-8ad5020e514d5f67.d
+│   │       │   ├── byteorder_lite-2362e05e1139b931.d
+│   │       │   ├── cfg_if-3a5ff2fcdd2b90dc.d
+│   │       │   ├── cipher-de337831b6903bdc.d
+│   │       │   ├── cmac-e37a578e22f55ec8.d
+│   │       │   ├── codespan_reporting-1db3d2a3be913d0f.d
+│   │       │   ├── concurrent_queue-0e575ac7df241308.d
+│   │       │   ├── console_error_panic_hook-591094f9bf37a372.d
+│   │       │   ├── constant_time_eq-d39b435f0976f422.d
+│   │       │   ├── const_fnv1a_hash-20fa907b233d41f9.d
+│   │       │   ├── constgebra-58f106c25beda1fb.d
+│   │       │   ├── const_panic-6f495b541c3161bd.d
+│   │       │   ├── const_soft_float-6a4aadb4cbac936c.d
+│   │       │   ├── core_maths-a1a78617c8974ce0.d
+│   │       │   ├── cosmic_text-e9f0686a6210fca1.d
+│   │       │   ├── crossbeam_channel-570af84af5df8d26.d
+│   │       │   ├── crossbeam_queue-8c15fd88732c17b2.d
+│   │       │   ├── crossbeam_utils-a9fbe25921dbdc58.d
+│   │       │   ├── crypto_common-2a4f6ca31bb463ef.d
+│   │       │   ├── cursor_icon-b7e6181b32a485a5.d
+│   │       │   ├── data_encoding-0d2927afd3aac461.d
+│   │       │   ├── dbl-7667f38f7beb008a.d
+│   │       │   ├── derive_more-344680ac9513b95b.d
+│   │       │   ├── digest-abcea88360d05510.d
+│   │       │   ├── disqualified-df2ef13c3cca52e4.d
+│   │       │   ├── downcast_rs-ad451eed9b951072.d
+│   │       │   ├── dpi-aa90cdf89e7de660.d
+│   │       │   ├── either-ef54b4574e4f31aa.d
+│   │       │   ├── encase-6a94cd63162216d9.d
+│   │       │   ├── equivalent-a7a54eb90692f2ce.d
+│   │       │   ├── erased_serde-4ca6b7728b17e32a.d
+│   │       │   ├── euclid-9e585f20caaf12d9.d
+│   │       │   ├── event_listener-51820984d0afff62.d
+│   │       │   ├── event_listener_strategy-9a0b3ac26b78e6a1.d
+│   │       │   ├── fastrand-845dc527a15b96ab.d
+│   │       │   ├── fixedbitset-3585a47de2d5b085.d
+│   │       │   ├── foldhash-cc732fa4a7dd2e9f.d
+│   │       │   ├── fontdb-af48355978ca402d.d
+│   │       │   ├── font_types-048b4dc060c3d632.d
+│   │       │   ├── font_types-4db8496b84e54908.d
+│   │       │   ├── futures_channel-07454c587ebe0a64.d
+│   │       │   ├── futures_core-772c2712af900339.d
+│   │       │   ├── futures_io-4b6457316b6cf961.d
+│   │       │   ├── futures_lite-a90ec1f1077cd9d4.d
+│   │       │   ├── futures_task-21bba4b1ff0ca79c.d
+│   │       │   ├── futures_util-2c0288137703f802.d
+│   │       │   ├── generic_array-c8ed7a72d32e23c4.d
+│   │       │   ├── glam-ee4c5f80bed6ac4c.d
+│   │       │   ├── glow-cb317fc77a354181.d
+│   │       │   ├── grid-bdbca9c829697da4.d
+│   │       │   ├── guillotiere-0fecfac1a941a26b.d
+│   │       │   ├── half-448475322ccc073e.d
+│   │       │   ├── harfrust-fd531eabde0cf043.d
+│   │       │   ├── hashbrown-b402cf0975b2b32e.d
+│   │       │   ├── hashbrown-f2bec8ab18b3b6cf.d
+│   │       │   ├── hexasphere-f72ddf2c36f70c1d.d
+│   │       │   ├── hexf_parse-8d812fc85d442b1a.d
+│   │       │   ├── image-9b7b36edcef5ee04.d
+│   │       │   ├── indexmap-0f719644b0da4675.d
+│   │       │   ├── inout-b01ea960b32ff2e9.d
+│   │       │   ├── inventory-61f84a5834a5045e.d
+│   │       │   ├── itertools-3d00f2f263950a0b.d
+│   │       │   ├── js_sys-47884ca3603a9301.d
+│   │       │   ├── lazy_static-a9bc4b760deb434a.d
+│   │       │   ├── libaccesskit-88a14b93c5485317.rlib
+│   │       │   ├── libaccesskit-88a14b93c5485317.rmeta
+│   │       │   ├── libaccesskit_winit-ec528a237e112786.rlib
+│   │       │   ├── libaccesskit_winit-ec528a237e112786.rmeta
+│   │       │   ├── libaes-fb5689f6d2fd8fa1.rlib
+│   │       │   ├── libaes-fb5689f6d2fd8fa1.rmeta
+│   │       │   ├── libaho_corasick-37bdbacdcfad65e8.rlib
+│   │       │   ├── libaho_corasick-37bdbacdcfad65e8.rmeta
+│   │       │   ├── libapprox-b37249f3c25544e0.rlib
+│   │       │   ├── libapprox-b37249f3c25544e0.rmeta
+│   │       │   ├── libarrayref-806939a4d4461921.rlib
+│   │       │   ├── libarrayref-806939a4d4461921.rmeta
+│   │       │   ├── libarrayvec-ef2910605f1917b6.rlib
+│   │       │   ├── libarrayvec-ef2910605f1917b6.rmeta
+│   │       │   ├── libasync_broadcast-34c5fd7ceab7ef34.rlib
+│   │       │   ├── libasync_broadcast-34c5fd7ceab7ef34.rmeta
+│   │       │   ├── libasync_channel-2ff5fbd3fe1669c6.rlib
+│   │       │   ├── libasync_channel-2ff5fbd3fe1669c6.rmeta
+│   │       │   ├── libasync_executor-52f152101a73f12a.rlib
+│   │       │   ├── libasync_executor-52f152101a73f12a.rmeta
+│   │       │   ├── libasync_fs-9caf75082f7c9a9b.rlib
+│   │       │   ├── libasync_fs-9caf75082f7c9a9b.rmeta
+│   │       │   ├── libasync_lock-d9ad0d29731eacc8.rlib
+│   │       │   ├── libasync_lock-d9ad0d29731eacc8.rmeta
+│   │       │   ├── libasync_task-5186a54aa75c7eb0.rlib
+│   │       │   ├── libasync_task-5186a54aa75c7eb0.rmeta
+│   │       │   ├── libatomicow-4c75d73f932781d6.rlib
+│   │       │   ├── libatomicow-4c75d73f932781d6.rmeta
+│   │       │   ├── libatomic_waker-a7d192e7b2d00682.rlib
+│   │       │   ├── libatomic_waker-a7d192e7b2d00682.rmeta
+│   │       │   ├── libbevy_a11y-aacde461f49b6bc0.rlib
+│   │       │   ├── libbevy_a11y-aacde461f49b6bc0.rmeta
+│   │       │   ├── libbevy_app-ddb6586dc71c3ae8.rlib
+│   │       │   ├── libbevy_app-ddb6586dc71c3ae8.rmeta
+│   │       │   ├── libbevy_asset-6588f61992490bba.rlib
+│   │       │   ├── libbevy_asset-6588f61992490bba.rmeta
+│   │       │   ├── libbevy_camera-21a0156544887465.rlib
+│   │       │   ├── libbevy_camera-21a0156544887465.rmeta
+│   │       │   ├── libbevy_color-a29f02611450ca88.rlib
+│   │       │   ├── libbevy_color-a29f02611450ca88.rmeta
+│   │       │   ├── libbevy_diagnostic-7051ee68af068c6c.rlib
+│   │       │   ├── libbevy_diagnostic-7051ee68af068c6c.rmeta
+│   │       │   ├── libbevy_ecs-e63e9cfc0e8b9056.rlib
+│   │       │   ├── libbevy_ecs-e63e9cfc0e8b9056.rmeta
+│   │       │   ├── libbevy_image-ea2299ca29b4e775.rlib
+│   │       │   ├── libbevy_image-ea2299ca29b4e775.rmeta
+│   │       │   ├── libbevy_input-a99ff43e516a0892.rlib
+│   │       │   ├── libbevy_input-a99ff43e516a0892.rmeta
+│   │       │   ├── libbevy_input_focus-86d2d8a137d23d9d.rlib
+│   │       │   ├── libbevy_input_focus-86d2d8a137d23d9d.rmeta
+│   │       │   ├── libbevy_log-efc19fd1ff1af22d.rlib
+│   │       │   ├── libbevy_log-efc19fd1ff1af22d.rmeta
+│   │       │   ├── libbevy_math-71e6e31dc9ae8c07.rlib
+│   │       │   ├── libbevy_math-71e6e31dc9ae8c07.rmeta
+│   │       │   ├── libbevy_mesh-8042cc7f71bfe34c.rlib
+│   │       │   ├── libbevy_mesh-8042cc7f71bfe34c.rmeta
+│   │       │   ├── libbevy_platform-d3f7f3e98ae5614a.rlib
+│   │       │   ├── libbevy_platform-d3f7f3e98ae5614a.rmeta
+│   │       │   ├── libbevy_ptr-0cbceb5d0088e4b6.rlib
+│   │       │   ├── libbevy_ptr-0cbceb5d0088e4b6.rmeta
+│   │       │   ├── libbevy_reflect-81ecba0176efac7c.rlib
+│   │       │   ├── libbevy_reflect-81ecba0176efac7c.rmeta
+│   │       │   ├── libbevy_shader-5c84e028fd092964.rlib
+│   │       │   ├── libbevy_shader-5c84e028fd092964.rmeta
+│   │       │   ├── libbevy_sprite-79bc1aee20f5b689.rlib
+│   │       │   ├── libbevy_sprite-79bc1aee20f5b689.rmeta
+│   │       │   ├── libbevy_tasks-00089802fbba8f16.rlib
+│   │       │   ├── libbevy_tasks-00089802fbba8f16.rmeta
+│   │       │   ├── libbevy_text-52de3b35001cfba0.rlib
+│   │       │   ├── libbevy_text-52de3b35001cfba0.rmeta
+│   │       │   ├── libbevy_time-3fee73d4d899d455.rlib
+│   │       │   ├── libbevy_time-3fee73d4d899d455.rmeta
+│   │       │   ├── libbevy_transform-439e80c5689ce773.rlib
+│   │       │   ├── libbevy_transform-439e80c5689ce773.rmeta
+│   │       │   ├── libbevy_ui-07e81545e424859d.rmeta
+│   │       │   ├── libbevy_utils-90fb17172e014029.rlib
+│   │       │   ├── libbevy_utils-90fb17172e014029.rmeta
+│   │       │   ├── libbevy_window-233363b5497a1599.rlib
+│   │       │   ├── libbevy_window-233363b5497a1599.rmeta
+│   │       │   ├── libbevy_winit-83097e45a1094905.rlib
+│   │       │   ├── libbevy_winit-83097e45a1094905.rmeta
+│   │       │   ├── libbitflags-e936c8e853722b95.rlib
+│   │       │   ├── libbitflags-e936c8e853722b95.rmeta
+│   │       │   ├── libbit_set-f0ccdbdf0169fd44.rlib
+│   │       │   ├── libbit_set-f0ccdbdf0169fd44.rmeta
+│   │       │   ├── libbit_vec-308272b520206753.rlib
+│   │       │   ├── libbit_vec-308272b520206753.rmeta
+│   │       │   ├── libblake3-2ed1e5838b235670.rlib
+│   │       │   ├── libblake3-2ed1e5838b235670.rmeta
+│   │       │   ├── libblock_buffer-387797809db170b1.rlib
+│   │       │   ├── libblock_buffer-387797809db170b1.rmeta
+│   │       │   ├── libblocking-be923c030b7cf711.rlib
+│   │       │   ├── libblocking-be923c030b7cf711.rmeta
+│   │       │   ├── libbumpalo-bd04cf208fcfeb35.rlib
+│   │       │   ├── libbumpalo-bd04cf208fcfeb35.rmeta
+│   │       │   ├── libbytemuck-8ad5020e514d5f67.rlib
+│   │       │   ├── libbytemuck-8ad5020e514d5f67.rmeta
+│   │       │   ├── libbyteorder_lite-2362e05e1139b931.rlib
+│   │       │   ├── libbyteorder_lite-2362e05e1139b931.rmeta
+│   │       │   ├── libcfg_if-3a5ff2fcdd2b90dc.rlib
+│   │       │   ├── libcfg_if-3a5ff2fcdd2b90dc.rmeta
+│   │       │   ├── libcipher-de337831b6903bdc.rlib
+│   │       │   ├── libcipher-de337831b6903bdc.rmeta
+│   │       │   ├── libcmac-e37a578e22f55ec8.rlib
+│   │       │   ├── libcmac-e37a578e22f55ec8.rmeta
+│   │       │   ├── libcodespan_reporting-1db3d2a3be913d0f.rlib
+│   │       │   ├── libcodespan_reporting-1db3d2a3be913d0f.rmeta
+│   │       │   ├── libconcurrent_queue-0e575ac7df241308.rlib
+│   │       │   ├── libconcurrent_queue-0e575ac7df241308.rmeta
+│   │       │   ├── libconsole_error_panic_hook-591094f9bf37a372.rlib
+│   │       │   ├── libconsole_error_panic_hook-591094f9bf37a372.rmeta
+│   │       │   ├── libconstant_time_eq-d39b435f0976f422.rlib
+│   │       │   ├── libconstant_time_eq-d39b435f0976f422.rmeta
+│   │       │   ├── libconst_fnv1a_hash-20fa907b233d41f9.rlib
+│   │       │   ├── libconst_fnv1a_hash-20fa907b233d41f9.rmeta
+│   │       │   ├── libconstgebra-58f106c25beda1fb.rlib
+│   │       │   ├── libconstgebra-58f106c25beda1fb.rmeta
+│   │       │   ├── libconst_panic-6f495b541c3161bd.rlib
+│   │       │   ├── libconst_panic-6f495b541c3161bd.rmeta
+│   │       │   ├── libconst_soft_float-6a4aadb4cbac936c.rlib
+│   │       │   ├── libconst_soft_float-6a4aadb4cbac936c.rmeta
+│   │       │   ├── libcore_maths-a1a78617c8974ce0.rlib
+│   │       │   ├── libcore_maths-a1a78617c8974ce0.rmeta
+│   │       │   ├── libcosmic_text-e9f0686a6210fca1.rlib
+│   │       │   ├── libcosmic_text-e9f0686a6210fca1.rmeta
+│   │       │   ├── libcrossbeam_channel-570af84af5df8d26.rlib
+│   │       │   ├── libcrossbeam_channel-570af84af5df8d26.rmeta
+│   │       │   ├── libcrossbeam_queue-8c15fd88732c17b2.rlib
+│   │       │   ├── libcrossbeam_queue-8c15fd88732c17b2.rmeta
+│   │       │   ├── libcrossbeam_utils-a9fbe25921dbdc58.rlib
+│   │       │   ├── libcrossbeam_utils-a9fbe25921dbdc58.rmeta
+│   │       │   ├── libcrypto_common-2a4f6ca31bb463ef.rlib
+│   │       │   ├── libcrypto_common-2a4f6ca31bb463ef.rmeta
+│   │       │   ├── libcursor_icon-b7e6181b32a485a5.rlib
+│   │       │   ├── libcursor_icon-b7e6181b32a485a5.rmeta
+│   │       │   ├── libdata_encoding-0d2927afd3aac461.rlib
+│   │       │   ├── libdata_encoding-0d2927afd3aac461.rmeta
+│   │       │   ├── libdbl-7667f38f7beb008a.rlib
+│   │       │   ├── libdbl-7667f38f7beb008a.rmeta
+│   │       │   ├── libderive_more-344680ac9513b95b.rlib
+│   │       │   ├── libderive_more-344680ac9513b95b.rmeta
+│   │       │   ├── libdigest-abcea88360d05510.rlib
+│   │       │   ├── libdigest-abcea88360d05510.rmeta
+│   │       │   ├── libdisqualified-df2ef13c3cca52e4.rlib
+│   │       │   ├── libdisqualified-df2ef13c3cca52e4.rmeta
+│   │       │   ├── libdowncast_rs-ad451eed9b951072.rlib
+│   │       │   ├── libdowncast_rs-ad451eed9b951072.rmeta
+│   │       │   ├── libdpi-aa90cdf89e7de660.rlib
+│   │       │   ├── libdpi-aa90cdf89e7de660.rmeta
+│   │       │   ├── libeither-ef54b4574e4f31aa.rlib
+│   │       │   ├── libeither-ef54b4574e4f31aa.rmeta
+│   │       │   ├── libencase-6a94cd63162216d9.rlib
+│   │       │   ├── libencase-6a94cd63162216d9.rmeta
+│   │       │   ├── libequivalent-a7a54eb90692f2ce.rlib
+│   │       │   ├── libequivalent-a7a54eb90692f2ce.rmeta
+│   │       │   ├── liberased_serde-4ca6b7728b17e32a.rlib
+│   │       │   ├── liberased_serde-4ca6b7728b17e32a.rmeta
+│   │       │   ├── libeuclid-9e585f20caaf12d9.rlib
+│   │       │   ├── libeuclid-9e585f20caaf12d9.rmeta
+│   │       │   ├── libevent_listener-51820984d0afff62.rlib
+│   │       │   ├── libevent_listener-51820984d0afff62.rmeta
+│   │       │   ├── libevent_listener_strategy-9a0b3ac26b78e6a1.rlib
+│   │       │   ├── libevent_listener_strategy-9a0b3ac26b78e6a1.rmeta
+│   │       │   ├── libfastrand-845dc527a15b96ab.rlib
+│   │       │   ├── libfastrand-845dc527a15b96ab.rmeta
+│   │       │   ├── libfixedbitset-3585a47de2d5b085.rlib
+│   │       │   ├── libfixedbitset-3585a47de2d5b085.rmeta
+│   │       │   ├── libfoldhash-cc732fa4a7dd2e9f.rlib
+│   │       │   ├── libfoldhash-cc732fa4a7dd2e9f.rmeta
+│   │       │   ├── libfontdb-af48355978ca402d.rlib
+│   │       │   ├── libfontdb-af48355978ca402d.rmeta
+│   │       │   ├── libfont_types-048b4dc060c3d632.rlib
+│   │       │   ├── libfont_types-048b4dc060c3d632.rmeta
+│   │       │   ├── libfont_types-4db8496b84e54908.rlib
+│   │       │   ├── libfont_types-4db8496b84e54908.rmeta
+│   │       │   ├── libfutures_channel-07454c587ebe0a64.rlib
+│   │       │   ├── libfutures_channel-07454c587ebe0a64.rmeta
+│   │       │   ├── libfutures_core-772c2712af900339.rlib
+│   │       │   ├── libfutures_core-772c2712af900339.rmeta
+│   │       │   ├── libfutures_io-4b6457316b6cf961.rlib
+│   │       │   ├── libfutures_io-4b6457316b6cf961.rmeta
+│   │       │   ├── libfutures_lite-a90ec1f1077cd9d4.rlib
+│   │       │   ├── libfutures_lite-a90ec1f1077cd9d4.rmeta
+│   │       │   ├── libfutures_task-21bba4b1ff0ca79c.rlib
+│   │       │   ├── libfutures_task-21bba4b1ff0ca79c.rmeta
+│   │       │   ├── libfutures_util-2c0288137703f802.rlib
+│   │       │   ├── libfutures_util-2c0288137703f802.rmeta
+│   │       │   ├── libgeneric_array-c8ed7a72d32e23c4.rlib
+│   │       │   ├── libgeneric_array-c8ed7a72d32e23c4.rmeta
+│   │       │   ├── libglam-ee4c5f80bed6ac4c.rlib
+│   │       │   ├── libglam-ee4c5f80bed6ac4c.rmeta
+│   │       │   ├── libglow-cb317fc77a354181.rlib
+│   │       │   ├── libglow-cb317fc77a354181.rmeta
+│   │       │   ├── libgrid-bdbca9c829697da4.rlib
+│   │       │   ├── libgrid-bdbca9c829697da4.rmeta
+│   │       │   ├── libguillotiere-0fecfac1a941a26b.rlib
+│   │       │   ├── libguillotiere-0fecfac1a941a26b.rmeta
+│   │       │   ├── libhalf-448475322ccc073e.rlib
+│   │       │   ├── libhalf-448475322ccc073e.rmeta
+│   │       │   ├── libharfrust-fd531eabde0cf043.rlib
+│   │       │   ├── libharfrust-fd531eabde0cf043.rmeta
+│   │       │   ├── libhashbrown-b402cf0975b2b32e.rlib
+│   │       │   ├── libhashbrown-b402cf0975b2b32e.rmeta
+│   │       │   ├── libhashbrown-f2bec8ab18b3b6cf.rlib
+│   │       │   ├── libhashbrown-f2bec8ab18b3b6cf.rmeta
+│   │       │   ├── libhexasphere-f72ddf2c36f70c1d.rlib
+│   │       │   ├── libhexasphere-f72ddf2c36f70c1d.rmeta
+│   │       │   ├── libhexf_parse-8d812fc85d442b1a.rlib
+│   │       │   ├── libhexf_parse-8d812fc85d442b1a.rmeta
+│   │       │   ├── libimage-9b7b36edcef5ee04.rlib
+│   │       │   ├── libimage-9b7b36edcef5ee04.rmeta
+│   │       │   ├── libindexmap-0f719644b0da4675.rlib
+│   │       │   ├── libindexmap-0f719644b0da4675.rmeta
+│   │       │   ├── libinout-b01ea960b32ff2e9.rlib
+│   │       │   ├── libinout-b01ea960b32ff2e9.rmeta
+│   │       │   ├── libinventory-61f84a5834a5045e.rlib
+│   │       │   ├── libinventory-61f84a5834a5045e.rmeta
+│   │       │   ├── libitertools-3d00f2f263950a0b.rlib
+│   │       │   ├── libitertools-3d00f2f263950a0b.rmeta
+│   │       │   ├── libjs_sys-47884ca3603a9301.rlib
+│   │       │   ├── libjs_sys-47884ca3603a9301.rmeta
+│   │       │   ├── liblazy_static-a9bc4b760deb434a.rlib
+│   │       │   ├── liblazy_static-a9bc4b760deb434a.rmeta
+│   │       │   ├── liblibm-863340c626c697b6.rlib
+│   │       │   ├── liblibm-863340c626c697b6.rmeta
+│   │       │   ├── liblinebender_resource_handle-f5c36ad16f483a8e.rlib
+│   │       │   ├── liblinebender_resource_handle-f5c36ad16f483a8e.rmeta
+│   │       │   ├── liblock_api-ecf5d1acbb271e7c.rlib
+│   │       │   ├── liblock_api-ecf5d1acbb271e7c.rmeta
+│   │       │   ├── liblog-cb696cb76696a5ba.rlib
+│   │       │   ├── liblog-cb696cb76696a5ba.rmeta
+│   │       │   ├── libm-863340c626c697b6.d
+│   │       │   ├── libmatchers-bef31476aedbc03a.rlib
+│   │       │   ├── libmatchers-bef31476aedbc03a.rmeta
+│   │       │   ├── libmemchr-424d489e4c3f91c6.rlib
+│   │       │   ├── libmemchr-424d489e4c3f91c6.rmeta
+│   │       │   ├── libmemmap2-ca59422b52c8f1b8.rlib
+│   │       │   ├── libmemmap2-ca59422b52c8f1b8.rmeta
+│   │       │   ├── libmoxcms-7057031d9542a4be.rlib
+│   │       │   ├── libmoxcms-7057031d9542a4be.rmeta
+│   │       │   ├── libnaga-2610680454f448c0.rlib
+│   │       │   ├── libnaga-2610680454f448c0.rmeta
+│   │       │   ├── libnaga_oil-0fef4771d01bd3f6.rlib
+│   │       │   ├── libnaga_oil-0fef4771d01bd3f6.rmeta
+│   │       │   ├── libnonmax-c435bd7f7ff9af35.rlib
+│   │       │   ├── libnonmax-c435bd7f7ff9af35.rmeta
+│   │       │   ├── libnu_ansi_term-b270e7c76023af34.rlib
+│   │       │   ├── libnu_ansi_term-b270e7c76023af34.rmeta
+│   │       │   ├── libnum_traits-e30e0b429665e39a.rlib
+│   │       │   ├── libnum_traits-e30e0b429665e39a.rmeta
+│   │       │   ├── liboffset_allocator-7034ef70a1a8235b.rlib
+│   │       │   ├── liboffset_allocator-7034ef70a1a8235b.rmeta
+│   │       │   ├── libonce_cell-e6de5165d690e14b.rlib
+│   │       │   ├── libonce_cell-e6de5165d690e14b.rmeta
+│   │       │   ├── libparking-21d24b73aeed5dd1.rlib
+│   │       │   ├── libparking-21d24b73aeed5dd1.rmeta
+│   │       │   ├── libparking_lot-a74c0178558d031a.rlib
+│   │       │   ├── libparking_lot-a74c0178558d031a.rmeta
+│   │       │   ├── libparking_lot_core-7909f2f190fb55d6.rlib
+│   │       │   ├── libparking_lot_core-7909f2f190fb55d6.rmeta
+│   │       │   ├── libpin_project-2976126320d034f6.rlib
+│   │       │   ├── libpin_project-2976126320d034f6.rmeta
+│   │       │   ├── libpin_project_lite-ad2e9d9aa353cc18.rlib
+│   │       │   ├── libpin_project_lite-ad2e9d9aa353cc18.rmeta
+│   │       │   ├── libpiper-0c70165f63f4963a.rlib
+│   │       │   ├── libpiper-0c70165f63f4963a.rmeta
+│   │       │   ├── libpp_rs-64e29f8161b6ec31.rlib
+│   │       │   ├── libpp_rs-64e29f8161b6ec31.rmeta
+│   │       │   ├── libprofiling-3b89f4efbd5636ce.rlib
+│   │       │   ├── libprofiling-3b89f4efbd5636ce.rmeta
+│   │       │   ├── libpxfm-198f0e2f8b138676.rlib
+│   │       │   ├── libpxfm-198f0e2f8b138676.rmeta
+│   │       │   ├── libradsort-d426e283e30b2fc5.rlib
+│   │       │   ├── libradsort-d426e283e30b2fc5.rmeta
+│   │       │   ├── librand-b1e525e7bd433f15.rlib
+│   │       │   ├── librand-b1e525e7bd433f15.rmeta
+│   │       │   ├── librand_core-8e4da7ab608c75ab.rlib
+│   │       │   ├── librand_core-8e4da7ab608c75ab.rmeta
+│   │       │   ├── librand_distr-8fecde60ee69c732.rlib
+│   │       │   ├── librand_distr-8fecde60ee69c732.rmeta
+│   │       │   ├── librangemap-3c79d787bb42b45e.rlib
+│   │       │   ├── librangemap-3c79d787bb42b45e.rmeta
+│   │       │   ├── libraw_window_handle-fa4ce10940313b3b.rlib
+│   │       │   ├── libraw_window_handle-fa4ce10940313b3b.rmeta
+│   │       │   ├── libread_fonts-8ed8c5eb50a24e8f.rlib
+│   │       │   ├── libread_fonts-8ed8c5eb50a24e8f.rmeta
+│   │       │   ├── libread_fonts-d438ea21fd965816.rlib
+│   │       │   ├── libread_fonts-d438ea21fd965816.rmeta
+│   │       │   ├── librectangle_pack-18c7a3ab9a1c6d6a.rlib
+│   │       │   ├── librectangle_pack-18c7a3ab9a1c6d6a.rmeta
+│   │       │   ├── libregex-a9cf2dea12e71194.rlib
+│   │       │   ├── libregex-a9cf2dea12e71194.rmeta
+│   │       │   ├── libregex_automata-b583afbfe805278d.rlib
+│   │       │   ├── libregex_automata-b583afbfe805278d.rmeta
+│   │       │   ├── libregex_syntax-acb344b850239fe1.rlib
+│   │       │   ├── libregex_syntax-acb344b850239fe1.rmeta
+│   │       │   ├── libron-08976b390f0b35cd.rlib
+│   │       │   ├── libron-08976b390f0b35cd.rmeta
+│   │       │   ├── librustc_hash-eccfe76b06f7f90c.rlib
+│   │       │   ├── librustc_hash-eccfe76b06f7f90c.rmeta
+│   │       │   ├── libscopeguard-5766b9fa0d6693ad.rlib
+│   │       │   ├── libscopeguard-5766b9fa0d6693ad.rmeta
+│   │       │   ├── libself_cell-6f4956f8b1879c4c.rlib
+│   │       │   ├── libself_cell-6f4956f8b1879c4c.rmeta
+│   │       │   ├── libserde_core-dfc4773d34a8b222.rlib
+│   │       │   ├── libserde_core-dfc4773d34a8b222.rmeta
+│   │       │   ├── libserde-e31546a5cf801043.rlib
+│   │       │   ├── libserde-e31546a5cf801043.rmeta
+│   │       │   ├── libsharded_slab-820ab2a4c3d71f3f.rlib
+│   │       │   ├── libsharded_slab-820ab2a4c3d71f3f.rmeta
+│   │       │   ├── libskrifa-63ba6495e728c5d9.rlib
+│   │       │   ├── libskrifa-63ba6495e728c5d9.rmeta
+│   │       │   ├── libskrifa-f7d25d552ac52477.rlib
+│   │       │   ├── libskrifa-f7d25d552ac52477.rmeta
+│   │       │   ├── libslab-7c00f74aaeda572a.rlib
+│   │       │   ├── libslab-7c00f74aaeda572a.rmeta
+│   │       │   ├── libslotmap-80aabc6d400c049c.rlib
+│   │       │   ├── libslotmap-80aabc6d400c049c.rmeta
+│   │       │   ├── libsmallvec-6c538eda2d584b0d.rlib
+│   │       │   ├── libsmallvec-6c538eda2d584b0d.rmeta
+│   │       │   ├── libsmol_str-f398e4a6b763366f.rlib
+│   │       │   ├── libsmol_str-f398e4a6b763366f.rmeta
+│   │       │   ├── libspin-a5dccfbf7e345f0e.rlib
+│   │       │   ├── libspin-a5dccfbf7e345f0e.rmeta
+│   │       │   ├── libstackfuture-9b9ee402cf7ec980.rlib
+│   │       │   ├── libstackfuture-9b9ee402cf7ec980.rmeta
+│   │       │   ├── libstatic_assertions-f5c86c49a3c40f1d.rlib
+│   │       │   ├── libstatic_assertions-f5c86c49a3c40f1d.rmeta
+│   │       │   ├── libsubtle-0c85a3f0206eb7b1.rlib
+│   │       │   ├── libsubtle-0c85a3f0206eb7b1.rmeta
+│   │       │   ├── libsvg_fmt-888ac32de3101bae.rlib
+│   │       │   ├── libsvg_fmt-888ac32de3101bae.rmeta
+│   │       │   ├── libswash-73e75af6d815bf32.rlib
+│   │       │   ├── libswash-73e75af6d815bf32.rmeta
+│   │       │   ├── libsys_locale-ab94fe4e47058af8.rlib
+│   │       │   ├── libsys_locale-ab94fe4e47058af8.rmeta
+│   │       │   ├── libtaffy-9606fbbbd49b3a97.rlib
+│   │       │   ├── libtaffy-9606fbbbd49b3a97.rmeta
+│   │       │   ├── libtermcolor-bf68053bd4e96ac0.rlib
+│   │       │   ├── libtermcolor-bf68053bd4e96ac0.rmeta
+│   │       │   ├── libthiserror-13b6a260ee4855b3.rlib
+│   │       │   ├── libthiserror-13b6a260ee4855b3.rmeta
+│   │       │   ├── libthread_local-a4c1bd30154a6ff2.rlib
+│   │       │   ├── libthread_local-a4c1bd30154a6ff2.rmeta
+│   │       │   ├── libtinyvec-80ded19e3702bfb6.rlib
+│   │       │   ├── libtinyvec-80ded19e3702bfb6.rmeta
+│   │       │   ├── libtinyvec_macros-c281d27c4d33b5cc.rlib
+│   │       │   ├── libtinyvec_macros-c281d27c4d33b5cc.rmeta
+│   │       │   ├── libtracing-3081deb89a445007.rlib
+│   │       │   ├── libtracing-3081deb89a445007.rmeta
+│   │       │   ├── libtracing_core-97f37cd033e40b6b.rlib
+│   │       │   ├── libtracing_core-97f37cd033e40b6b.rmeta
+│   │       │   ├── libtracing_log-677b32808ef62652.rlib
+│   │       │   ├── libtracing_log-677b32808ef62652.rmeta
+│   │       │   ├── libtracing_subscriber-777a839fd8383666.rlib
+│   │       │   ├── libtracing_subscriber-777a839fd8383666.rmeta
+│   │       │   ├── libtracing_wasm-a57b1b598f8b3ce0.rlib
+│   │       │   ├── libttf_parser-6e03e523163d1c64.rlib
+│   │       │   ├── libttf_parser-6e03e523163d1c64.rmeta
+│   │       │   ├── libtypeid-af90163709286413.rlib
+│   │       │   ├── libtypeid-af90163709286413.rmeta
+│   │       │   ├── libtypenum-8f9f38c69dff9218.rlib
+│   │       │   ├── libtypenum-8f9f38c69dff9218.rmeta
+│   │       │   ├── libtypewit-453532ba593f3d9d.rlib
+│   │       │   ├── libtypewit-453532ba593f3d9d.rmeta
+│   │       │   ├── libunicode_bidi-907a10cb4a0374ea.rlib
+│   │       │   ├── libunicode_bidi-907a10cb4a0374ea.rmeta
+│   │       │   ├── libunicode_ident-0292cbad70cd8fbf.rlib
+│   │       │   ├── libunicode_ident-0292cbad70cd8fbf.rmeta
+│   │       │   ├── libunicode_linebreak-6faf747c7050c094.rlib
+│   │       │   ├── libunicode_linebreak-6faf747c7050c094.rmeta
+│   │       │   ├── libunicode_script-0039eb1721327c77.rlib
+│   │       │   ├── libunicode_script-0039eb1721327c77.rmeta
+│   │       │   ├── libunicode_segmentation-7f7285e137ec7e6e.rlib
+│   │       │   ├── libunicode_segmentation-7f7285e137ec7e6e.rmeta
+│   │       │   ├── libunicode_width-67e8b238828fb4fb.rlib
+│   │       │   ├── libunicode_width-67e8b238828fb4fb.rmeta
+│   │       │   ├── libunicode_xid-b08563cfbb0379f5.rlib
+│   │       │   ├── libunicode_xid-b08563cfbb0379f5.rmeta
+│   │       │   ├── libuuid-4aea3059dd73785b.rlib
+│   │       │   ├── libuuid-4aea3059dd73785b.rmeta
+│   │       │   ├── libwasm_bindgen-2db9272f4cbb649a.rlib
+│   │       │   ├── libwasm_bindgen-2db9272f4cbb649a.rmeta
+│   │       │   ├── libwasm_bindgen_futures-ae175a2d7523b124.rlib
+│   │       │   ├── libwasm_bindgen_futures-ae175a2d7523b124.rmeta
+│   │       │   ├── libwasm_bindgen_shared-ae13aa6d0291b6f9.rlib
+│   │       │   ├── libwasm_bindgen_shared-ae13aa6d0291b6f9.rmeta
+│   │       │   ├── libweb_sys-690a8f3c758a1fe7.rlib
+│   │       │   ├── libweb_sys-690a8f3c758a1fe7.rmeta
+│   │       │   ├── libweb_time-c3a06bd53b4d2a38.rlib
+│   │       │   ├── libweb_time-c3a06bd53b4d2a38.rmeta
+│   │       │   ├── libwgpu_core-9a49400fe20ec85a.rlib
+│   │       │   ├── libwgpu_core-9a49400fe20ec85a.rmeta
+│   │       │   ├── libwgpu_core_deps_wasm-75f842ac21b2eac3.rlib
+│   │       │   ├── libwgpu_core_deps_wasm-75f842ac21b2eac3.rmeta
+│   │       │   ├── libwgpu-e201dc6e943a8632.rlib
+│   │       │   ├── libwgpu-e201dc6e943a8632.rmeta
+│   │       │   ├── libwgpu_hal-f31c18871021205a.rlib
+│   │       │   ├── libwgpu_hal-f31c18871021205a.rmeta
+│   │       │   ├── libwgpu_types-9f97713bc2597daa.rlib
+│   │       │   ├── libwgpu_types-9f97713bc2597daa.rmeta
+│   │       │   ├── libwinit-2c07262cec064681.rlib
+│   │       │   ├── libwinit-2c07262cec064681.rmeta
+│   │       │   ├── libyazi-9531bbd92cf9c57e.rlib
+│   │       │   ├── libyazi-9531bbd92cf9c57e.rmeta
+│   │       │   ├── libzeno-a536341b4ee8ca7b.rlib
+│   │       │   ├── libzeno-a536341b4ee8ca7b.rmeta
+│   │       │   ├── libzerocopy-f26a46e8e2488eb9.rlib
+│   │       │   ├── libzerocopy-f26a46e8e2488eb9.rmeta
+│   │       │   ├── linebender_resource_handle-f5c36ad16f483a8e.d
+│   │       │   ├── lock_api-ecf5d1acbb271e7c.d
+│   │       │   ├── log-cb696cb76696a5ba.d
+│   │       │   ├── matchers-bef31476aedbc03a.d
+│   │       │   ├── memchr-424d489e4c3f91c6.d
+│   │       │   ├── memmap2-ca59422b52c8f1b8.d
+│   │       │   ├── moxcms-7057031d9542a4be.d
+│   │       │   ├── naga-2610680454f448c0.d
+│   │       │   ├── naga_oil-0fef4771d01bd3f6.d
+│   │       │   ├── nonmax-c435bd7f7ff9af35.d
+│   │       │   ├── nu_ansi_term-b270e7c76023af34.d
+│   │       │   ├── num_traits-e30e0b429665e39a.d
+│   │       │   ├── offset_allocator-7034ef70a1a8235b.d
+│   │       │   ├── once_cell-e6de5165d690e14b.d
+│   │       │   ├── parking-21d24b73aeed5dd1.d
+│   │       │   ├── parking_lot-a74c0178558d031a.d
+│   │       │   ├── parking_lot_core-7909f2f190fb55d6.d
+│   │       │   ├── pin_project-2976126320d034f6.d
+│   │       │   ├── pin_project_lite-ad2e9d9aa353cc18.d
+│   │       │   ├── piper-0c70165f63f4963a.d
+│   │       │   ├── pp_rs-64e29f8161b6ec31.d
+│   │       │   ├── profiling-3b89f4efbd5636ce.d
+│   │       │   ├── pxfm-198f0e2f8b138676.d
+│   │       │   ├── radsort-d426e283e30b2fc5.d
+│   │       │   ├── rand-b1e525e7bd433f15.d
+│   │       │   ├── rand_core-8e4da7ab608c75ab.d
+│   │       │   ├── rand_distr-8fecde60ee69c732.d
+│   │       │   ├── rangemap-3c79d787bb42b45e.d
+│   │       │   ├── raw_window_handle-fa4ce10940313b3b.d
+│   │       │   ├── read_fonts-8ed8c5eb50a24e8f.d
+│   │       │   ├── read_fonts-d438ea21fd965816.d
+│   │       │   ├── rectangle_pack-18c7a3ab9a1c6d6a.d
+│   │       │   ├── regex-a9cf2dea12e71194.d
+│   │       │   ├── regex_automata-b583afbfe805278d.d
+│   │       │   ├── regex_syntax-acb344b850239fe1.d
+│   │       │   ├── rmetaR1dKdr
+│   │       │   │   └── full.rmeta
+│   │       │   ├── ron-08976b390f0b35cd.d
+│   │       │   ├── rustc_hash-eccfe76b06f7f90c.d
+│   │       │   ├── scopeguard-5766b9fa0d6693ad.d
+│   │       │   ├── self_cell-6f4956f8b1879c4c.d
+│   │       │   ├── serde_core-dfc4773d34a8b222.d
+│   │       │   ├── serde-e31546a5cf801043.d
+│   │       │   ├── sharded_slab-820ab2a4c3d71f3f.d
+│   │       │   ├── skrifa-63ba6495e728c5d9.d
+│   │       │   ├── skrifa-f7d25d552ac52477.d
+│   │       │   ├── slab-7c00f74aaeda572a.d
+│   │       │   ├── slotmap-80aabc6d400c049c.d
+│   │       │   ├── smallvec-6c538eda2d584b0d.d
+│   │       │   ├── smol_str-f398e4a6b763366f.d
+│   │       │   ├── spin-a5dccfbf7e345f0e.d
+│   │       │   ├── stackfuture-9b9ee402cf7ec980.d
+│   │       │   ├── static_assertions-f5c86c49a3c40f1d.d
+│   │       │   ├── subtle-0c85a3f0206eb7b1.d
+│   │       │   ├── svg_fmt-888ac32de3101bae.d
+│   │       │   ├── swash-73e75af6d815bf32.d
+│   │       │   ├── sys_locale-ab94fe4e47058af8.d
+│   │       │   ├── taffy-9606fbbbd49b3a97.d
+│   │       │   ├── termcolor-bf68053bd4e96ac0.d
+│   │       │   ├── thiserror-13b6a260ee4855b3.d
+│   │       │   ├── thread_local-a4c1bd30154a6ff2.d
+│   │       │   ├── tinyvec-80ded19e3702bfb6.d
+│   │       │   ├── tinyvec_macros-c281d27c4d33b5cc.d
+│   │       │   ├── tracing-3081deb89a445007.d
+│   │       │   ├── tracing_core-97f37cd033e40b6b.d
+│   │       │   ├── tracing_log-677b32808ef62652.d
+│   │       │   ├── tracing_subscriber-777a839fd8383666.d
+│   │       │   ├── tracing_wasm-a57b1b598f8b3ce0.d
+│   │       │   ├── tracing_wasm-a57b1b598f8b3ce0.wasm
+│   │       │   ├── ttf_parser-6e03e523163d1c64.d
+│   │       │   ├── typeid-af90163709286413.d
+│   │       │   ├── typenum-8f9f38c69dff9218.d
+│   │       │   ├── typewit-453532ba593f3d9d.d
+│   │       │   ├── unicode_bidi-907a10cb4a0374ea.d
+│   │       │   ├── unicode_ident-0292cbad70cd8fbf.d
+│   │       │   ├── unicode_linebreak-6faf747c7050c094.d
+│   │       │   ├── unicode_script-0039eb1721327c77.d
+│   │       │   ├── unicode_segmentation-7f7285e137ec7e6e.d
+│   │       │   ├── unicode_width-67e8b238828fb4fb.d
+│   │       │   ├── unicode_xid-b08563cfbb0379f5.d
+│   │       │   ├── uuid-4aea3059dd73785b.d
+│   │       │   ├── wasm_bindgen-2db9272f4cbb649a.d
+│   │       │   ├── wasm_bindgen_futures-ae175a2d7523b124.d
+│   │       │   ├── wasm_bindgen_shared-ae13aa6d0291b6f9.d
+│   │       │   ├── web_sys-690a8f3c758a1fe7.d
+│   │       │   ├── web_time-c3a06bd53b4d2a38.d
+│   │       │   ├── wgpu_core-9a49400fe20ec85a.d
+│   │       │   ├── wgpu_core_deps_wasm-75f842ac21b2eac3.d
+│   │       │   ├── wgpu-e201dc6e943a8632.d
+│   │       │   ├── wgpu_hal-f31c18871021205a.d
+│   │       │   ├── wgpu_types-9f97713bc2597daa.d
+│   │       │   ├── winit-2c07262cec064681.d
+│   │       │   ├── yazi-9531bbd92cf9c57e.d
+│   │       │   ├── zeno-a536341b4ee8ca7b.d
+│   │       │   └── zerocopy-f26a46e8e2488eb9.d
+│   │       ├── examples
+│   │       └── incremental
+│   └── wasm-release
+│       ├── build
+│       │   ├── blake3-bd95fc2c78b4f79c
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-bd95fc2c78b4f79c
+│       │   │   └── build_script_build-bd95fc2c78b4f79c.d
+│       │   ├── crossbeam-utils-3d466b114dbe7dfd
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-3d466b114dbe7dfd
+│       │   │   └── build_script_build-3d466b114dbe7dfd.d
+│       │   ├── erased-serde-bd10b0ef0a0b48c3
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-bd10b0ef0a0b48c3
+│       │   │   └── build_script_build-bd10b0ef0a0b48c3.d
+│       │   ├── generic-array-23cc69456bd4591d
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-23cc69456bd4591d
+│       │   │   └── build_script_build-23cc69456bd4591d.d
+│       │   ├── libm-036b3341aaea844c
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-036b3341aaea844c
+│       │   │   └── build_script_build-036b3341aaea844c.d
+│       │   ├── naga-19cb792cef5d8680
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-19cb792cef5d8680
+│       │   │   └── build_script_build-19cb792cef5d8680.d
+│       │   ├── num-traits-dbc551d3145ec35d
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-dbc551d3145ec35d
+│       │   │   └── build_script_build-dbc551d3145ec35d.d
+│       │   ├── parking_lot_core-64b982981f163da8
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-64b982981f163da8
+│       │   │   └── build_script_build-64b982981f163da8.d
+│       │   ├── proc-macro2-225a2de662e79794
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-225a2de662e79794
+│       │   │   └── build_script_build-225a2de662e79794.d
+│       │   ├── proc-macro2-2c5b870e5e45e289
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── quote-819ee9b97b9c6243
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-819ee9b97b9c6243
+│       │   │   └── build_script_build-819ee9b97b9c6243.d
+│       │   ├── quote-d2a6a526fc99b448
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── rustversion-3ba72af558746b2f
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-3ba72af558746b2f
+│       │   │   └── build_script_build-3ba72af558746b2f.d
+│       │   ├── rustversion-f714059a78079ae2
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   │   └── version.expr
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── serde-714179f6156b3971
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-714179f6156b3971
+│       │   │   └── build_script_build-714179f6156b3971.d
+│       │   ├── serde_core-c00f2dacc99144e2
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-c00f2dacc99144e2
+│       │   │   └── build_script_build-c00f2dacc99144e2.d
+│       │   ├── slotmap-cd458d37f0a25a8e
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-cd458d37f0a25a8e
+│       │   │   └── build_script_build-cd458d37f0a25a8e.d
+│       │   ├── thiserror-bcbfd2e22700e020
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-bcbfd2e22700e020
+│       │   │   └── build_script_build-bcbfd2e22700e020.d
+│       │   ├── typeid-f5aa349c10a94b5d
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-f5aa349c10a94b5d
+│       │   │   └── build_script_build-f5aa349c10a94b5d.d
+│       │   ├── wasm-bindgen-3386153439a84076
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-3386153439a84076
+│       │   │   └── build_script_build-3386153439a84076.d
+│       │   ├── wasm-bindgen-shared-1ff08c010f8426d7
+│       │   │   ├── invoked.timestamp
+│       │   │   ├── out
+│       │   │   ├── output
+│       │   │   ├── root-output
+│       │   │   └── stderr
+│       │   ├── wasm-bindgen-shared-499ed271222ec64f
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-499ed271222ec64f
+│       │   │   └── build_script_build-499ed271222ec64f.d
+│       │   ├── wgpu-75b9cc5d405d73b8
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-75b9cc5d405d73b8
+│       │   │   └── build_script_build-75b9cc5d405d73b8.d
+│       │   ├── wgpu-core-17a5e51e361fac22
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-17a5e51e361fac22
+│       │   │   └── build_script_build-17a5e51e361fac22.d
+│       │   ├── wgpu-hal-5b3721196548ab22
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-5b3721196548ab22
+│       │   │   └── build_script_build-5b3721196548ab22.d
+│       │   ├── winit-ccb5fc7b62cb223d
+│       │   │   ├── build-script-build
+│       │   │   ├── build_script_build-ccb5fc7b62cb223d
+│       │   │   └── build_script_build-ccb5fc7b62cb223d.d
+│       │   └── zerocopy-332195a8b8c53818
+│       │       ├── build-script-build
+│       │       ├── build_script_build-332195a8b8c53818
+│       │       └── build_script_build-332195a8b8c53818.d
+│       ├── deps
+│       │   ├── assert_type_match-6bbdfdc23badd980.d
+│       │   ├── autocfg-3bd90a2451de96e2.d
+│       │   ├── bevy_asset_macros-a4663d0e773db95d.d
+│       │   ├── bevy_derive-593adec3861bb5a2.d
+│       │   ├── bevy_ecs_macros-9a8353cf83d32404.d
+│       │   ├── bevy_encase_derive-0a954807e4b417af.d
+│       │   ├── bevy_macro_utils-0c7e02648330ce39.d
+│       │   ├── bevy_reflect_derive-39b31adc2be7fc86.d
+│       │   ├── bevy_render_macros-70c907b65f6e3346.d
+│       │   ├── bumpalo-3a1365f91575147c.d
+│       │   ├── bytemuck_derive-88efec81448f3ea2.d
+│       │   ├── cc-23e649c32899b9a9.d
+│       │   ├── cfg_aliases-2ca10c6896f304b2.d
+│       │   ├── convert_case-d3b176c8c9dca515.d
+│       │   ├── derive_more_impl-57fd0e8d22ed4e40.d
+│       │   ├── document_features-f719b5780557acbe.d
+│       │   ├── encase_derive-43894d4ececded3b.d
+│       │   ├── encase_derive_impl-5c406cd106b2a933.d
+│       │   ├── equivalent-733444d591095a3a.d
+│       │   ├── find_msvc_tools-7815fde6ac0fcf2a.d
+│       │   ├── futures_macro-a7688ba14cb3b7b2.d
+│       │   ├── hashbrown-4eccdea33a50d5cb.d
+│       │   ├── indexmap-56a023f1e6dbf731.d
+│       │   ├── libassert_type_match-6bbdfdc23badd980.so
+│       │   ├── libautocfg-3bd90a2451de96e2.rlib
+│       │   ├── libautocfg-3bd90a2451de96e2.rmeta
+│       │   ├── libbevy_asset_macros-a4663d0e773db95d.so
+│       │   ├── libbevy_derive-593adec3861bb5a2.so
+│       │   ├── libbevy_ecs_macros-9a8353cf83d32404.so
+│       │   ├── libbevy_encase_derive-0a954807e4b417af.so
+│       │   ├── libbevy_macro_utils-0c7e02648330ce39.rlib
+│       │   ├── libbevy_macro_utils-0c7e02648330ce39.rmeta
+│       │   ├── libbevy_reflect_derive-39b31adc2be7fc86.so
+│       │   ├── libbevy_render_macros-70c907b65f6e3346.so
+│       │   ├── libbumpalo-3a1365f91575147c.rlib
+│       │   ├── libbumpalo-3a1365f91575147c.rmeta
+│       │   ├── libbytemuck_derive-88efec81448f3ea2.so
+│       │   ├── libcc-23e649c32899b9a9.rlib
+│       │   ├── libcc-23e649c32899b9a9.rmeta
+│       │   ├── libcfg_aliases-2ca10c6896f304b2.rlib
+│       │   ├── libcfg_aliases-2ca10c6896f304b2.rmeta
+│       │   ├── libconvert_case-d3b176c8c9dca515.rlib
+│       │   ├── libconvert_case-d3b176c8c9dca515.rmeta
+│       │   ├── libderive_more_impl-57fd0e8d22ed4e40.so
+│       │   ├── libdocument_features-f719b5780557acbe.so
+│       │   ├── libencase_derive-43894d4ececded3b.so
+│       │   ├── libencase_derive_impl-5c406cd106b2a933.rlib
+│       │   ├── libencase_derive_impl-5c406cd106b2a933.rmeta
+│       │   ├── libequivalent-733444d591095a3a.rlib
+│       │   ├── libequivalent-733444d591095a3a.rmeta
+│       │   ├── libfind_msvc_tools-7815fde6ac0fcf2a.rlib
+│       │   ├── libfind_msvc_tools-7815fde6ac0fcf2a.rmeta
+│       │   ├── libfutures_macro-a7688ba14cb3b7b2.so
+│       │   ├── libhashbrown-4eccdea33a50d5cb.rlib
+│       │   ├── libhashbrown-4eccdea33a50d5cb.rmeta
+│       │   ├── libindexmap-56a023f1e6dbf731.rlib
+│       │   ├── libindexmap-56a023f1e6dbf731.rmeta
+│       │   ├── liblitrs-1fdeece1a22bb1e9.rlib
+│       │   ├── liblitrs-1fdeece1a22bb1e9.rmeta
+│       │   ├── libpin_project_internal-a1625662ff939453.so
+│       │   ├── libproc_macro2-741570d57bb3ca9c.rlib
+│       │   ├── libproc_macro2-741570d57bb3ca9c.rmeta
+│       │   ├── libquote-8dc0f1095b262ffa.rlib
+│       │   ├── libquote-8dc0f1095b262ffa.rmeta
+│       │   ├── librustversion-2c5d706e0c991e12.so
+│       │   ├── libserde_derive-775c53836d0772fc.so
+│       │   ├── libshlex-be6f06a86c35c274.rlib
+│       │   ├── libshlex-be6f06a86c35c274.rmeta
+│       │   ├── libsyn-51d70c4607cef992.rlib
+│       │   ├── libsyn-51d70c4607cef992.rmeta
+│       │   ├── libthiserror_impl-97fef559c7949269.so
+│       │   ├── libtoml_datetime-bc96810448181a16.rlib
+│       │   ├── libtoml_datetime-bc96810448181a16.rmeta
+│       │   ├── libtoml_edit-d1af9eca647166b0.rlib
+│       │   ├── libtoml_edit-d1af9eca647166b0.rmeta
+│       │   ├── libtoml_parser-88964b68ea132475.rlib
+│       │   ├── libtoml_parser-88964b68ea132475.rmeta
+│       │   ├── libtracing_attributes-048f742c4705a657.so
+│       │   ├── libunicode_ident-07521929e421aa23.rlib
+│       │   ├── libunicode_ident-07521929e421aa23.rmeta
+│       │   ├── libunicode_segmentation-dadcace3abd981b0.rlib
+│       │   ├── libunicode_segmentation-dadcace3abd981b0.rmeta
+│       │   ├── libunicode_xid-3887e57fcb94efad.rlib
+│       │   ├── libunicode_xid-3887e57fcb94efad.rmeta
+│       │   ├── libvariadics_please-ac41da9b8ca9a31b.so
+│       │   ├── libversion_check-aea9ac49710c99f5.rlib
+│       │   ├── libversion_check-aea9ac49710c99f5.rmeta
+│       │   ├── libwasm_bindgen_macro-ea110ea8f71e667e.so
+│       │   ├── libwasm_bindgen_macro_support-ac2b39b2b024c7de.rlib
+│       │   ├── libwasm_bindgen_macro_support-ac2b39b2b024c7de.rmeta
+│       │   ├── libwasm_bindgen_shared-c0aeaf49eb2ff8e6.rlib
+│       │   ├── libwasm_bindgen_shared-c0aeaf49eb2ff8e6.rmeta
+│       │   ├── libwinnow-98a6126417981f6a.rlib
+│       │   ├── libwinnow-98a6126417981f6a.rmeta
+│       │   ├── libwinnow-f12be4bf093e6956.rlib
+│       │   ├── libwinnow-f12be4bf093e6956.rmeta
+│       │   ├── libzerocopy_derive-dc3ae6556df4c372.so
+│       │   ├── litrs-1fdeece1a22bb1e9.d
+│       │   ├── pin_project_internal-a1625662ff939453.d
+│       │   ├── proc_macro2-741570d57bb3ca9c.d
+│       │   ├── quote-8dc0f1095b262ffa.d
+│       │   ├── rustversion-2c5d706e0c991e12.d
+│       │   ├── serde_derive-775c53836d0772fc.d
+│       │   ├── shlex-be6f06a86c35c274.d
+│       │   ├── syn-51d70c4607cef992.d
+│       │   ├── thiserror_impl-97fef559c7949269.d
+│       │   ├── toml_datetime-bc96810448181a16.d
+│       │   ├── toml_edit-d1af9eca647166b0.d
+│       │   ├── toml_parser-88964b68ea132475.d
+│       │   ├── tracing_attributes-048f742c4705a657.d
+│       │   ├── unicode_ident-07521929e421aa23.d
+│       │   ├── unicode_segmentation-dadcace3abd981b0.d
+│       │   ├── unicode_xid-3887e57fcb94efad.d
+│       │   ├── variadics_please-ac41da9b8ca9a31b.d
+│       │   ├── version_check-aea9ac49710c99f5.d
+│       │   ├── wasm_bindgen_macro-ea110ea8f71e667e.d
+│       │   ├── wasm_bindgen_macro_support-ac2b39b2b024c7de.d
+│       │   ├── wasm_bindgen_shared-c0aeaf49eb2ff8e6.d
+│       │   ├── winnow-98a6126417981f6a.d
+│       │   ├── winnow-f12be4bf093e6956.d
+│       │   └── zerocopy_derive-dc3ae6556df4c372.d
+│       ├── examples
+│       └── incremental
+├── tree.txt
+└── website
+    ├── config.toml
+    ├── content
+    │   └── _index.md
+    └── templates
+        └── index.html
+
+324 directories, 3313 files

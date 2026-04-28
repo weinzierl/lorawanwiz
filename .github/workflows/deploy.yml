@@ -1,0 +1,90 @@
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache Cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Just
+        uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
+      - name: Install Zola
+        uses: taiki-e/install-action@v2
+        with:
+          tool: zola@0.19.2
+
+      # Extract the exact wasm-bindgen version from Cargo.lock and install
+      # the matching CLI. This avoids the schema-mismatch error between the
+      # crate baked into the .wasm file and the CLI used to post-process it.
+      - name: Determine wasm-bindgen version
+        id: wbg
+        run: |
+          set -euo pipefail
+          VER=$(awk '
+            /^\[\[package\]\]/   { in_pkg=1; name=""; ver=""; next }
+            in_pkg && /^name = / { name=$3 }
+            in_pkg && /^version = / { ver=$3 }
+            in_pkg && /^$/ {
+              if (name == "\"wasm-bindgen\"") { gsub(/"/,"",ver); print ver; exit }
+              in_pkg=0
+            }
+          ' Cargo.lock)
+          if [ -z "$VER" ]; then
+            echo "wasm-bindgen not found in Cargo.lock"
+            exit 1
+          fi
+          echo "Detected wasm-bindgen version: $VER"
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+
+      - name: Install wasm-bindgen-cli
+        uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-bindgen-cli@${{ steps.wbg.outputs.version }}
+
+      - name: Build site
+        run: just _site "${{ steps.pages.outputs.base_url }}"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: website/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

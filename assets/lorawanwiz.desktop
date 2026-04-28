@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=lorawanwiz
+GenericName=LoRaWAN modulation visualizer
+Comment=Step-by-step LoRaWAN encryption and chirp modulation, for technical talks
+Exec=lorawanwiz
+Icon=lorawanwiz
+Terminal=false
+Categories=Education;
+Keywords=LoRaWAN;LoRa;modulation;chirp;visualizer;
+X-Copyright=Copyright L. Weinzierl, 2026
+X-Homepage=https://weinzierlweb.com/
