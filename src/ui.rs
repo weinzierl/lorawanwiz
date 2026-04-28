@@ -1,5 +1,4 @@
-//! Header (name + subtitle + version + copyright link + Play), tabs,
-//! step panels, scroll, tooltips.
+//! Header, toolbar, tabs, step panels, scroll, tooltips, footer.
 
 use bevy::ecs::message::MessageReader;
 use bevy::input::keyboard::{Key, KeyboardInput};
@@ -8,26 +7,38 @@ use bevy::prelude::*;
 
 use crate::math::{ChirpDirection, SymbolKind};
 use crate::state::{
-    parse_hex, CodingRate, CryptoEdit, CryptoFocus, InputsDirty, LorawanInputs, PipelineOutput,
+    parse_hex, AudioSettings, ChirpAnimator, CodingRate, CryptoEdit, CryptoFocus, InputsDirty,
+    LorawanInputs, PipelineOutput,
 };
 
 const PANEL_BG: Color = Color::srgb(0.10, 0.11, 0.14);
+const HEADER_BG: Color = Color::srgb(0.13, 0.14, 0.18);
+const TOOLBAR_BG: Color = Color::srgb(0.16, 0.17, 0.21);
+const FOOTER_BG: Color = Color::srgb(0.07, 0.08, 0.10);
+const TOOLBAR_BORDER: Color = Color::srgb(0.30, 0.32, 0.38);
 const PANEL_FG: Color = Color::srgb(0.92, 0.94, 0.97);
 const ACCENT: Color = Color::srgb(0.40, 0.75, 1.00);
-const MUTED: Color = Color::srgb(0.55, 0.58, 0.65);
+const MUTED_FG: Color = Color::srgb(0.55, 0.58, 0.65);
 const LINK: Color = Color::srgb(0.55, 0.80, 1.00);
-const BUTTON_BG: Color = Color::srgb(0.18, 0.20, 0.26);
-const BUTTON_HOVER: Color = Color::srgb(0.24, 0.28, 0.36);
-const TAB_BG: Color = Color::srgb(0.08, 0.09, 0.11);
+const BUTTON_BG: Color = Color::srgb(0.22, 0.24, 0.30);
+const BUTTON_HOVER: Color = Color::srgb(0.28, 0.32, 0.40);
+const BUTTON_DISABLED: Color = Color::srgb(0.18, 0.20, 0.24);
+const TAB_BG: Color = Color::srgb(0.05, 0.06, 0.08);
+const TAB_BUTTON_BG: Color = Color::srgb(0.10, 0.11, 0.14);
 const PAGE_BG: Color = Color::srgb(0.06, 0.07, 0.09);
 const FIELD_FOCUS: Color = Color::srgb(0.30, 0.40, 0.55);
 const ERROR_RED: Color = Color::srgb(0.90, 0.40, 0.45);
 const OK_GREEN: Color = Color::srgb(0.55, 0.85, 0.55);
+const MUTED_RED: Color = Color::srgb(0.85, 0.50, 0.45);
 
 const FONT_S: f32 = 13.0;
 const FONT_M: f32 = 15.0;
 const FONT_L: f32 = 18.0;
 const FONT_XL: f32 = 22.0;
+
+const VOLUME_BTN_WIDTH: f32 = 80.0;
+const MUTE_BTN_WIDTH: f32 = 110.0;
+const PLAY_BTN_WIDTH: f32 = 110.0;
 
 const COPYRIGHT_TEXT: &str = "Copyright L. Weinzierl, 2026";
 const HOMEPAGE_URL: &str = "https://weinzierlweb.com";
@@ -58,6 +69,21 @@ pub struct MessageByteCount;
 
 #[derive(Component)]
 pub struct PlayAudioButton;
+
+#[derive(Component)]
+pub struct PlayAudioLabel;
+
+#[derive(Component)]
+pub struct VolumeButton;
+
+#[derive(Component)]
+pub struct VolumeLabel;
+
+#[derive(Component)]
+pub struct MuteButton;
+
+#[derive(Component)]
+pub struct MuteLabel;
 
 #[derive(Component)]
 pub struct HomepageLink;
@@ -139,16 +165,17 @@ pub fn build_ui(mut commands: Commands) {
             UiRoot,
         ))
         .with_children(|root| {
+            // === Title bar ===
             root.spawn((
                 Node {
                     width: Val::Percent(100.0),
                     padding: UiRect::axes(Val::Px(16.0), Val::Px(10.0)),
                     column_gap: Val::Px(12.0),
                     flex_direction: FlexDirection::Row,
-                    align_items: AlignItems::Center,
+                    align_items: AlignItems::Baseline,
                     ..default()
                 },
-                BackgroundColor(PANEL_BG),
+                BackgroundColor(HEADER_BG),
             ))
             .with_children(|h| {
                 h.spawn((
@@ -161,43 +188,42 @@ pub fn build_ui(mut commands: Commands) {
                     TextFont { font_size: FONT_M, ..default() },
                     TextColor(PANEL_FG),
                 ));
-                h.spawn((
-                    Text::new(format!("v{}", env!("CARGO_PKG_VERSION"))),
-                    TextFont { font_size: FONT_S, ..default() },
-                    TextColor(MUTED),
-                ));
-                h.spawn(Node { flex_grow: 1.0, ..default() });
-
-                h.spawn((
-                    Text::new(COPYRIGHT_TEXT),
-                    TextFont { font_size: FONT_S, ..default() },
-                    TextColor(MUTED),
-                ));
-                h.spawn((
-                    Button,
-                    Node {
-                        padding: UiRect::axes(Val::Px(4.0), Val::Px(2.0)),
-                        ..default()
-                    },
-                    BackgroundColor(Color::NONE),
-                    HomepageLink,
-                    Tooltip("Click to open weinzierlweb.com in your browser."),
-                ))
-                .with_children(|b| {
-                    b.spawn((
-                        Text::new("weinzierlweb.com"),
-                        TextFont { font_size: FONT_S, ..default() },
-                        TextColor(LINK),
-                    ));
-                });
-
-                play_button(h);
             });
 
+            // === Toolbar ===
+            // Lighter background and a 1 px bottom border so it reads as a
+            // distinct band from the tab strip directly below.
             root.spawn((
                 Node {
                     width: Val::Percent(100.0),
-                    padding: UiRect::axes(Val::Px(12.0), Val::Px(8.0)),
+                    padding: UiRect {
+                        left: Val::Px(16.0),
+                        right: Val::Px(16.0),
+                        top: Val::Px(8.0),
+                        bottom: Val::Px(8.0),
+                    },
+                    border: UiRect::bottom(Val::Px(1.0)),
+                    column_gap: Val::Px(8.0),
+                    flex_direction: FlexDirection::Row,
+                    align_items: AlignItems::Center,
+                    ..default()
+                },
+                BackgroundColor(TOOLBAR_BG),
+                BorderColor::all(TOOLBAR_BORDER),
+            ))
+            .with_children(|t| {
+                volume_button(t);
+                mute_button(t);
+                play_button(t);
+                // Future buttons land here.
+            });
+
+            // === Tab bar ===
+            // Notably darker than the toolbar so the two strips don't blur.
+            root.spawn((
+                Node {
+                    width: Val::Percent(100.0),
+                    padding: UiRect::axes(Val::Px(12.0), Val::Px(6.0)),
                     column_gap: Val::Px(6.0),
                     flex_direction: FlexDirection::Row,
                     align_items: AlignItems::Center,
@@ -213,6 +239,7 @@ pub fn build_ui(mut commands: Commands) {
                 tab_button(bar, Tab::About, "About");
             });
 
+            // === Tab content area ===
             root.spawn(Node {
                 width: Val::Percent(100.0),
                 flex_grow: 1.0,
@@ -225,6 +252,85 @@ pub fn build_ui(mut commands: Commands) {
                 build_frame_tab(content);
                 build_modulation_tab(content);
                 build_about_tab(content);
+            });
+
+            // === Footer ===
+            // Three columns: copyright (left), URL link (center), version
+            // (right). Each column uses flex_basis so the center stays
+            // centered even when the side columns are different widths.
+            root.spawn((
+                Node {
+                    width: Val::Percent(100.0),
+                    padding: UiRect::axes(Val::Px(16.0), Val::Px(6.0)),
+                    flex_direction: FlexDirection::Row,
+                    align_items: AlignItems::Center,
+                    ..default()
+                },
+                BackgroundColor(FOOTER_BG),
+            ))
+            .with_children(|f| {
+                // Left
+                f.spawn(Node {
+                    flex_basis: Val::Percent(33.3),
+                    flex_grow: 1.0,
+                    flex_direction: FlexDirection::Row,
+                    justify_content: JustifyContent::FlexStart,
+                    align_items: AlignItems::Center,
+                    ..default()
+                })
+                .with_children(|c| {
+                    c.spawn((
+                        Text::new(COPYRIGHT_TEXT),
+                        TextFont { font_size: FONT_S, ..default() },
+                        TextColor(MUTED_FG),
+                    ));
+                });
+
+                // Center
+                f.spawn(Node {
+                    flex_basis: Val::Percent(33.3),
+                    flex_grow: 1.0,
+                    flex_direction: FlexDirection::Row,
+                    justify_content: JustifyContent::Center,
+                    align_items: AlignItems::Center,
+                    ..default()
+                })
+                .with_children(|c| {
+                    c.spawn((
+                        Button,
+                        Node {
+                            padding: UiRect::axes(Val::Px(6.0), Val::Px(2.0)),
+                            ..default()
+                        },
+                        BackgroundColor(Color::NONE),
+                        HomepageLink,
+                        Tooltip("Click to open weinzierlweb.com in your browser."),
+                    ))
+                    .with_children(|b| {
+                        b.spawn((
+                            Text::new(HOMEPAGE_URL),
+                            TextFont { font_size: FONT_S, ..default() },
+                            TextColor(LINK),
+                        ));
+                    });
+                });
+
+                // Right
+                f.spawn(Node {
+                    flex_basis: Val::Percent(33.3),
+                    flex_grow: 1.0,
+                    flex_direction: FlexDirection::Row,
+                    justify_content: JustifyContent::FlexEnd,
+                    align_items: AlignItems::Center,
+                    ..default()
+                })
+                .with_children(|c| {
+                    c.spawn((
+                        Text::new(format!("v{}", env!("CARGO_PKG_VERSION"))),
+                        TextFont { font_size: FONT_S, ..default() },
+                        TextColor(MUTED_FG),
+                    ));
+                });
             });
         });
 }
@@ -305,7 +411,7 @@ fn build_inputs_tab(content: &mut ChildSpawnerCommands) {
             p.spawn((
                 Text::new("Hex digits only. Whitespace and ':' allowed and ignored. Click a field to focus, type to edit, Backspace to delete. Changes apply when the field is filled to the expected length."),
                 TextFont { font_size: FONT_S, ..default() },
-                TextColor(MUTED),
+                TextColor(MUTED_FG),
             ));
             crypto_row(p, CryptoFocus::DevAddr, "DevAddr", 4,
                 "Device address, 4 bytes (8 hex digits). Identifies the device on the LoRaWAN network. Used in the Ai block and the MIC.");
@@ -316,7 +422,7 @@ fn build_inputs_tab(content: &mut ChildSpawnerCommands) {
             p.spawn((
                 Text::new("Defaults are public test vectors. Do not paste real production keys here."),
                 TextFont { font_size: FONT_S, ..default() },
-                TextColor(MUTED),
+                TextColor(MUTED_FG),
             ));
         });
 }
@@ -382,12 +488,13 @@ fn build_modulation_tab(content: &mut ChildSpawnerCommands) {
             m.spawn((
                 Text::new(
                     "Per-chirp label: type letter (P/S/H/D) + index, then the raw symbol value.\n\
-                     Pan: click and drag (left or right mouse), or two-finger swipe on a Mac trackpad.\n\
-                     Zoom: mouse wheel, or pinch on a Mac trackpad (Ctrl/Cmd+wheel also works).\n\
-                     View resets when you leave this tab. Click Play in the header to start playback."
+                     Pan: click and drag.   Zoom: mouse wheel, or pinch on a Mac trackpad.\n\
+                     View resets when you leave this tab. Click Play in the toolbar to start playback;\n\
+                     the highlight bar tracks the audible chirp. The button is disabled until the\n\
+                     previous playback finishes."
                 ),
                 TextFont { font_size: FONT_S, ..default() },
-                TextColor(MUTED),
+                TextColor(MUTED_FG),
             ));
         });
 }
@@ -431,9 +538,12 @@ fn build_about_tab(content: &mut ChildSpawnerCommands) {
             about_para(a,
                 "Real LoRa chirps are 125-500 kHz, well above hearing. The audio button plays each chirp at a fixed audible target (top frequency 3 kHz, 80 ms per symbol) regardless of SF/BW, so every config sounds at the same comfortable pace. Visualization keeps the true LoRa numbers."
             );
+            about_para(a,
+                "The volume button cycles through 25%, 50%, 75%, 100%. The sound button toggles mute. Both apply live: changes during a playback take effect immediately."
+            );
             about_heading(a, "Pan and zoom");
             about_para(a,
-                "On the Modulation tab: click and drag (left or right mouse) to pan. On a Mac trackpad, two-finger swipe pans, pinch zooms. Mouse wheel zooms (Ctrl/Cmd+wheel also zooms on trackpads). Switching tabs resets the view."
+                "On the Modulation tab: click and drag to pan. Mouse wheel zooms; on a Mac trackpad, pinch zooms. Switching tabs resets the view."
             );
             about_heading(a, "Max payload");
             about_para(a,
@@ -450,7 +560,7 @@ fn input_label(parent: &mut ChildSpawnerCommands, text: &str) {
     parent.spawn((
         Text::new(text.to_string()),
         TextFont { font_size: FONT_M, ..default() },
-        TextColor(MUTED),
+        TextColor(MUTED_FG),
     ));
 }
 
@@ -477,7 +587,7 @@ fn cycle_button(
             Button,
             Node {
                 padding: UiRect::axes(Val::Px(10.0), Val::Px(6.0)),
-                min_width: Val::Px(72.0),
+                width: Val::Px(80.0),
                 justify_content: JustifyContent::Center,
                 ..default()
             },
@@ -523,7 +633,7 @@ fn byte_count_label(parent: &mut ChildSpawnerCommands) {
     parent.spawn((
         Text::new("0 / 51 B"),
         TextFont { font_size: FONT_S, ..default() },
-        TextColor(MUTED),
+        TextColor(MUTED_FG),
         MessageByteCount,
     ));
 }
@@ -547,7 +657,7 @@ fn crypto_row(
             row.spawn((
                 Text::new(label.to_string()),
                 TextFont { font_size: FONT_M, ..default() },
-                TextColor(MUTED),
+                TextColor(MUTED_FG),
                 Node { min_width: Val::Px(72.0), ..default() },
             ));
             row.spawn((
@@ -578,23 +688,74 @@ fn crypto_row(
         });
 }
 
+fn volume_button(parent: &mut ChildSpawnerCommands) {
+    parent
+        .spawn((
+            Button,
+            Node {
+                padding: UiRect::axes(Val::Px(10.0), Val::Px(6.0)),
+                width: Val::Px(VOLUME_BTN_WIDTH),
+                justify_content: JustifyContent::Center,
+                ..default()
+            },
+            BackgroundColor(BUTTON_BG),
+            VolumeButton,
+            Tooltip("Volume level. Click to cycle through 25%, 50%, 75%, 100%."),
+        ))
+        .with_children(|b| {
+            b.spawn((
+                Text::new("75%"),
+                TextFont { font_size: FONT_M, ..default() },
+                TextColor(PANEL_FG),
+                VolumeLabel,
+            ));
+        });
+}
+
+fn mute_button(parent: &mut ChildSpawnerCommands) {
+    parent
+        .spawn((
+            Button,
+            Node {
+                padding: UiRect::axes(Val::Px(10.0), Val::Px(6.0)),
+                width: Val::Px(MUTE_BTN_WIDTH),
+                justify_content: JustifyContent::Center,
+                ..default()
+            },
+            BackgroundColor(BUTTON_BG),
+            MuteButton,
+            Tooltip("Click to toggle mute. When muted, playback is silent but the highlight bar still moves."),
+        ))
+        .with_children(|b| {
+            b.spawn((
+                Text::new("Sound: on"),
+                TextFont { font_size: FONT_M, ..default() },
+                TextColor(PANEL_FG),
+                MuteLabel,
+            ));
+        });
+}
+
 fn play_button(parent: &mut ChildSpawnerCommands) {
     parent
         .spawn((
             Button,
             Node {
                 padding: UiRect::axes(Val::Px(14.0), Val::Px(6.0)),
+                width: Val::Px(PLAY_BTN_WIDTH),
+                justify_content: JustifyContent::Center,
                 ..default()
             },
             BackgroundColor(ACCENT),
             PlayAudioButton,
-            Tooltip("Play the chirp sequence as audio. The highlight bar in the Modulation tab tracks the audible chirp."),
+            Tooltip("Play the chirp sequence. The highlight bar in the Modulation tab tracks the audible chirp. Disabled while a previous playback is still running."),
         ))
         .with_children(|b| {
             b.spawn((
-                Text::new("Play audio"),
+                Text::new("Play"),
                 TextFont { font_size: FONT_M, ..default() },
                 TextColor(Color::BLACK),
+                PlayAudioLabel,
             ));
         });
 }
@@ -607,7 +768,7 @@ fn tab_button(parent: &mut ChildSpawnerCommands, tab: Tab, label: &str) {
                 padding: UiRect::axes(Val::Px(14.0), Val::Px(6.0)),
                 ..default()
             },
-            BackgroundColor(BUTTON_BG),
+            BackgroundColor(TAB_BUTTON_BG),
             TabButton(tab),
         ))
         .with_children(|b| {
@@ -634,6 +795,76 @@ fn about_para(parent: &mut ChildSpawnerCommands, text: &str) {
         TextFont { font_size: FONT_M, ..default() },
         TextColor(PANEL_FG),
     ));
+}
+
+// ---------------------------------------------------------------------------
+// Audio button handlers
+// ---------------------------------------------------------------------------
+
+pub fn handle_volume_click(
+    q: Query<&Interaction, (Changed<Interaction>, With<VolumeButton>)>,
+    mut settings: ResMut<AudioSettings>,
+) {
+    for i in &q {
+        if *i == Interaction::Pressed {
+            settings.cycle_volume();
+        }
+    }
+}
+
+pub fn handle_mute_click(
+    q: Query<&Interaction, (Changed<Interaction>, With<MuteButton>)>,
+    mut settings: ResMut<AudioSettings>,
+) {
+    for i in &q {
+        if *i == Interaction::Pressed {
+            settings.muted = !settings.muted;
+        }
+    }
+}
+
+pub fn refresh_audio_button_labels(
+    settings: Res<AudioSettings>,
+    animator: Res<ChirpAnimator>,
+    mut volume_label_q: Query<&mut Text, (With<VolumeLabel>, Without<MuteLabel>, Without<PlayAudioLabel>)>,
+    mut mute_label_q: Query<(&mut Text, &mut TextColor), (With<MuteLabel>, Without<VolumeLabel>, Without<PlayAudioLabel>)>,
+    mut play_label_q: Query<&mut Text, (With<PlayAudioLabel>, Without<VolumeLabel>, Without<MuteLabel>)>,
+    mut play_bg_q: Query<&mut BackgroundColor, With<PlayAudioButton>>,
+) {
+    if !settings.is_changed() && !animator.is_changed() {
+        return;
+    }
+    let vol = settings.volume_label();
+    for mut t in &mut volume_label_q {
+        if t.0 != vol {
+            t.0 = vol.clone();
+        }
+    }
+    let (mute_text, mute_color) = if settings.muted {
+        ("Sound: off".to_string(), MUTED_RED)
+    } else {
+        ("Sound: on".to_string(), PANEL_FG)
+    };
+    for (mut t, mut c) in &mut mute_label_q {
+        if t.0 != mute_text {
+            t.0 = mute_text.clone();
+        }
+        if c.0 != mute_color {
+            c.0 = mute_color;
+        }
+    }
+    let play_text = if animator.playing { "Playing..." } else { "Play" };
+    for mut t in &mut play_label_q {
+        if t.0 != play_text {
+            t.0 = play_text.to_string();
+        }
+    }
+    let play_bg_color = if animator.playing { BUTTON_DISABLED } else { ACCENT };
+    for mut bg in &mut play_bg_q {
+        if bg.0 != play_bg_color {
+            bg.0 = play_bg_color;
+        }
+    }
 }
 
 pub fn handle_homepage_click(
@@ -679,6 +910,10 @@ fn open_url(url: &str) {
 fn open_url(_url: &str) {
     eprintln!("open_url: unsupported platform");
 }
+
+// ---------------------------------------------------------------------------
+// Interaction systems
+// ---------------------------------------------------------------------------
 
 pub fn handle_button_hover(
     mut q: Query<
@@ -903,10 +1138,10 @@ pub fn handle_crypto_typing(
 pub fn refresh_labels(
     inputs: Res<LorawanInputs>,
     mut q: Query<(&LiveLabel, &mut Text)>,
-    mut field_q: Query<&mut Text, (With<MessageFieldText>, Without<LiveLabel>, Without<MessageByteCount>, Without<CryptoFieldText>, Without<CryptoFieldStatus>)>,
+    mut field_q: Query<&mut Text, (With<MessageFieldText>, Without<LiveLabel>, Without<MessageByteCount>, Without<CryptoFieldText>, Without<CryptoFieldStatus>, Without<VolumeLabel>, Without<MuteLabel>, Without<PlayAudioLabel>)>,
     mut count_q: Query<
         &mut Text,
-        (With<MessageByteCount>, Without<LiveLabel>, Without<MessageFieldText>, Without<CryptoFieldText>, Without<CryptoFieldStatus>),
+        (With<MessageByteCount>, Without<LiveLabel>, Without<MessageFieldText>, Without<CryptoFieldText>, Without<CryptoFieldStatus>, Without<VolumeLabel>, Without<MuteLabel>, Without<PlayAudioLabel>),
     >,
     mut field_node_q: Query<&mut Node, With<MessageField>>,
 ) {
@@ -1166,7 +1401,7 @@ fn kv(parent: &mut ChildSpawnerCommands, k: &str, v: &str) {
             row.spawn((
                 Text::new(format!("{}:", k)),
                 TextFont { font_size: FONT_S, ..default() },
-                TextColor(MUTED),
+                TextColor(MUTED_FG),
                 Node { min_width: Val::Px(110.0), ..default() },
             ));
             row.spawn((
@@ -1255,7 +1490,7 @@ pub fn refresh_tab_visibility(
         node.display = if tab.0 == active.0 { Display::Flex } else { Display::None };
     }
     for (btn, mut bg) in &mut button_q {
-        bg.0 = if btn.0 == active.0 { ACCENT } else { BUTTON_BG };
+        bg.0 = if btn.0 == active.0 { ACCENT } else { TAB_BUTTON_BG };
     }
 }
 

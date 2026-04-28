@@ -113,13 +113,6 @@ pub struct PipelineOutput {
     pub audio_duration_s: f32,
 }
 
-/// Drives the chirp animation in the Modulation tab.
-///
-/// `playing = true` means audio is in flight. `elapsed_s` accumulates the
-/// time since playback started, integrating frame deltas (avoids depending
-/// on `Time::elapsed_secs()` semantics that may differ across Bevy
-/// `Time<...>` variants). `current_index` is derived from `elapsed_s` and
-/// `AUDIO_TARGET_T_SYM_S`.
 #[derive(Resource, Default)]
 pub struct ChirpAnimator {
     pub current_index: usize,
@@ -191,4 +184,46 @@ pub fn parse_hex(text: &str, n: usize) -> Option<Vec<u8>> {
         out.push(byte);
     }
     Some(out)
+}
+
+/// Audio playback settings. `volume` cycles through discrete levels via
+/// the volume button; `muted` is an independent toggle. The effective
+/// gain applied to playback is `if muted { 0.0 } else { volume }`.
+#[derive(Resource)]
+pub struct AudioSettings {
+    pub volume: f32,
+    pub muted: bool,
+}
+
+impl Default for AudioSettings {
+    fn default() -> Self {
+        Self {
+            volume: 0.75,
+            muted: false,
+        }
+    }
+}
+
+impl AudioSettings {
+    pub fn effective_gain(&self) -> f32 {
+        if self.muted {
+            0.0
+        } else {
+            self.volume
+        }
+    }
+
+    /// Cycle through 25%, 50%, 75%, 100%. Bumping past 100% wraps to 25%.
+    pub fn cycle_volume(&mut self) {
+        self.volume = match (self.volume * 100.0).round() as i32 {
+            v if v < 38 => 0.50,
+            v if v < 63 => 0.75,
+            v if v < 88 => 1.00,
+            _ => 0.25,
+        };
+    }
+
+    pub fn volume_label(&self) -> String {
+        format!("{}%", (self.volume * 100.0).round() as i32)
+    }
 }

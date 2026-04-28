@@ -1,26 +1,45 @@
 //! Audio playback for the chirp sequence.
 //!
 //! Native: cpal output stream, kept alive on AudioState.
-//! WASM:   web-sys AudioContext, lazily created on first user gesture.
+//! WASM:   web-sys AudioContext + GainNode, kept alive on AudioState.
+//!
+//! Volume and mute are applied live: changes during playback take effect
+//! immediately. Native uses an Arc<AtomicU32> storing f32 bits, read by
+//! the audio callback. Web stores the GainNode and we set its gain on
+//! settings change.
 
 use bevy::prelude::*;
 
-use crate::state::{AUDIO_TARGET_T_SYM_S, ChirpAnimator, PipelineOutput};
+use crate::state::{AUDIO_TARGET_T_SYM_S, AudioSettings, ChirpAnimator, PipelineOutput};
 #[cfg(target_arch = "wasm32")]
 use crate::state::AUDIO_SAMPLE_RATE_HZ;
 use crate::ui::PlayAudioButton;
+
+#[cfg(not(target_arch = "wasm32"))]
+use std::sync::{Arc, atomic::{AtomicU32, Ordering}};
 
 #[derive(Resource, Default)]
 pub struct AudioState {
     #[cfg(target_arch = "wasm32")]
     ctx: Option<web_sys::AudioContext>,
+    /// While playback is in flight, holds the GainNode so live volume
+    /// changes can mutate it. Cleared (along with the source) when the
+    /// next play starts.
+    #[cfg(target_arch = "wasm32")]
+    current_gain: Option<web_sys::GainNode>,
+
     #[cfg(not(target_arch = "wasm32"))]
     stream: Option<NativeStream>,
+    /// Shared float read by the cpal callback every frame, written by
+    /// the main thread when AudioSettings changes.
+    #[cfg(not(target_arch = "wasm32"))]
+    gain: Option<Arc<AtomicU32>>,
 }
 
 pub fn handle_play_button(
     q: Query<&Interaction, (Changed<Interaction>, With<PlayAudioButton>)>,
     output: Res<PipelineOutput>,
+    settings: Res<AudioSettings>,
     mut audio: ResMut<AudioState>,
     mut animator: ResMut<ChirpAnimator>,
 ) {
@@ -28,7 +47,11 @@ pub fn handle_play_button(
         if *i != Interaction::Pressed {
             continue;
         }
-        if play(&mut audio, &output.audio_samples) {
+        if animator.playing {
+            continue;
+        }
+        let gain = settings.effective_gain();
+        if play(&mut audio, &output.audio_samples, gain) {
             animator.playing = true;
             animator.elapsed_s = 0.0;
             animator.current_index = 0;
@@ -61,12 +84,35 @@ pub fn tick_animator(
     animator.current_index = idx.min(output.chirps.len().saturating_sub(1));
 }
 
+/// Push live volume/mute changes to the active playback (if any).
+pub fn apply_audio_settings(settings: Res<AudioSettings>, audio: ResMut<AudioState>) {
+    if !settings.is_changed() {
+        return;
+    }
+    let gain = settings.effective_gain();
+    apply_gain(audio, gain);
+}
+
+#[cfg(target_arch = "wasm32")]
+fn apply_gain(audio: ResMut<AudioState>, gain: f32) {
+    if let Some(g) = audio.current_gain.as_ref() {
+        g.gain().set_value(gain.clamp(0.0, 1.0));
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn apply_gain(audio: ResMut<AudioState>, gain: f32) {
+    if let Some(g) = audio.gain.as_ref() {
+        g.store(gain.clamp(0.0, 1.0).to_bits(), Ordering::Relaxed);
+    }
+}
+
 // ---------------------------------------------------------------------------
 // WASM (Web Audio)
 // ---------------------------------------------------------------------------
 
 #[cfg(target_arch = "wasm32")]
-fn play(audio: &mut AudioState, samples: &[f32]) -> bool {
+fn play(audio: &mut AudioState, samples: &[f32], gain: f32) -> bool {
     if samples.is_empty() {
         return false;
     }
@@ -104,18 +150,35 @@ fn play(audio: &mut AudioState, samples: &[f32]) -> bool {
     };
     source.set_buffer(Some(&buffer));
 
-    // wasm-bindgen 0.2.100+ requires an explicit AudioNode reference here;
-    // type inference can no longer resolve `dest.as_ref().unchecked_ref()`.
-    let dest = ctx.destination();
-    let dest_node: &web_sys::AudioNode = dest.as_ref();
-    if let Err(e) = source.connect_with_audio_node(dest_node) {
-        web_sys::console::warn_1(&format!("connect failed: {:?}", e).into());
+    let gain_node = match ctx.create_gain() {
+        Ok(g) => g,
+        Err(e) => {
+            web_sys::console::warn_1(&format!("create_gain failed: {:?}", e).into());
+            return false;
+        }
+    };
+    gain_node.gain().set_value(gain.clamp(0.0, 1.0));
+
+    let source_node: &web_sys::AudioNode = source.as_ref();
+    let gain_as_node: &web_sys::AudioNode = gain_node.as_ref();
+    if let Err(e) = source_node.connect_with_audio_node(gain_as_node) {
+        web_sys::console::warn_1(&format!("source.connect failed: {:?}", e).into());
         return false;
     }
+
+    let dest = ctx.destination();
+    let dest_node: &web_sys::AudioNode = dest.as_ref();
+    if let Err(e) = gain_as_node.connect_with_audio_node(dest_node) {
+        web_sys::console::warn_1(&format!("gain.connect failed: {:?}", e).into());
+        return false;
+    }
+
     if let Err(e) = source.start() {
         web_sys::console::warn_1(&format!("start failed: {:?}", e).into());
         return false;
     }
+
+    audio.current_gain = Some(gain_node);
     true
 }
 
@@ -134,15 +197,16 @@ unsafe impl Send for NativeStream {}
 unsafe impl Sync for NativeStream {}
 
 #[cfg(not(target_arch = "wasm32"))]
-fn play(audio: &mut AudioState, samples: &[f32]) -> bool {
+fn play(audio: &mut AudioState, samples: &[f32], gain: f32) -> bool {
     use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
-    use std::sync::{Arc, Mutex};
+    use std::sync::Mutex;
 
     if samples.is_empty() {
         return false;
     }
 
     audio.stream = None;
+    audio.gain = None;
 
     let host = cpal::default_host();
     let Some(device) = host.default_output_device() else {
@@ -163,6 +227,8 @@ fn play(audio: &mut AudioState, samples: &[f32]) -> bool {
     let src_rate = crate::state::AUDIO_SAMPLE_RATE_HZ as f32;
     let ratio = device_sample_rate / src_rate;
     let resampled_len = ((samples.len() as f32) * ratio) as usize;
+    // Resample at full amplitude; gain is applied per-sample in the
+    // callback so live volume changes work.
     let mut resampled = Vec::with_capacity(resampled_len);
     for i in 0..resampled_len {
         let src_idx = (i as f32) / ratio;
@@ -176,18 +242,21 @@ fn play(audio: &mut AudioState, samples: &[f32]) -> bool {
 
     let cursor = Arc::new(Mutex::new(0usize));
     let buffer = Arc::new(resampled);
+    let gain_atomic = Arc::new(AtomicU32::new(gain.clamp(0.0, 1.0).to_bits()));
     let err_fn = |e| eprintln!("audio: stream error: {:?}", e);
 
     let stream_result = match config.sample_format() {
         cpal::SampleFormat::F32 => {
             let buffer = buffer.clone();
             let cursor = cursor.clone();
+            let gain_atomic = gain_atomic.clone();
             device.build_output_stream(
                 &config.config(),
                 move |out: &mut [f32], _| {
+                    let g = f32::from_bits(gain_atomic.load(Ordering::Relaxed));
                     let mut c = cursor.lock().unwrap();
                     for frame in out.chunks_mut(device_channels) {
-                        let s = buffer.get(*c).copied().unwrap_or(0.0);
+                        let s = buffer.get(*c).copied().unwrap_or(0.0) * g;
                         for sample in frame.iter_mut() {
                             *sample = s;
                         }
@@ -201,12 +270,14 @@ fn play(audio: &mut AudioState, samples: &[f32]) -> bool {
         cpal::SampleFormat::I16 => {
             let buffer = buffer.clone();
             let cursor = cursor.clone();
+            let gain_atomic = gain_atomic.clone();
             device.build_output_stream(
                 &config.config(),
                 move |out: &mut [i16], _| {
+                    let g = f32::from_bits(gain_atomic.load(Ordering::Relaxed));
                     let mut c = cursor.lock().unwrap();
                     for frame in out.chunks_mut(device_channels) {
-                        let s = buffer.get(*c).copied().unwrap_or(0.0);
+                        let s = buffer.get(*c).copied().unwrap_or(0.0) * g;
                         let v = (s.clamp(-1.0, 1.0) * i16::MAX as f32) as i16;
                         for sample in frame.iter_mut() {
                             *sample = v;
@@ -221,12 +292,14 @@ fn play(audio: &mut AudioState, samples: &[f32]) -> bool {
         cpal::SampleFormat::U16 => {
             let buffer = buffer.clone();
             let cursor = cursor.clone();
+            let gain_atomic = gain_atomic.clone();
             device.build_output_stream(
                 &config.config(),
                 move |out: &mut [u16], _| {
+                    let g = f32::from_bits(gain_atomic.load(Ordering::Relaxed));
                     let mut c = cursor.lock().unwrap();
                     for frame in out.chunks_mut(device_channels) {
-                        let s = buffer.get(*c).copied().unwrap_or(0.0);
+                        let s = buffer.get(*c).copied().unwrap_or(0.0) * g;
                         let v = ((s.clamp(-1.0, 1.0) * 0.5 + 0.5) * u16::MAX as f32) as u16;
                         for sample in frame.iter_mut() {
                             *sample = v;
@@ -256,5 +329,6 @@ fn play(audio: &mut AudioState, samples: &[f32]) -> bool {
         return false;
     }
     audio.stream = Some(NativeStream { _stream: stream });
+    audio.gain = Some(gain_atomic);
     true
 }

@@ -6,7 +6,7 @@ use bevy::color::palettes::css::{DODGER_BLUE, LIME, ORANGE, SLATE_GRAY};
 use bevy::ecs::message::MessageReader;
 use bevy::ecs::system::ParamSet;
 use bevy::input::keyboard::KeyCode;
-use bevy::input::mouse::{MouseButton, MouseMotion, MouseScrollUnit, MouseWheel};
+use bevy::input::mouse::{MouseButton, MouseScrollUnit, MouseWheel};
 use bevy::mesh::{Indices, Mesh, PrimitiveTopology};
 use bevy::prelude::*;
 use bevy::sprite_render::{ColorMaterial, MeshMaterial2d};
@@ -18,6 +18,7 @@ const CHIRP_WIDTH_PX: f32 = 90.0;
 const CANVAS_HEIGHT_PX: f32 = 320.0;
 const TOP_PADDING_PX: f32 = 30.0;
 const HEADER_HEIGHT_PX: f32 = 130.0;
+const TAB_BAR_HEIGHT_PX: f32 = 40.0;
 const LINE_THICKNESS_PX: f32 = 3.0;
 const SEPARATOR_THICKNESS_PX: f32 = 1.0;
 const AXIS_THICKNESS_PX: f32 = 2.0;
@@ -26,8 +27,20 @@ const AXIS_LABEL_FONT_SIZE: f32 = 12.0;
 
 const MIN_ZOOM: f32 = 0.2;
 const MAX_ZOOM: f32 = 4.0;
-const ZOOM_STEP_LINE: f32 = 0.1;
+const ZOOM_STEP_LINE: f32 = 0.15;
 const ZOOM_STEP_PIXEL: f32 = 0.005;
+
+/// Drag tracking for the chirp canvas. Owned by visualization.rs because
+/// it is part of the canvas interaction state.
+#[derive(Resource, Default)]
+pub struct DragState {
+    /// True while a drag is in progress.
+    pub active: bool,
+    /// Cursor position last frame (window coordinates), used to compute
+    /// per-frame deltas without relying on MouseMotion which can be
+    /// suppressed by Bevy UI input handling.
+    pub last_cursor: Vec2,
+}
 
 #[derive(Component)]
 pub struct ChirpCanvas;
@@ -408,98 +421,97 @@ pub fn refresh_canvas_visibility(
 // Pan / zoom
 // ---------------------------------------------------------------------------
 
-/// Read mouse / trackpad input on the Modulation tab and update CanvasView.
-///
 /// Bindings:
-///   * Left or right mouse drag below the header area: pan
-///   * Two-finger trackpad swipe (Pixel-unit wheel): pan
-///   * Mouse wheel (Line-unit): zoom
+///   * Click and drag (left or right mouse): pan
+///   * Mouse wheel: zoom
+///   * Two-finger trackpad swipe: zoom (treated as wheel)
 ///   * Pinch / Ctrl+wheel / Cmd+wheel: zoom
 ///
-/// On the Mac trackpad: two-finger swipe pans, pinch zooms. Single-finger
-/// click-and-drag also pans (like dragging a map). On Linux/Windows mice:
-/// wheel zooms, left-drag or right-drag pans.
+/// We track drag state ourselves rather than polling MouseButton::pressed
+/// because the latter goes wrong on the web: if the user releases the
+/// button outside the canvas, the mouseup never reaches the WASM app and
+/// the button appears stuck pressed.
+///
+/// We compute pan deltas from window cursor positions (not MouseMotion)
+/// because Bevy UI input can suppress motion events that fall over UI
+/// nodes.
 pub fn handle_canvas_input(
     active: Res<crate::ui::ActiveTab>,
     buttons: Res<ButtonInput<MouseButton>>,
     keys: Res<ButtonInput<KeyCode>>,
     windows: Query<&Window>,
-    interactions: Query<&Interaction, With<Button>>,
-    mut motion: MessageReader<MouseMotion>,
     mut wheel: MessageReader<MouseWheel>,
+    mut drag: ResMut<DragState>,
     mut view: ResMut<CanvasView>,
 ) {
     if active.0 != crate::ui::Tab::Modulation {
-        motion.clear();
         wheel.clear();
+        if drag.active {
+            drag.active = false;
+        }
         return;
     }
 
-    // Don't grab drag input if a UI button is currently being pressed
-    // (tab buttons, play button, etc.).
-    let any_button_pressed = interactions
-        .iter()
-        .any(|i| *i == Interaction::Pressed);
+    let Ok(window) = windows.single() else {
+        wheel.clear();
+        return;
+    };
+    let cursor = window.cursor_position();
 
-    // Cursor position check: only pan when cursor is below the header bar
-    // (so left-click on tabs / play button doesn't pan).
-    let cursor_in_canvas = windows
-        .single()
-        .ok()
-        .and_then(|w| w.cursor_position())
-        .map(|p| p.y > HEADER_HEIGHT_PX)
-        .unwrap_or(false);
+    // Drag state machine.
+    let any_button_held = buttons.pressed(MouseButton::Left) || buttons.pressed(MouseButton::Right);
+    let any_button_just_pressed =
+        buttons.just_pressed(MouseButton::Left) || buttons.just_pressed(MouseButton::Right);
+    let any_button_just_released =
+        buttons.just_released(MouseButton::Left) || buttons.just_released(MouseButton::Right);
 
-    let drag_active = !any_button_pressed
-        && cursor_in_canvas
-        && (buttons.pressed(MouseButton::Left) || buttons.pressed(MouseButton::Right));
-
-    if drag_active {
-        let mut dx = 0.0;
-        let mut dy = 0.0;
-        for ev in motion.read() {
-            dx += ev.delta.x;
-            dy += ev.delta.y;
+    // Start a drag: just-pressed AND cursor is inside the canvas area
+    // (below header + tab bar).
+    if any_button_just_pressed {
+        if let Some(pos) = cursor {
+            let canvas_top = HEADER_HEIGHT_PX + TAB_BAR_HEIGHT_PX;
+            if pos.y > canvas_top {
+                drag.active = true;
+                drag.last_cursor = pos;
+            }
         }
-        view.pan.x -= dx * view.zoom;
-        view.pan.y += dy * view.zoom;
-    } else {
-        motion.clear();
     }
 
-    let modifier_held = keys.pressed(KeyCode::ControlLeft)
+    // End a drag: explicit release, OR the cursor left the window
+    // (cursor == None), OR the button is no longer held.
+    if any_button_just_released || cursor.is_none() || !any_button_held {
+        if drag.active {
+            drag.active = false;
+        }
+    }
+
+    // Compute pan delta from cursor motion while dragging.
+    if drag.active {
+        if let Some(pos) = cursor {
+            let dx = pos.x - drag.last_cursor.x;
+            let dy = pos.y - drag.last_cursor.y;
+            // Window Y is down-positive; world Y is up-positive.
+            view.pan.x -= dx * view.zoom;
+            view.pan.y += dy * view.zoom;
+            drag.last_cursor = pos;
+        }
+    }
+
+    // Zoom from wheel events. All wheel input zooms; pan is exclusively
+    // drag-based. Ctrl/Cmd is irrelevant to behavior but kept for the
+    // "pinch" mental model.
+    let _modifier_held = keys.pressed(KeyCode::ControlLeft)
         || keys.pressed(KeyCode::ControlRight)
         || keys.pressed(KeyCode::SuperLeft)
         || keys.pressed(KeyCode::SuperRight);
 
-    let mut pan_dx = 0.0f32;
-    let mut pan_dy = 0.0f32;
     let mut zoom_delta = 0.0f32;
-
     for ev in wheel.read() {
         match ev.unit {
-            MouseScrollUnit::Line => {
-                // Discrete wheel: zoom.
-                zoom_delta += ev.y * ZOOM_STEP_LINE;
-            }
-            MouseScrollUnit::Pixel => {
-                if modifier_held {
-                    // Ctrl/Cmd held, or Mac trackpad pinch: zoom.
-                    zoom_delta += ev.y * ZOOM_STEP_PIXEL;
-                } else {
-                    // Trackpad two-finger swipe: pan.
-                    pan_dx += ev.x;
-                    pan_dy += ev.y;
-                }
-            }
+            MouseScrollUnit::Line => zoom_delta += ev.y * ZOOM_STEP_LINE,
+            MouseScrollUnit::Pixel => zoom_delta += ev.y * ZOOM_STEP_PIXEL,
         }
     }
-
-    if pan_dx != 0.0 || pan_dy != 0.0 {
-        view.pan.x -= pan_dx * view.zoom;
-        view.pan.y += pan_dy * view.zoom;
-    }
-
     if zoom_delta.abs() > 0.0 {
         let factor = (-zoom_delta).exp();
         view.zoom = (view.zoom * factor).clamp(MIN_ZOOM, MAX_ZOOM);
@@ -526,6 +538,7 @@ pub fn apply_canvas_view(
 pub fn reset_canvas_view_on_tab_change(
     active: Res<crate::ui::ActiveTab>,
     mut view: ResMut<CanvasView>,
+    mut drag: ResMut<DragState>,
 ) {
     if !active.is_changed() {
         return;
@@ -533,5 +546,6 @@ pub fn reset_canvas_view_on_tab_change(
     if active.0 != crate::ui::Tab::Modulation {
         view.pan = Vec2::ZERO;
         view.zoom = 1.0;
+        drag.active = false;
     }
 }

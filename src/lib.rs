@@ -20,9 +20,11 @@ impl Plugin for LorawanwizPlugin {
             .init_resource::<state::ChirpAnimator>()
             .init_resource::<state::CanvasView>()
             .init_resource::<state::CryptoEdit>()
+            .init_resource::<state::AudioSettings>()
             .init_resource::<ui::MessageFieldFocus>()
             .init_resource::<ui::ActiveTab>()
             .init_resource::<audio::AudioState>()
+            .init_resource::<visualization::DragState>()
             .add_systems(
                 Startup,
                 (
@@ -40,6 +42,8 @@ impl Plugin for LorawanwizPlugin {
                     ui::handle_homepage_hover,
                     ui::handle_homepage_click,
                     ui::handle_cycle_clicks,
+                    ui::handle_volume_click,
+                    ui::handle_mute_click,
                     ui::handle_field_focus,
                     ui::handle_message_typing,
                     ui::handle_crypto_typing,
@@ -55,6 +59,7 @@ impl Plugin for LorawanwizPlugin {
                 (
                     ui::refresh_labels,
                     ui::refresh_crypto_field_labels,
+                    ui::refresh_audio_button_labels,
                     ui::rebuild_step_panels,
                     ui::handle_tooltips,
                     visualization::rebuild_chirp_canvas,
@@ -65,6 +70,7 @@ impl Plugin for LorawanwizPlugin {
                     visualization::reset_canvas_view_on_tab_change,
                     audio::handle_play_button,
                     audio::tick_animator,
+                    audio::apply_audio_settings,
                 ),
             )
             .add_systems(Startup, mark_dirty_at_start);
