@@ -676,7 +676,7 @@ pub fn handle_canvas_input(
     mut drag: ResMut<DragState>,
     mut view: ResMut<CanvasView>,
 ) {
-    if active.0 != crate::ui::Tab::Modulation {
+    if active.0 != crate::ui::Tab::Modulation && active.0 != crate::ui::Tab::TimeDomain {
         wheel.clear();
         if drag.active {
             drag.active = false;
@@ -775,7 +775,7 @@ pub fn reset_canvas_view_on_tab_change(
     if !active.is_changed() {
         return;
     }
-    if active.0 != crate::ui::Tab::Modulation {
+    if active.0 != crate::ui::Tab::Modulation && active.0 != crate::ui::Tab::TimeDomain {
         view.pan = Vec2::ZERO;
         view.zoom = 1.0;
         drag.active = false;

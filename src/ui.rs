@@ -145,6 +145,7 @@ pub enum Tab {
     Plaintext,
     Frame,
     Modulation,
+    TimeDomain,
     About,
 }
 
@@ -265,6 +266,7 @@ pub fn build_ui(mut commands: Commands) {
                 tab_button(bar, Tab::Plaintext, "Plaintext");
                 tab_button(bar, Tab::Frame, "Frame");
                 tab_button(bar, Tab::Modulation, "Modulation");
+                tab_button(bar, Tab::TimeDomain, "Waveforms");
                 tab_button(bar, Tab::About, "About");
             });
 
@@ -280,6 +282,7 @@ pub fn build_ui(mut commands: Commands) {
                 build_plaintext_tab(content);
                 build_frame_tab(content);
                 build_modulation_tab(content);
+                build_time_domain_tab(content);
                 build_about_tab(content);
             });
 
@@ -523,6 +526,45 @@ fn build_modulation_tab(content: &mut ChildSpawnerCommands) {
         });
 }
 
+fn build_time_domain_tab(content: &mut ChildSpawnerCommands) {
+    content
+        .spawn((
+            Node {
+                width: Val::Percent(100.0),
+                height: Val::Percent(100.0),
+                display: Display::None,
+                flex_direction: FlexDirection::Column,
+                padding: UiRect::all(Val::Px(12.0)),
+                row_gap: Val::Px(8.0),
+                ..default()
+            },
+            TabContent(Tab::TimeDomain),
+        ))
+        .with_children(|m| {
+            m.spawn((
+                Text::new("Waveforms (real-amplitude time domain)"),
+                TextFont { font_size: FONT_L, ..default() },
+                TextColor(ACCENT),
+            ));
+            m.spawn((
+                Text::new(
+                    "Real-valued amplitude in [-1, 1] over time, drawn from the audio-rescaled \
+                     samples (top frequency 3 kHz, T_sym = 80 ms). When Decode is on, the product \
+                     row is signal samples times reference samples, exactly: a real time-domain \
+                     multiplication. The fast carrier is the sum frequency (filtered out by a \
+                     real receiver); the slow envelope is the difference frequency, which equals \
+                     the symbol value times BW / 2^SF. A fourth row shows the FFT magnitude of \
+                     that product, sliced to the audible band so the peak is visible. Header and \
+                     payload columns get a small annotation under the FFT row showing the symbol \
+                     value recovered from the peak bin.\n\
+                     Pan: click and drag.   Zoom: mouse wheel, or pinch on a Mac trackpad."
+                ),
+                TextFont { font_size: FONT_S, ..default() },
+                TextColor(MUTED_FG),
+            ));
+        });
+}
+
 fn build_about_tab(content: &mut ChildSpawnerCommands) {
     content
         .spawn((
@@ -571,7 +613,11 @@ fn build_about_tab(content: &mut ChildSpawnerCommands) {
             );
             about_heading(a, "Pan and zoom");
             about_para(a,
-                "On the Modulation tab: click and drag to pan. Mouse wheel zooms; on a Mac trackpad, pinch zooms. Switching tabs resets the view."
+                "On the Modulation and Waveforms tabs: click and drag to pan. Mouse wheel zooms; on a Mac trackpad, pinch zooms. View persists when switching between Modulation and Waveforms (you stay at the same horizontal position); other tabs reset the view."
+            );
+            about_heading(a, "Modulation vs Waveforms");
+            about_para(a,
+                "Modulation plots instantaneous frequency over time, with a representational shortcut for the dechirping product (frequency addition modulo BW). Waveforms plots actual real-valued amplitude samples and computes the product by literal sample-by-sample multiplication, so the sum-and-difference identity is visible: a fast carrier modulated by a slow beat envelope at the difference frequency. Decode toggle is shared between the two tabs."
             );
             about_heading(a, "Max payload");
             about_para(a,
@@ -776,7 +822,7 @@ fn play_button(parent: &mut ChildSpawnerCommands) {
             },
             BackgroundColor(ACCENT),
             PlayAudioButton,
-            Tooltip("Play the chirp sequence. The highlight bar in the Modulation tab tracks the audible chirp. Disabled while a playback is running."),
+            Tooltip("Play the chirp sequence. The highlight bar on the Modulation and Waveforms tabs tracks the audible chirp. Disabled while a playback is running."),
         ))
         .with_children(|b| {
             b.spawn((
@@ -892,7 +938,7 @@ fn decode_button(parent: &mut ChildSpawnerCommands) {
             },
             BackgroundColor(BUTTON_BG),
             DecodeButton,
-            Tooltip("Toggle the decoding visualization. When on, the chirp canvas adds two rows: the conjugate reference downchirp, and the product (signal times conjugate reference) which would feed an FFT in a real receiver. Click again to hide them."),
+            Tooltip("Toggle the decoding visualization on the Modulation and Waveforms tabs. When on, the canvas adds two rows: the reference and the product. Click again to hide them."),
         ))
         .with_children(|b| {
             b.spawn((
@@ -1526,7 +1572,7 @@ pub fn rebuild_step_panels(
             step_panel(c, 7, "Baseband chirps", |b| {
                 kv(b, "T_sym", &format!("{:.3} ms", (1u32 << inputs.sf) as f32 / inputs.bw_hz * 1000.0));
                 kv(b, "chirps queued", &format!("{}", output.chirps.len()));
-                kv(b, "see", "Modulation tab for the chirp visualization (drag pan, wheel zoom)");
+                kv(b, "see", "Modulation or Waveforms tabs for the chirp visualization (drag pan, wheel zoom)");
             });
         });
     }
@@ -1606,7 +1652,7 @@ pub fn handle_scroll(
     mut q: Query<(&mut ScrollPosition, &ComputedNode, &Children, &TabContent), With<StepsContainer>>,
     children_q: Query<&ComputedNode>,
 ) {
-    if active.0 == Tab::Modulation {
+    if active.0 == Tab::Modulation || active.0 == Tab::TimeDomain {
         wheel.clear();
         return;
     }

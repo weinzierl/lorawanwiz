@@ -7,6 +7,7 @@ pub mod math;
 pub mod persistence;
 pub mod pipeline;
 pub mod state;
+pub mod time_visualization;
 pub mod ui;
 pub mod visualization;
 
@@ -86,6 +87,9 @@ impl Plugin for LorawanwizPlugin {
                     export::handle_export_click,
                     ui::handle_decode_click,
                     ui::refresh_decode_label,
+                    time_visualization::rebuild_time_canvas,
+                    time_visualization::animate_time_chirps,
+                    time_visualization::refresh_time_canvas_visibility,
                 ),
             )
             .add_systems(Startup, mark_dirty_at_start);
