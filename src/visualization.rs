@@ -12,10 +12,16 @@ use bevy::prelude::*;
 use bevy::sprite_render::{ColorMaterial, MeshMaterial2d};
 
 use crate::math::{ChirpDirection, SymbolKind};
-use crate::state::{CanvasView, ChirpAnimator, LorawanInputs, PipelineOutput};
+use crate::state::{CanvasView, ChirpAnimator, DecodeView, LorawanInputs, PipelineOutput};
 
 const CHIRP_WIDTH_PX: f32 = 90.0;
 const CANVAS_HEIGHT_PX: f32 = 320.0;
+/// Per-row height when decode mode shows three rows. Picked to keep
+/// each individual row readable while not making the total canvas
+/// dwarf the rest of the modulation tab.
+const DECODE_ROW_HEIGHT_PX: f32 = 200.0;
+/// Vertical gap between rows in decode mode.
+const DECODE_ROW_GAP_PX: f32 = 18.0;
 const TOP_PADDING_PX: f32 = 30.0;
 const HEADER_HEIGHT_PX: f32 = 130.0;
 const TAB_BAR_HEIGHT_PX: f32 = 40.0;
@@ -76,6 +82,7 @@ pub fn rebuild_chirp_canvas(
     output: Res<PipelineOutput>,
     inputs: Res<LorawanInputs>,
     active: Res<crate::ui::ActiveTab>,
+    decode: Res<DecodeView>,
     windows: Query<&Window>,
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -84,8 +91,9 @@ pub fn rebuild_chirp_canvas(
     existing_axes: Query<Entity, With<ChirpAxis>>,
     existing_separators: Query<Entity, With<ChirpSeparator>>,
     existing_labels: Query<Entity, With<ChirpLabel>>,
+    existing_highlights: Query<Entity, With<ChirpHighlight>>,
 ) {
-    if !output.is_changed() {
+    if !output.is_changed() && !decode.is_changed() {
         return;
     }
 
@@ -94,6 +102,7 @@ pub fn rebuild_chirp_canvas(
         .chain(existing_axes.iter())
         .chain(existing_separators.iter())
         .chain(existing_labels.iter())
+        .chain(existing_highlights.iter())
     {
         commands.entity(e).despawn();
     }
@@ -113,34 +122,214 @@ pub fn rebuild_chirp_canvas(
         .map(|w| w.resolution.height())
         .unwrap_or(800.0);
 
-    let canvas_center_y = -HEADER_HEIGHT_PX * 0.5;
-    let y0 = canvas_center_y - CANVAS_HEIGHT_PX * 0.5;
-    let y_top = y0 + CANVAS_HEIGHT_PX;
-
     let total_width = output.chirps.len() as f32 * CHIRP_WIDTH_PX;
     let x0 = -total_width * 0.5;
+    let t_sym_ms = (1u32 << inputs.sf) as f32 / inputs.bw_hz * 1000.0;
 
+    // Pre-compute the reference downchirp's frequency trace once, since
+    // the same value-0 conjugate (downchirp) is the dechirping reference
+    // for every column. We borrow the length and bandwidth from the
+    // first chirp so the reference matches the per-symbol sample count
+    // exactly for product computation.
+    let first_chirp = &output.chirps[0];
+    let ref_trace = make_reference_trace(first_chirp.freq_trace.len(), inputs.bw_hz);
+
+    if decode.enabled {
+        // Three rows, stacked vertically. Top: signal, middle: reference,
+        // bottom: product. Y math computes each row's center.
+        let rows_total_h =
+            DECODE_ROW_HEIGHT_PX * 3.0 + DECODE_ROW_GAP_PX * 2.0;
+        let canvas_center_y = -HEADER_HEIGHT_PX * 0.5;
+        let canvas_top_y = canvas_center_y + rows_total_h * 0.5;
+
+        let signal_cy = canvas_top_y - DECODE_ROW_HEIGHT_PX * 0.5;
+        let ref_cy = signal_cy - DECODE_ROW_HEIGHT_PX - DECODE_ROW_GAP_PX;
+        let prod_cy = ref_cy - DECODE_ROW_HEIGHT_PX - DECODE_ROW_GAP_PX;
+
+        draw_row(
+            &mut commands,
+            &mut meshes,
+            &mut materials,
+            &output,
+            inputs.bw_hz,
+            x0,
+            signal_cy,
+            DECODE_ROW_HEIGHT_PX,
+            RowKind::Signal,
+            &ref_trace,
+            initial_visibility,
+        );
+        draw_row(
+            &mut commands,
+            &mut meshes,
+            &mut materials,
+            &output,
+            inputs.bw_hz,
+            x0,
+            ref_cy,
+            DECODE_ROW_HEIGHT_PX,
+            RowKind::Reference,
+            &ref_trace,
+            initial_visibility,
+        );
+        draw_row(
+            &mut commands,
+            &mut meshes,
+            &mut materials,
+            &output,
+            inputs.bw_hz,
+            x0,
+            prod_cy,
+            DECODE_ROW_HEIGHT_PX,
+            RowKind::Product,
+            &ref_trace,
+            initial_visibility,
+        );
+
+        // Per-symbol header labels (kind letter + index + raw value) go
+        // above the top (signal) row only.
+        spawn_chirp_header_labels(
+            &mut commands,
+            &output,
+            x0,
+            signal_cy + DECODE_ROW_HEIGHT_PX * 0.5 + 12.0,
+            initial_visibility,
+        );
+
+        // X-axis time annotation under the bottom (product) row.
+        spawn_text_label(
+            &mut commands,
+            format!(
+                "time ({} symbols, T_sym = {:.3} ms)",
+                output.chirps.len(),
+                t_sym_ms
+            ),
+            Vec2::new(
+                x0 + total_width * 0.5,
+                prod_cy - DECODE_ROW_HEIGHT_PX * 0.5 - 22.0,
+            ),
+            AXIS_LABEL_FONT_SIZE,
+            Color::srgb(0.40, 0.75, 1.00),
+            initial_visibility,
+            ChirpAxis,
+        );
+
+        // Highlight bar spans all three rows.
+        let highlight_h = rows_total_h;
+        let highlight_cy =
+            (signal_cy + prod_cy) * 0.5; // midpoint between top and bottom centers
+        let highlight = build_rect_mesh(CHIRP_WIDTH_PX, highlight_h);
+        commands.spawn((
+            Mesh2d(meshes.add(highlight)),
+            MeshMaterial2d(materials.add(Color::srgba(1.0, 0.95, 0.55, 0.18))),
+            Transform::from_xyz(x0 + CHIRP_WIDTH_PX * 0.5, highlight_cy, 0.5),
+            Visibility::Hidden,
+            ChirpHighlight,
+        ));
+    } else {
+        // Single-row layout (original behavior). Centered the same way
+        // as before to avoid any visible jump when toggling.
+        let canvas_center_y = -HEADER_HEIGHT_PX * 0.5;
+        let cy = canvas_center_y;
+
+        draw_row(
+            &mut commands,
+            &mut meshes,
+            &mut materials,
+            &output,
+            inputs.bw_hz,
+            x0,
+            cy,
+            CANVAS_HEIGHT_PX,
+            RowKind::Signal,
+            &ref_trace,
+            initial_visibility,
+        );
+
+        spawn_chirp_header_labels(
+            &mut commands,
+            &output,
+            x0,
+            cy + CANVAS_HEIGHT_PX * 0.5 + 12.0,
+            initial_visibility,
+        );
+
+        spawn_text_label(
+            &mut commands,
+            format!(
+                "time ({} symbols, T_sym = {:.3} ms)",
+                output.chirps.len(),
+                t_sym_ms
+            ),
+            Vec2::new(x0 + total_width * 0.5, cy - CANVAS_HEIGHT_PX * 0.5 - 22.0),
+            AXIS_LABEL_FONT_SIZE,
+            Color::srgb(0.40, 0.75, 1.00),
+            initial_visibility,
+            ChirpAxis,
+        );
+
+        let highlight = build_rect_mesh(CHIRP_WIDTH_PX, CANVAS_HEIGHT_PX);
+        commands.spawn((
+            Mesh2d(meshes.add(highlight)),
+            MeshMaterial2d(materials.add(Color::srgba(1.0, 0.95, 0.55, 0.22))),
+            Transform::from_xyz(x0 + CHIRP_WIDTH_PX * 0.5, cy, 0.5),
+            Visibility::Hidden,
+            ChirpHighlight,
+        ));
+    }
+}
+
+/// Which of the three decode-mode rows we're drawing. Affects the
+/// frequency curve, the row label, and the line color.
+#[derive(Copy, Clone)]
+enum RowKind {
+    Signal,
+    Reference,
+    Product,
+}
+
+#[allow(clippy::too_many_arguments)]
+fn draw_row(
+    commands: &mut Commands,
+    meshes: &mut ResMut<Assets<Mesh>>,
+    materials: &mut ResMut<Assets<ColorMaterial>>,
+    output: &PipelineOutput,
+    bw_hz: f32,
+    x0: f32,
+    cy: f32,
+    row_height: f32,
+    row_kind: RowKind,
+    ref_trace: &[f32],
+    initial_visibility: Visibility,
+) {
+    let total_width = output.chirps.len() as f32 * CHIRP_WIDTH_PX;
+    let y_top = cy + row_height * 0.5;
+    let y_bot = cy - row_height * 0.5;
+
+    // X-axis baseline for this row.
     let axis_mesh = build_rect_mesh(total_width, AXIS_THICKNESS_PX);
     commands.spawn((
         Mesh2d(meshes.add(axis_mesh)),
         MeshMaterial2d(materials.add(Color::from(SLATE_GRAY))),
-        Transform::from_xyz(x0 + total_width * 0.5, y0, 0.0),
+        Transform::from_xyz(x0 + total_width * 0.5, y_bot, 0.0),
         initial_visibility,
         ChirpAxis,
     ));
-
-    let y_axis_mesh = build_rect_mesh(AXIS_THICKNESS_PX, CANVAS_HEIGHT_PX);
+    // Y-axis vertical line for this row.
+    let y_axis_mesh = build_rect_mesh(AXIS_THICKNESS_PX, row_height);
     commands.spawn((
         Mesh2d(meshes.add(y_axis_mesh)),
         MeshMaterial2d(materials.add(Color::from(SLATE_GRAY))),
-        Transform::from_xyz(x0, y0 + CANVAS_HEIGHT_PX * 0.5, 0.0),
+        Transform::from_xyz(x0, cy, 0.0),
         initial_visibility,
         ChirpAxis,
     ));
 
-    let bw_khz = inputs.bw_hz / 1000.0;
+    // Y-axis labels (BW at top, 0 Hz at bottom) and the row name on
+    // the far left.
+    let bw_khz = bw_hz / 1000.0;
     spawn_text_label(
-        &mut commands,
+        commands,
         format!("{:.0} kHz", bw_khz),
         Vec2::new(x0 - 36.0, y_top - 8.0),
         AXIS_LABEL_FONT_SIZE,
@@ -149,51 +338,55 @@ pub fn rebuild_chirp_canvas(
         ChirpAxis,
     );
     spawn_text_label(
-        &mut commands,
+        commands,
         "0 Hz".to_string(),
-        Vec2::new(x0 - 30.0, y0 + 8.0),
+        Vec2::new(x0 - 30.0, y_bot + 8.0),
         AXIS_LABEL_FONT_SIZE,
         Color::srgb(0.55, 0.58, 0.65),
         initial_visibility,
         ChirpAxis,
     );
+    let row_label = match row_kind {
+        RowKind::Signal => "signal",
+        RowKind::Reference => "reference",
+        RowKind::Product => "product",
+    };
     spawn_text_label(
-        &mut commands,
-        "frequency".to_string(),
-        Vec2::new(x0 - 32.0, y0 + CANVAS_HEIGHT_PX * 0.5),
+        commands,
+        row_label.to_string(),
+        Vec2::new(x0 - 32.0, cy),
         AXIS_LABEL_FONT_SIZE,
         Color::srgb(0.40, 0.75, 1.00),
         initial_visibility,
         ChirpAxis,
     );
 
-    let t_sym_ms = (1u32 << inputs.sf) as f32 / inputs.bw_hz * 1000.0;
-    spawn_text_label(
-        &mut commands,
-        format!(
-            "time ({} symbols, T_sym = {:.3} ms)",
-            output.chirps.len(),
-            t_sym_ms
-        ),
-        Vec2::new(x0 + total_width * 0.5, y0 - 22.0),
-        AXIS_LABEL_FONT_SIZE,
-        Color::srgb(0.40, 0.75, 1.00),
-        initial_visibility,
-        ChirpAxis,
-    );
-
+    // Per-chirp meshes and separators for this row.
     for (i, chirp) in output.chirps.iter().enumerate() {
         let sym = &output.symbols[i];
-        let color = color_for(sym.kind, chirp.direction);
+        let color = match row_kind {
+            RowKind::Signal => color_for(sym.kind, chirp.direction),
+            RowKind::Reference => Color::srgb(0.55, 0.58, 0.65),
+            RowKind::Product => Color::srgb(0.95, 0.78, 0.45),
+        };
 
         let cx = x0 + i as f32 * CHIRP_WIDTH_PX + CHIRP_WIDTH_PX * 0.5;
-        let cy = y0 + CANVAS_HEIGHT_PX * 0.5;
+
+        // Build the frequency trace this row needs from the per-symbol
+        // signal trace (which already exists) and the shared reference
+        // trace. Only the signal row uses the chirp's own trace
+        // directly; the other two are derived.
+        let trace: Vec<f32> = match row_kind {
+            RowKind::Signal => chirp.freq_trace.clone(),
+            RowKind::Reference => ref_trace.to_vec(),
+            RowKind::Product => product_trace(&chirp.freq_trace, ref_trace, bw_hz),
+        };
 
         let mesh = build_chirp_mesh(
-            &chirp.freq_trace,
-            inputs.bw_hz,
+            &trace,
+            bw_hz,
             CHIRP_WIDTH_PX * 0.92,
-            CANVAS_HEIGHT_PX - TOP_PADDING_PX,
+            row_height - TOP_PADDING_PX,
         );
 
         commands.spawn((
@@ -206,16 +399,31 @@ pub fn rebuild_chirp_canvas(
 
         if i + 1 < output.chirps.len() {
             let sep_x = x0 + (i + 1) as f32 * CHIRP_WIDTH_PX;
-            let sep_mesh = build_rect_mesh(SEPARATOR_THICKNESS_PX, CANVAS_HEIGHT_PX);
+            let sep_mesh = build_rect_mesh(SEPARATOR_THICKNESS_PX, row_height);
             commands.spawn((
                 Mesh2d(meshes.add(sep_mesh)),
                 MeshMaterial2d(materials.add(Color::srgba(1.0, 1.0, 1.0, 0.10))),
-                Transform::from_xyz(sep_x, y0 + CANVAS_HEIGHT_PX * 0.5, 0.2),
+                Transform::from_xyz(sep_x, cy, 0.2),
                 initial_visibility,
                 ChirpSeparator,
             ));
         }
+    }
+}
 
+/// Per-symbol header labels (kind letter + index + raw value) above
+/// a row. Drawn as `ChirpLabel` so they hide/show with the canvas.
+fn spawn_chirp_header_labels(
+    commands: &mut Commands,
+    output: &PipelineOutput,
+    x0: f32,
+    label_y: f32,
+    initial_visibility: Visibility,
+) {
+    for (i, chirp) in output.chirps.iter().enumerate() {
+        let sym = &output.symbols[i];
+        let color = color_for(sym.kind, chirp.direction);
+        let cx = x0 + i as f32 * CHIRP_WIDTH_PX + CHIRP_WIDTH_PX * 0.5;
         let kind_letter = match sym.kind {
             SymbolKind::Preamble => "P",
             SymbolKind::Sync => "S",
@@ -224,24 +432,48 @@ pub fn rebuild_chirp_canvas(
         };
         let label = format!("{}{}\n0x{:X}", kind_letter, i, sym.raw);
         spawn_text_label(
-            &mut commands,
+            commands,
             label,
-            Vec2::new(cx, y_top + 12.0),
+            Vec2::new(cx, label_y),
             LABEL_FONT_SIZE,
             color,
             initial_visibility,
             ChirpLabel,
         );
     }
+}
 
-    let highlight = build_rect_mesh(CHIRP_WIDTH_PX, CANVAS_HEIGHT_PX);
-    commands.spawn((
-        Mesh2d(meshes.add(highlight)),
-        MeshMaterial2d(materials.add(Color::srgba(1.0, 0.95, 0.55, 0.22))),
-        Transform::from_xyz(x0 + CHIRP_WIDTH_PX * 0.5, y0 + CANVAS_HEIGHT_PX * 0.5, 0.5),
-        Visibility::Hidden,
-        ChirpHighlight,
-    ));
+/// Frequency trace of the conjugate of the basic value-0 upchirp,
+/// which is the dechirping reference. Linear sweep from BW down to 0
+/// over `n` samples. Same shape as a downchirp's `freq_trace`.
+fn make_reference_trace(n: usize, bw_hz: f32) -> Vec<f32> {
+    if n == 0 {
+        return Vec::new();
+    }
+    let mut out = Vec::with_capacity(n);
+    let denom = (n.saturating_sub(1)) as f32;
+    for i in 0..n {
+        let t = if denom == 0.0 { 0.0 } else { i as f32 / denom };
+        let f = bw_hz * (1.0 - t);
+        out.push(f.clamp(0.0, bw_hz));
+    }
+    out
+}
+
+/// Pointwise sum of the signal and reference frequency traces, modulo
+/// BW. This represents the time-domain product (multiplication of two
+/// complex chirps adds their instantaneous frequencies). For a value-v
+/// upchirp signal against the value-0 downchirp reference, the result
+/// is a flat horizontal line at v · (BW / 2^SF). For a downchirp
+/// signal it produces a wrapped double-rate downchirp instead.
+fn product_trace(signal: &[f32], reference: &[f32], bw_hz: f32) -> Vec<f32> {
+    let n = signal.len().min(reference.len());
+    let mut out = Vec::with_capacity(n);
+    for i in 0..n {
+        let f = (signal[i] + reference[i]).rem_euclid(bw_hz);
+        out.push(f);
+    }
+    out
 }
 
 fn spawn_text_label(

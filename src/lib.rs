@@ -2,6 +2,7 @@
 //! tiny shim that runs `App::new().add_plugins(LorawanwizPlugin).run()`.
 
 pub mod audio;
+pub mod export;
 pub mod math;
 pub mod persistence;
 pub mod pipeline;
@@ -22,6 +23,7 @@ impl Plugin for LorawanwizPlugin {
             .init_resource::<state::CanvasView>()
             .init_resource::<state::CryptoEdit>()
             .init_resource::<state::AudioSettings>()
+            .init_resource::<state::DecodeView>()
             .init_resource::<ui::MessageFieldFocus>()
             .init_resource::<ui::ActiveTab>()
             .init_resource::<audio::AudioState>()
@@ -81,6 +83,9 @@ impl Plugin for LorawanwizPlugin {
                     persistence::handle_save_click,
                     persistence::handle_load_click,
                     persistence::poll_pending_load,
+                    export::handle_export_click,
+                    ui::handle_decode_click,
+                    ui::refresh_decode_label,
                 ),
             )
             .add_systems(Startup, mark_dirty_at_start);

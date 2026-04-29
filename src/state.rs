@@ -225,6 +225,17 @@ impl AudioSettings {
     }
 }
 
+/// Toggleable view-state for the modulation tab. When on, the chirp
+/// canvas shows three rows (signal, reference, product) instead of
+/// just the signal. The product row is the pointwise sum (modulo BW)
+/// of the signal's instantaneous frequency and the conjugate
+/// reference's instantaneous frequency, which is the dechirping
+/// operation expressed in the frequency-trace domain. No FFT is run.
+#[derive(Resource, Default)]
+pub struct DecodeView {
+    pub enabled: bool,
+}
+
 /// Persistent snapshot of all user-facing settings, written to and read
 /// from RON files via the Save / Load buttons.
 #[derive(Serialize, Deserialize, Clone)]

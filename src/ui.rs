@@ -7,8 +7,8 @@ use bevy::prelude::*;
 
 use crate::math::{ChirpDirection, SymbolKind};
 use crate::state::{
-    parse_hex, AudioSettings, ChirpAnimator, CodingRate, CryptoEdit, CryptoFocus, InputsDirty,
-    LorawanInputs, PipelineOutput,
+    parse_hex, AudioSettings, ChirpAnimator, CodingRate, CryptoEdit, CryptoFocus, DecodeView,
+    InputsDirty, LorawanInputs, PipelineOutput,
 };
 
 const PANEL_BG: Color = Color::srgb(0.10, 0.11, 0.14);
@@ -44,6 +44,7 @@ const MUTE_BTN_WIDTH: f32 = 110.0;
 const PLAY_BTN_WIDTH: f32 = 90.0;
 const STOP_BTN_WIDTH: f32 = 90.0;
 const FILE_BTN_WIDTH: f32 = 90.0;
+const DECODE_BTN_WIDTH: f32 = 130.0;
 
 const COPYRIGHT_TEXT: &str = "Copyright L. Weinzierl, 2026";
 const HOMEPAGE_URL: &str = "https://weinzierlweb.com";
@@ -98,6 +99,15 @@ pub struct SaveButton;
 
 #[derive(Component)]
 pub struct LoadButton;
+
+#[derive(Component)]
+pub struct ExportButton;
+
+#[derive(Component)]
+pub struct DecodeButton;
+
+#[derive(Component)]
+pub struct DecodeLabel;
 
 #[derive(Component)]
 pub struct HomepageLink;
@@ -228,10 +238,14 @@ pub fn build_ui(mut commands: Commands) {
                 mute_button(t);
                 play_button(t);
                 stop_button(t);
-                // Spacer between audio controls and file controls.
+                // Spacer between audio controls and view-toggle controls.
+                t.spawn(Node { width: Val::Px(16.0), ..default() });
+                decode_button(t);
+                // Spacer between view-toggle and file controls.
                 t.spawn(Node { width: Val::Px(16.0), ..default() });
                 save_button(t);
                 load_button(t);
+                export_button(t);
             });
 
             // === Tab bar ===
@@ -843,6 +857,53 @@ fn load_button(parent: &mut ChildSpawnerCommands) {
         });
 }
 
+fn export_button(parent: &mut ChildSpawnerCommands) {
+    parent
+        .spawn((
+            Button,
+            Node {
+                padding: UiRect::axes(Val::Px(14.0), Val::Px(6.0)),
+                width: Val::Px(FILE_BTN_WIDTH),
+                justify_content: JustifyContent::Center,
+                ..default()
+            },
+            BackgroundColor(BUTTON_BG),
+            ExportButton,
+            Tooltip("Export the entire LoRaWAN flow as a Typst document. Compile with `typst compile lorawanwiz_export.typ` to get a PDF."),
+        ))
+        .with_children(|b| {
+            b.spawn((
+                Text::new("Export"),
+                TextFont { font_size: FONT_M, ..default() },
+                TextColor(PANEL_FG),
+            ));
+        });
+}
+
+fn decode_button(parent: &mut ChildSpawnerCommands) {
+    parent
+        .spawn((
+            Button,
+            Node {
+                padding: UiRect::axes(Val::Px(10.0), Val::Px(6.0)),
+                width: Val::Px(DECODE_BTN_WIDTH),
+                justify_content: JustifyContent::Center,
+                ..default()
+            },
+            BackgroundColor(BUTTON_BG),
+            DecodeButton,
+            Tooltip("Toggle the decoding visualization. When on, the chirp canvas adds two rows: the conjugate reference downchirp, and the product (signal times conjugate reference) which would feed an FFT in a real receiver. Click again to hide them."),
+        ))
+        .with_children(|b| {
+            b.spawn((
+                Text::new("Decode: off"),
+                TextFont { font_size: FONT_M, ..default() },
+                TextColor(PANEL_FG),
+                DecodeLabel,
+            ));
+        });
+}
+
 fn tab_button(parent: &mut ChildSpawnerCommands, tab: Tab, label: &str) {
     parent
         .spawn((
@@ -902,6 +963,32 @@ pub fn handle_mute_click(
     for i in &q {
         if *i == Interaction::Pressed {
             settings.muted = !settings.muted;
+        }
+    }
+}
+
+pub fn handle_decode_click(
+    q: Query<&Interaction, (Changed<Interaction>, With<DecodeButton>)>,
+    mut decode: ResMut<DecodeView>,
+) {
+    for i in &q {
+        if *i == Interaction::Pressed {
+            decode.enabled = !decode.enabled;
+        }
+    }
+}
+
+pub fn refresh_decode_label(
+    decode: Res<DecodeView>,
+    mut q: Query<&mut Text, With<DecodeLabel>>,
+) {
+    if !decode.is_changed() {
+        return;
+    }
+    let s = if decode.enabled { "Decode: on" } else { "Decode: off" };
+    for mut t in &mut q {
+        if t.0 != s {
+            t.0 = s.to_string();
         }
     }
 }
