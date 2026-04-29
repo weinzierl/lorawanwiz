@@ -1,19 +1,16 @@
 //! Audio playback for the chirp sequence.
 //!
 //! Native: cpal output stream, kept alive on AudioState.
-//! WASM:   web-sys AudioContext + GainNode, kept alive on AudioState.
-//!
-//! Volume and mute are applied live: changes during playback take effect
-//! immediately. Native uses an Arc<AtomicU32> storing f32 bits, read by
-//! the audio callback. Web stores the GainNode and we set its gain on
-//! settings change.
+//! WASM:   web-sys AudioContext + GainNode + BufferSource, kept alive on
+//! AudioState so we can support live volume changes (GainNode) and Stop
+//! (calling source.stop()).
 
 use bevy::prelude::*;
 
 use crate::state::{AUDIO_TARGET_T_SYM_S, AudioSettings, ChirpAnimator, PipelineOutput};
 #[cfg(target_arch = "wasm32")]
 use crate::state::AUDIO_SAMPLE_RATE_HZ;
-use crate::ui::PlayAudioButton;
+use crate::ui::{PlayAudioButton, StopAudioButton};
 
 #[cfg(not(target_arch = "wasm32"))]
 use std::sync::{Arc, atomic::{AtomicU32, Ordering}};
@@ -22,16 +19,13 @@ use std::sync::{Arc, atomic::{AtomicU32, Ordering}};
 pub struct AudioState {
     #[cfg(target_arch = "wasm32")]
     ctx: Option<web_sys::AudioContext>,
-    /// While playback is in flight, holds the GainNode so live volume
-    /// changes can mutate it. Cleared (along with the source) when the
-    /// next play starts.
     #[cfg(target_arch = "wasm32")]
     current_gain: Option<web_sys::GainNode>,
+    #[cfg(target_arch = "wasm32")]
+    current_source: Option<web_sys::AudioBufferSourceNode>,
 
     #[cfg(not(target_arch = "wasm32"))]
     stream: Option<NativeStream>,
-    /// Shared float read by the cpal callback every frame, written by
-    /// the main thread when AudioSettings changes.
     #[cfg(not(target_arch = "wasm32"))]
     gain: Option<Arc<AtomicU32>>,
 }
@@ -56,6 +50,22 @@ pub fn handle_play_button(
             animator.elapsed_s = 0.0;
             animator.current_index = 0;
         }
+    }
+}
+
+pub fn handle_stop_button(
+    q: Query<&Interaction, (Changed<Interaction>, With<StopAudioButton>)>,
+    mut audio: ResMut<AudioState>,
+    mut animator: ResMut<ChirpAnimator>,
+) {
+    for i in &q {
+        if *i != Interaction::Pressed {
+            continue;
+        }
+        stop(&mut audio);
+        animator.playing = false;
+        animator.elapsed_s = 0.0;
+        animator.current_index = 0;
     }
 }
 
@@ -84,7 +94,6 @@ pub fn tick_animator(
     animator.current_index = idx.min(output.chirps.len().saturating_sub(1));
 }
 
-/// Push live volume/mute changes to the active playback (if any).
 pub fn apply_audio_settings(settings: Res<AudioSettings>, audio: ResMut<AudioState>) {
     if !settings.is_changed() {
         return;
@@ -106,10 +115,6 @@ fn apply_gain(audio: ResMut<AudioState>, gain: f32) {
         g.store(gain.clamp(0.0, 1.0).to_bits(), Ordering::Relaxed);
     }
 }
-
-// ---------------------------------------------------------------------------
-// WASM (Web Audio)
-// ---------------------------------------------------------------------------
 
 #[cfg(target_arch = "wasm32")]
 fn play(audio: &mut AudioState, samples: &[f32], gain: f32) -> bool {
@@ -179,12 +184,23 @@ fn play(audio: &mut AudioState, samples: &[f32], gain: f32) -> bool {
     }
 
     audio.current_gain = Some(gain_node);
+    audio.current_source = Some(source);
     true
 }
 
-// ---------------------------------------------------------------------------
-// Native (cpal)
-// ---------------------------------------------------------------------------
+#[cfg(target_arch = "wasm32")]
+fn stop(audio: &mut AudioState) {
+    if let Some(source) = audio.current_source.take() {
+        // `AudioBufferSourceNode::stop()` is flagged deprecated in
+        // recent web-sys for Safari-compat reasons; the no-arg form is
+        // still functionally correct on every browser we care about,
+        // and the parent-class alternatives carry the same flag, so we
+        // just suppress the warning here.
+        #[allow(deprecated)]
+        let _ = source.stop();
+    }
+    audio.current_gain = None;
+}
 
 #[cfg(not(target_arch = "wasm32"))]
 pub struct NativeStream {
@@ -227,8 +243,6 @@ fn play(audio: &mut AudioState, samples: &[f32], gain: f32) -> bool {
     let src_rate = crate::state::AUDIO_SAMPLE_RATE_HZ as f32;
     let ratio = device_sample_rate / src_rate;
     let resampled_len = ((samples.len() as f32) * ratio) as usize;
-    // Resample at full amplitude; gain is applied per-sample in the
-    // callback so live volume changes work.
     let mut resampled = Vec::with_capacity(resampled_len);
     for i in 0..resampled_len {
         let src_idx = (i as f32) / ratio;
@@ -331,4 +345,10 @@ fn play(audio: &mut AudioState, samples: &[f32], gain: f32) -> bool {
     audio.stream = Some(NativeStream { _stream: stream });
     audio.gain = Some(gain_atomic);
     true
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn stop(audio: &mut AudioState) {
+    audio.stream = None;
+    audio.gain = None;
 }

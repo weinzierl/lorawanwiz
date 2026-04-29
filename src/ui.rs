@@ -14,8 +14,11 @@ use crate::state::{
 const PANEL_BG: Color = Color::srgb(0.10, 0.11, 0.14);
 const HEADER_BG: Color = Color::srgb(0.13, 0.14, 0.18);
 const TOOLBAR_BG: Color = Color::srgb(0.16, 0.17, 0.21);
-const FOOTER_BG: Color = Color::srgb(0.07, 0.08, 0.10);
+// Footer reads as a chrome band paired with the toolbar. Picked a warmer
+// dark tone so it differs from PAGE_BG (cool dark) and TAB_BG (near-black).
+const FOOTER_BG: Color = Color::srgb(0.14, 0.13, 0.11);
 const TOOLBAR_BORDER: Color = Color::srgb(0.30, 0.32, 0.38);
+const FOOTER_BORDER: Color = Color::srgb(0.28, 0.26, 0.22);
 const PANEL_FG: Color = Color::srgb(0.92, 0.94, 0.97);
 const ACCENT: Color = Color::srgb(0.40, 0.75, 1.00);
 const MUTED_FG: Color = Color::srgb(0.55, 0.58, 0.65);
@@ -38,7 +41,9 @@ const FONT_XL: f32 = 22.0;
 
 const VOLUME_BTN_WIDTH: f32 = 80.0;
 const MUTE_BTN_WIDTH: f32 = 110.0;
-const PLAY_BTN_WIDTH: f32 = 110.0;
+const PLAY_BTN_WIDTH: f32 = 90.0;
+const STOP_BTN_WIDTH: f32 = 90.0;
+const FILE_BTN_WIDTH: f32 = 90.0;
 
 const COPYRIGHT_TEXT: &str = "Copyright L. Weinzierl, 2026";
 const HOMEPAGE_URL: &str = "https://weinzierlweb.com";
@@ -74,6 +79,9 @@ pub struct PlayAudioButton;
 pub struct PlayAudioLabel;
 
 #[derive(Component)]
+pub struct StopAudioButton;
+
+#[derive(Component)]
 pub struct VolumeButton;
 
 #[derive(Component)]
@@ -84,6 +92,12 @@ pub struct MuteButton;
 
 #[derive(Component)]
 pub struct MuteLabel;
+
+#[derive(Component)]
+pub struct SaveButton;
+
+#[derive(Component)]
+pub struct LoadButton;
 
 #[derive(Component)]
 pub struct HomepageLink;
@@ -191,8 +205,6 @@ pub fn build_ui(mut commands: Commands) {
             });
 
             // === Toolbar ===
-            // Lighter background and a 1 px bottom border so it reads as a
-            // distinct band from the tab strip directly below.
             root.spawn((
                 Node {
                     width: Val::Percent(100.0),
@@ -215,11 +227,14 @@ pub fn build_ui(mut commands: Commands) {
                 volume_button(t);
                 mute_button(t);
                 play_button(t);
-                // Future buttons land here.
+                stop_button(t);
+                // Spacer between audio controls and file controls.
+                t.spawn(Node { width: Val::Px(16.0), ..default() });
+                save_button(t);
+                load_button(t);
             });
 
             // === Tab bar ===
-            // Notably darker than the toolbar so the two strips don't blur.
             root.spawn((
                 Node {
                     width: Val::Percent(100.0),
@@ -255,21 +270,19 @@ pub fn build_ui(mut commands: Commands) {
             });
 
             // === Footer ===
-            // Three columns: copyright (left), URL link (center), version
-            // (right). Each column uses flex_basis so the center stays
-            // centered even when the side columns are different widths.
             root.spawn((
                 Node {
                     width: Val::Percent(100.0),
                     padding: UiRect::axes(Val::Px(16.0), Val::Px(6.0)),
+                    border: UiRect::top(Val::Px(1.0)),
                     flex_direction: FlexDirection::Row,
                     align_items: AlignItems::Center,
                     ..default()
                 },
                 BackgroundColor(FOOTER_BG),
+                BorderColor::all(FOOTER_BORDER),
             ))
             .with_children(|f| {
-                // Left
                 f.spawn(Node {
                     flex_basis: Val::Percent(33.3),
                     flex_grow: 1.0,
@@ -286,7 +299,6 @@ pub fn build_ui(mut commands: Commands) {
                     ));
                 });
 
-                // Center
                 f.spawn(Node {
                     flex_basis: Val::Percent(33.3),
                     flex_grow: 1.0,
@@ -315,7 +327,6 @@ pub fn build_ui(mut commands: Commands) {
                     });
                 });
 
-                // Right
                 f.spawn(Node {
                     flex_basis: Val::Percent(33.3),
                     flex_grow: 1.0,
@@ -490,8 +501,7 @@ fn build_modulation_tab(content: &mut ChildSpawnerCommands) {
                     "Per-chirp label: type letter (P/S/H/D) + index, then the raw symbol value.\n\
                      Pan: click and drag.   Zoom: mouse wheel, or pinch on a Mac trackpad.\n\
                      View resets when you leave this tab. Click Play in the toolbar to start playback;\n\
-                     the highlight bar tracks the audible chirp. The button is disabled until the\n\
-                     previous playback finishes."
+                     the highlight bar tracks the audible chirp. Stop ends playback immediately."
                 ),
                 TextFont { font_size: FONT_S, ..default() },
                 TextColor(MUTED_FG),
@@ -539,7 +549,11 @@ fn build_about_tab(content: &mut ChildSpawnerCommands) {
                 "Real LoRa chirps are 125-500 kHz, well above hearing. The audio button plays each chirp at a fixed audible target (top frequency 3 kHz, 80 ms per symbol) regardless of SF/BW, so every config sounds at the same comfortable pace. Visualization keeps the true LoRa numbers."
             );
             about_para(a,
-                "The volume button cycles through 25%, 50%, 75%, 100%. The sound button toggles mute. Both apply live: changes during a playback take effect immediately."
+                "Volume cycles 25%, 50%, 75%, 100%. Sound toggles mute. Both apply live: changes during a playback take effect immediately. Stop ends playback at any time."
+            );
+            about_heading(a, "Save and Load");
+            about_para(a,
+                "Save writes the current message, modulation parameters, frame parameters, crypto keys, and audio settings to a RON file. Load reads such a file back. RON is a human-readable format, so files can be hand-edited if you want."
             );
             about_heading(a, "Pan and zoom");
             about_para(a,
@@ -748,7 +762,7 @@ fn play_button(parent: &mut ChildSpawnerCommands) {
             },
             BackgroundColor(ACCENT),
             PlayAudioButton,
-            Tooltip("Play the chirp sequence. The highlight bar in the Modulation tab tracks the audible chirp. Disabled while a previous playback is still running."),
+            Tooltip("Play the chirp sequence. The highlight bar in the Modulation tab tracks the audible chirp. Disabled while a playback is running."),
         ))
         .with_children(|b| {
             b.spawn((
@@ -756,6 +770,75 @@ fn play_button(parent: &mut ChildSpawnerCommands) {
                 TextFont { font_size: FONT_M, ..default() },
                 TextColor(Color::BLACK),
                 PlayAudioLabel,
+            ));
+        });
+}
+
+fn stop_button(parent: &mut ChildSpawnerCommands) {
+    parent
+        .spawn((
+            Button,
+            Node {
+                padding: UiRect::axes(Val::Px(14.0), Val::Px(6.0)),
+                width: Val::Px(STOP_BTN_WIDTH),
+                justify_content: JustifyContent::Center,
+                ..default()
+            },
+            BackgroundColor(BUTTON_BG),
+            StopAudioButton,
+            Tooltip("Stop the current playback immediately. Resets the highlight bar."),
+        ))
+        .with_children(|b| {
+            b.spawn((
+                Text::new("Stop"),
+                TextFont { font_size: FONT_M, ..default() },
+                TextColor(PANEL_FG),
+            ));
+        });
+}
+
+fn save_button(parent: &mut ChildSpawnerCommands) {
+    parent
+        .spawn((
+            Button,
+            Node {
+                padding: UiRect::axes(Val::Px(14.0), Val::Px(6.0)),
+                width: Val::Px(FILE_BTN_WIDTH),
+                justify_content: JustifyContent::Center,
+                ..default()
+            },
+            BackgroundColor(BUTTON_BG),
+            SaveButton,
+            Tooltip("Save current message, modulation, frame, crypto, and audio settings to a RON file."),
+        ))
+        .with_children(|b| {
+            b.spawn((
+                Text::new("Save"),
+                TextFont { font_size: FONT_M, ..default() },
+                TextColor(PANEL_FG),
+            ));
+        });
+}
+
+fn load_button(parent: &mut ChildSpawnerCommands) {
+    parent
+        .spawn((
+            Button,
+            Node {
+                padding: UiRect::axes(Val::Px(14.0), Val::Px(6.0)),
+                width: Val::Px(FILE_BTN_WIDTH),
+                justify_content: JustifyContent::Center,
+                ..default()
+            },
+            BackgroundColor(BUTTON_BG),
+            LoadButton,
+            Tooltip("Load a RON file produced by Save and apply all of its settings."),
+        ))
+        .with_children(|b| {
+            b.spawn((
+                Text::new("Load"),
+                TextFont { font_size: FONT_M, ..default() },
+                TextColor(PANEL_FG),
             ));
         });
 }

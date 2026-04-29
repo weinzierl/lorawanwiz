@@ -1,6 +1,7 @@
 //! Bevy resources for the visualizer.
 
 use bevy::prelude::*;
+use serde::{Deserialize, Serialize};
 
 use crate::math::{ChirpWaveform, EncryptStep, LabeledSymbol};
 
@@ -23,7 +24,7 @@ pub const AUDIO_SAMPLE_RATE_HZ: u32 = 22_050;
 pub const AUDIO_TARGET_TOP_HZ: f32 = 3_000.0;
 pub const AUDIO_TARGET_T_SYM_S: f32 = 0.080;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CodingRate {
     FourFive,
     FourSix,
@@ -50,7 +51,7 @@ impl CodingRate {
     }
 }
 
-#[derive(Resource, Clone, Debug)]
+#[derive(Resource, Clone, Debug, Serialize, Deserialize)]
 pub struct LorawanInputs {
     pub message: String,
     pub sf: u8,
@@ -186,10 +187,7 @@ pub fn parse_hex(text: &str, n: usize) -> Option<Vec<u8>> {
     Some(out)
 }
 
-/// Audio playback settings. `volume` cycles through discrete levels via
-/// the volume button; `muted` is an independent toggle. The effective
-/// gain applied to playback is `if muted { 0.0 } else { volume }`.
-#[derive(Resource)]
+#[derive(Resource, Serialize, Deserialize, Clone)]
 pub struct AudioSettings {
     pub volume: f32,
     pub muted: bool,
@@ -213,7 +211,6 @@ impl AudioSettings {
         }
     }
 
-    /// Cycle through 25%, 50%, 75%, 100%. Bumping past 100% wraps to 25%.
     pub fn cycle_volume(&mut self) {
         self.volume = match (self.volume * 100.0).round() as i32 {
             v if v < 38 => 0.50,
@@ -225,5 +222,26 @@ impl AudioSettings {
 
     pub fn volume_label(&self) -> String {
         format!("{}%", (self.volume * 100.0).round() as i32)
+    }
+}
+
+/// Persistent snapshot of all user-facing settings, written to and read
+/// from RON files via the Save / Load buttons.
+#[derive(Serialize, Deserialize, Clone)]
+pub struct SavedState {
+    pub version: u32,
+    pub inputs: LorawanInputs,
+    pub audio: AudioSettings,
+}
+
+impl SavedState {
+    pub const CURRENT_VERSION: u32 = 1;
+
+    pub fn from_resources(inputs: &LorawanInputs, audio: &AudioSettings) -> Self {
+        Self {
+            version: Self::CURRENT_VERSION,
+            inputs: inputs.clone(),
+            audio: audio.clone(),
+        }
     }
 }

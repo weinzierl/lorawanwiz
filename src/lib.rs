@@ -3,6 +3,7 @@
 
 pub mod audio;
 pub mod math;
+pub mod persistence;
 pub mod pipeline;
 pub mod state;
 pub mod ui;
@@ -69,8 +70,17 @@ impl Plugin for LorawanwizPlugin {
                     visualization::apply_canvas_view,
                     visualization::reset_canvas_view_on_tab_change,
                     audio::handle_play_button,
+                    audio::handle_stop_button,
                     audio::tick_animator,
                     audio::apply_audio_settings,
+                ),
+            )
+            .add_systems(
+                Update,
+                (
+                    persistence::handle_save_click,
+                    persistence::handle_load_click,
+                    persistence::poll_pending_load,
                 ),
             )
             .add_systems(Startup, mark_dirty_at_start);
